@@ -1,15 +1,26 @@
 package se.JonathanAnton.bykanalen.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+
 import java.time.LocalDateTime;
 
 public class CreateListingDTO {
 
-    private Long id;
+    @NotBlank(message = "Titel får inte vara tom")
     private String title;
+
     private String description;
+
     private byte[] image;
+
     private LocalDateTime publishDate;
+
+    @NotNull(message = "Pris måste anges")
+    @PositiveOrZero(message = "Pris får inte vara negativt")
     private Integer price;
+
     private String location;
 
     public CreateListingDTO() {}

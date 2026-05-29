@@ -1,13 +1,24 @@
 package se.JonathanAnton.bykanalen.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CreateUserDTO {
 
-    private Long id;
+    @NotBlank(message = "Du måsste välja ett användarnamn")
     private String username;
+
+    @NotBlank(message = "Du måste välja ett lösenord")
     private String password;
+
+    @NotBlank(message = "Du måste skriva en email-adress")
     private String email;
+
     private Byte age;
+
+    @NotBlank(message = "Förnamn får inte vara tomt")
     private String firstName;
+
+    @NotBlank(message = "Efternamn får inte vara tomt")
     private String lastName;
 
     public CreateUserDTO() {}

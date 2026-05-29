@@ -1,13 +1,18 @@
 package se.JonathanAnton.bykanalen.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 
 public class CreateServiceDTO {
 
-    private Long id;
+    @NotBlank(message = "Titel får inte vara tom")
     private String title;
+
     private String description;
+
     private byte[] image;
+
     private LocalDateTime publishDate;
 
     public CreateServiceDTO() {}

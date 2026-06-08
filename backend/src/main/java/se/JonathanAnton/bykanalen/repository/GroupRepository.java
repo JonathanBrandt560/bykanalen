@@ -1,19 +1,20 @@
 package se.JonathanAnton.bykanalen.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import se.JonathanAnton.bykanalen.model.Group;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface GroupInfoRepository extends JpaRepository<GroupInfo, Long> {
+public interface GroupRepository extends JpaRepository<Group, Long> {
 
     // Hitta group by namn
-    Optional<GroupInfo> findByGroupName(String groupName);
+    Optional<Group> findByGroupName(String groupName);
 
     // Hitta groups efter namn (case-insensitive)
-    List<GroupInfo> findByGroupNameContainingIgnoreCase(String groupName);
+    List<Group> findByGroupNameContainingIgnoreCase(String groupName);
 
     // Hitta alla groups sorterade efter senaste
-    List<GroupInfo> findAllByOrderByCreatedDateDesc();
+    List<Group> findAllByOrderByCreatedDateDesc();
 
 }

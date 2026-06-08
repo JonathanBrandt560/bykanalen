@@ -1,6 +1,7 @@
 package se.JonathanAnton.bykanalen.model;
 
 import jakarta.persistence.*;
+import se.JonathanAnton.bykanalen.enums.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +20,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
     @Column(nullable = false)
-    private Byte age;
-
-    @Column(nullable = false)
-    private String firstName;
-
-    @Column(nullable = false)
-    private String lastName;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetail userDetail;
@@ -44,20 +37,17 @@ public class User {
     private List<EventRegistration> eventRegistrations = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ServiceUser> serviceUsers = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberlistGroup> memberlistGroups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Service> services = new ArrayList<>();
 
     public User() {}
 
-    public User(String username, String password, String email, Byte age, String firstName, String lastName) {
+    public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.age = age;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.role = role;
     }
 
     public Long getId() {
@@ -84,36 +74,12 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public Role getRole() {
+        return role;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Byte getAge() {
-        return age;
-    }
-
-    public void setAge(Byte age) {
-        this.age = age;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public UserDetail getUserDetail() {
@@ -148,19 +114,19 @@ public class User {
         this.eventRegistrations = eventRegistrations;
     }
 
-    public List<ServiceUser> getServiceUsers() {
-        return serviceUsers;
-    }
-
-    public void setServiceUsers(List<ServiceUser> serviceUsers) {
-        this.serviceUsers = serviceUsers;
-    }
-
     public List<MemberlistGroup> getMemberlistGroups() {
         return memberlistGroups;
     }
 
     public void setMemberlistGroups(List<MemberlistGroup> memberlistGroups) {
         this.memberlistGroups = memberlistGroups;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
     }
 }

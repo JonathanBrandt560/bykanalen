@@ -18,8 +18,8 @@ public class MemberlistGroup {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_info_id", nullable = false)
-    private GroupInfo groupInfo;
+    @JoinColumn(name = "group_id", nullable = false)
+    private Group group;
 
     @Column(nullable = false)
     @CreationTimestamp
@@ -27,9 +27,9 @@ public class MemberlistGroup {
 
     public MemberlistGroup() {}
 
-    public MemberlistGroup(User user, GroupInfo groupInfo) {
+    public MemberlistGroup(User user, Group group) {
         this.user = user;
-        this.groupInfo = groupInfo;
+        this.group = group;
     }
 
     public Long getId() {
@@ -48,12 +48,12 @@ public class MemberlistGroup {
         this.user = user;
     }
 
-    public GroupInfo getGroupInfo() {
-        return groupInfo;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGroupInfo(GroupInfo groupInfo) {
-        this.groupInfo = groupInfo;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public LocalDateTime getJoinedDate() {

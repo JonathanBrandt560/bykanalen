@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "group_infos")
-public class GroupInfo {
+@Table(name = "bykanalen_groups")
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +45,21 @@ public class GroupInfo {
     @CreationTimestamp
     private LocalDateTime createdDate;
 
-    @OneToMany(mappedBy = "groupInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberlistGroup> memberlistGroups = new ArrayList<>();
 
-    public GroupInfo() {}
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> events = new ArrayList<>();
 
-    public GroupInfo(String groupName, String text1, String text2, String text3, byte[] image1, byte[] image2, byte[] image3) {
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GeneralPost> generalPosts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Service> services = new ArrayList<>();
+
+    public Group() {}
+
+    public Group(String groupName, String text1, String text2, String text3, byte[] image1, byte[] image2, byte[] image3) {
         this.groupName = groupName;
         this.text1 = text1;
         this.text2 = text2;
@@ -138,5 +147,29 @@ public class GroupInfo {
 
     public void setMemberlistGroups(List<MemberlistGroup> memberlistGroups) {
         this.memberlistGroups = memberlistGroups;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
+    public List<GeneralPost> getGeneralPosts() {
+        return generalPosts;
+    }
+
+    public void setGeneralPosts(List<GeneralPost> generalPosts) {
+        this.generalPosts = generalPosts;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
     }
 }

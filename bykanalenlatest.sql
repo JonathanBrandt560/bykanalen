@@ -16,6 +16,40 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `bykanalen_groups`
+--
+
+DROP TABLE IF EXISTS `bykanalen_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bykanalen_groups` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `text1` text COLLATE utf8mb4_unicode_ci,
+  `text2` text COLLATE utf8mb4_unicode_ci,
+  `text3` text COLLATE utf8mb4_unicode_ci,
+  `image1` longblob,
+  `image2` longblob,
+  `image3` longblob,
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_group_infos_group_name` (`group_name`),
+  KEY `idx_group_infos_created_date` (`created_date`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bykanalen_groups`
+--
+
+LOCK TABLES `bykanalen_groups` WRITE;
+/*!40000 ALTER TABLE `bykanalen_groups` DISABLE KEYS */;
+INSERT INTO `bykanalen_groups` VALUES (1,'Tygelsjö','En vacker by i Skåne med cirka 500 invånare. Här finns både trevliga grannar och många gemensamma aktiviteter under året.','Välkommen till Tygelsjö! Vi är en liten men aktiv gemenskap där alla hjälps åt.','Vi anordnar många evenemang under året - från midsommar till julmarknad.','Missa inte våra regelbundna träffar och aktiviteter för både barn och vuxna!',NULL,NULL,NULL,'2024-01-01 08:00:00'),(2,'Östra Grevinge','En charmig liten by med en stark känsla av gemenskap. Vi samlas ofta för att fira olika högtider och anordna gemensamma aktiviteter.','Östra Grevinge är ett fantastiskt ställe att bo på med trevliga människor.','Vi har många traditioner och aktiviteter som håller gemenskapen levande året runt.','Kom och bli en del av vår växande gemenskap!',NULL,NULL,NULL,'2024-01-05 09:30:00');
+/*!40000 ALTER TABLE `bykanalen_groups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `event_registrations`
 --
 
@@ -23,14 +57,16 @@ DROP TABLE IF EXISTS `event_registrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `event_registrations` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` bigint NOT NULL,
   `event_id` bigint NOT NULL,
   `registration_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`,`event_id`),
+  PRIMARY KEY (`id`),
   KEY `idx_event_registrations_event_id` (`event_id`),
-  CONSTRAINT `fk_event_registrations_event` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_event_registrations_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `fk_event_registrations_user` (`user_id`),
+  CONSTRAINT `fk_event_registrations_event` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
+  CONSTRAINT `fk_event_registrations_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +75,7 @@ CREATE TABLE `event_registrations` (
 
 LOCK TABLES `event_registrations` WRITE;
 /*!40000 ALTER TABLE `event_registrations` DISABLE KEYS */;
-INSERT INTO `event_registrations` VALUES (1,1,'2024-04-20 10:15:00'),(1,3,'2024-10-15 09:30:00'),(1,4,'2024-02-20 10:00:00'),(1,6,'2024-05-25 10:30:00'),(1,7,'2024-03-20 11:00:00'),(2,1,'2024-04-21 14:30:00'),(2,2,'2024-05-05 14:00:00'),(2,5,'2024-04-10 15:30:00'),(2,8,'2024-06-10 09:30:00'),(3,1,'2024-04-22 09:45:00'),(3,3,'2024-10-20 14:15:00'),(3,4,'2024-02-25 14:30:00'),(3,6,'2024-06-01 14:15:00'),(3,7,'2024-03-25 14:30:00'),(4,1,'2024-04-23 16:20:00'),(4,2,'2024-05-08 10:20:00'),(4,8,'2024-06-15 14:45:00'),(5,1,'2024-05-01 11:00:00'),(5,3,'2024-11-01 10:45:00'),(5,4,'2024-03-01 09:15:00'),(5,5,'2024-04-15 10:45:00'),(5,6,'2024-06-05 09:40:00'),(5,7,'2024-04-01 09:45:00'),(6,9,'2024-05-15 10:45:00'),(6,11,'2024-09-10 10:30:00'),(6,14,'2024-03-25 11:20:00'),(6,15,'2024-06-20 10:30:00'),(7,10,'2024-05-10 15:45:00'),(7,11,'2024-09-15 14:45:00'),(7,16,'2024-04-25 16:40:00'),(8,9,'2024-05-20 14:30:00'),(8,11,'2024-09-20 09:20:00'),(8,12,'2024-05-15 14:20:00'),(8,13,'2024-07-15 14:40:00'),(8,15,'2024-06-25 15:45:00'),(9,1,'2024-06-01 09:00:00'),(9,2,'2024-06-01 09:15:00'),(9,3,'2024-11-10 11:00:00'),(9,4,'2024-03-10 11:20:00'),(9,6,'2024-06-15 11:50:00'),(9,7,'2024-04-20 10:55:00'),(10,1,'2024-06-05 12:30:00'),(10,2,'2024-06-05 13:50:00'),(10,5,'2024-04-20 14:20:00'),(10,8,'2024-07-01 11:35:00'),(11,9,'2024-06-01 15:20:00'),(11,11,'2024-10-05 11:40:00'),(11,14,'2024-04-10 10:35:00'),(11,15,'2024-07-10 11:55:00'),(12,9,'2024-06-05 11:40:00'),(12,11,'2024-10-10 13:55:00'),(12,12,'2024-06-01 16:10:00'),(12,13,'2024-07-20 09:55:00'),(12,15,'2024-07-15 13:30:00'),(13,1,'2024-05-05 13:45:00'),(13,2,'2024-06-10 15:25:00'),(13,3,'2024-11-20 09:55:00'),(13,6,'2024-06-25 10:05:00'),(13,7,'2024-05-05 15:40:00'),(14,9,'2024-06-10 13:25:00'),(14,11,'2024-10-20 16:30:00'),(14,12,'2024-06-05 11:30:00'),(14,14,'2024-05-01 12:40:00'),(14,15,'2024-07-20 10:05:00'),(15,10,'2024-05-20 10:20:00'),(15,11,'2024-11-01 14:50:00'),(15,16,'2024-05-01 11:25:00'),(16,1,'2024-06-10 10:30:00'),(16,2,'2024-06-18 14:10:00'),(16,3,'2024-12-01 10:20:00'),(16,8,'2024-07-15 15:40:00'),(17,9,'2024-06-15 10:05:00'),(17,10,'2024-06-01 16:55:00'),(17,11,'2024-11-05 09:35:00'),(17,16,'2024-05-10 09:50:00'),(18,1,'2024-06-15 15:15:00'),(18,2,'2024-06-20 11:55:00'),(18,8,'2024-07-20 10:25:00');
+INSERT INTO `event_registrations` VALUES (1,1,1,'2024-04-20 10:15:00'),(2,1,3,'2024-10-15 09:30:00'),(3,1,4,'2024-02-20 10:00:00'),(4,1,6,'2024-05-25 10:30:00'),(5,1,7,'2024-03-20 11:00:00'),(6,2,1,'2024-04-21 14:30:00'),(7,2,2,'2024-05-05 14:00:00'),(8,2,5,'2024-04-10 15:30:00'),(9,2,8,'2024-06-10 09:30:00'),(10,3,1,'2024-04-22 09:45:00'),(11,3,3,'2024-10-20 14:15:00'),(12,3,4,'2024-02-25 14:30:00'),(13,3,6,'2024-06-01 14:15:00'),(14,3,7,'2024-03-25 14:30:00'),(15,4,1,'2024-04-23 16:20:00'),(16,4,2,'2024-05-08 10:20:00'),(17,4,8,'2024-06-15 14:45:00'),(18,5,1,'2024-05-01 11:00:00'),(19,5,3,'2024-11-01 10:45:00'),(20,5,4,'2024-03-01 09:15:00'),(21,5,5,'2024-04-15 10:45:00'),(22,5,6,'2024-06-05 09:40:00'),(23,5,7,'2024-04-01 09:45:00'),(24,6,9,'2024-05-15 10:45:00'),(25,6,11,'2024-09-10 10:30:00'),(26,6,14,'2024-03-25 11:20:00'),(27,6,15,'2024-06-20 10:30:00'),(28,7,10,'2024-05-10 15:45:00'),(29,7,11,'2024-09-15 14:45:00'),(30,7,16,'2024-04-25 16:40:00'),(31,8,9,'2024-05-20 14:30:00'),(32,8,11,'2024-09-20 09:20:00'),(33,8,12,'2024-05-15 14:20:00'),(34,8,13,'2024-07-15 14:40:00'),(35,8,15,'2024-06-25 15:45:00'),(36,9,1,'2024-06-01 09:00:00'),(37,9,2,'2024-06-01 09:15:00'),(38,9,3,'2024-11-10 11:00:00'),(39,9,4,'2024-03-10 11:20:00'),(40,9,6,'2024-06-15 11:50:00'),(41,9,7,'2024-04-20 10:55:00'),(42,10,1,'2024-06-05 12:30:00'),(43,10,2,'2024-06-05 13:50:00'),(44,10,5,'2024-04-20 14:20:00'),(45,10,8,'2024-07-01 11:35:00'),(46,11,9,'2024-06-01 15:20:00'),(47,11,11,'2024-10-05 11:40:00'),(48,11,14,'2024-04-10 10:35:00'),(49,11,15,'2024-07-10 11:55:00'),(50,12,9,'2024-06-05 11:40:00'),(51,12,11,'2024-10-10 13:55:00'),(52,12,12,'2024-06-01 16:10:00'),(53,12,13,'2024-07-20 09:55:00'),(54,12,15,'2024-07-15 13:30:00'),(55,13,1,'2024-05-05 13:45:00'),(56,13,2,'2024-06-10 15:25:00'),(57,13,3,'2024-11-20 09:55:00'),(58,13,6,'2024-06-25 10:05:00'),(59,13,7,'2024-05-05 15:40:00'),(60,14,9,'2024-06-10 13:25:00'),(61,14,11,'2024-10-20 16:30:00'),(62,14,12,'2024-06-05 11:30:00'),(63,14,14,'2024-05-01 12:40:00'),(64,14,15,'2024-07-20 10:05:00'),(65,15,10,'2024-05-20 10:20:00'),(66,15,11,'2024-11-01 14:50:00'),(67,15,16,'2024-05-01 11:25:00'),(68,16,1,'2024-06-10 10:30:00'),(69,16,2,'2024-06-18 14:10:00'),(70,16,3,'2024-12-01 10:20:00'),(71,16,8,'2024-07-15 15:40:00'),(72,17,9,'2024-06-15 10:05:00'),(73,17,10,'2024-06-01 16:55:00'),(74,17,11,'2024-11-05 09:35:00'),(75,17,16,'2024-05-10 09:50:00'),(76,18,1,'2024-06-15 15:15:00'),(77,18,2,'2024-06-20 11:55:00'),(78,18,8,'2024-07-20 10:25:00');
 /*!40000 ALTER TABLE `event_registrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,8 +100,8 @@ CREATE TABLE `events` (
   KEY `idx_events_group_id` (`group_id`),
   KEY `idx_events_start_date` (`start_date`),
   KEY `idx_events_publish_date` (`publish_date`),
-  CONSTRAINT `fk_events_group` FOREIGN KEY (`group_id`) REFERENCES `group_infos` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CONSTRAINT `fk_events_group` FOREIGN KEY (`group_id`) REFERENCES `bykanalen_groups` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +110,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
-INSERT INTO `events` VALUES (1,1,'Midsommarfirande i Folkparken','Traditionell midsommarfirande med dansbana, mat och dryck. Vi startar klockan 14:00 med grejer för barn och uppvärmningen på dansbanan. Alla är välkomna!',NULL,'2024-04-15 10:00:00','2024-06-21 14:00:00','2024-06-21 23:00:00','2024-06-19 23:59:00'),(2,1,'Dansbandskväll med Hasse Staffanz','Välkommen till en fantastisk kväll med dansbandet Hasse Staffanz! Dansbanan öppen från 19:00, musik börjar 20:00. Mat och dryck finns tillgängligt.',NULL,'2024-05-01 09:00:00','2024-07-13 19:00:00','2024-07-13 23:30:00','2024-07-10 23:59:00'),(3,1,'Lucia-firande på Torget','År fest med luciatåg, sång och glögg. Vi firar Lucia tillsammans med klassiska lucialåtar och avslutar med fika och pepparkakor. Börjar 17:30 på torget.',NULL,'2024-10-01 08:00:00','2024-12-13 17:30:00','2024-12-13 19:30:00','2024-12-10 23:59:00'),(4,1,'Påskmarknad i Centrum','Traditionell påskmarknad med hantverkare, blomsterförsäljare och påskdekorationer. Mat och kaffe finns på plats. Marknaden är öppen från 10:00-16:00.',NULL,'2024-02-15 11:00:00','2024-03-30 10:00:00','2024-03-30 16:00:00','2024-03-28 23:59:00'),(5,1,'Friidrott-träningen öppet för alla','Kom och träna friidrott tillsammans! Vi tränar på idrottsplatsen varje vecka. Passar för alla åldrar och nivåer. Träningen startar 18:30 på fredagar.',NULL,'2024-04-05 14:00:00','2024-06-07 18:30:00','2024-06-07 20:00:00',NULL),(6,1,'Sommarcafé vid sjön','En mysig sommarkväll vid vattnet! Vi arrangerar ett öppet kafé med hemlagat fika, musik och god miljö. Perfekt för att umgås med grannar och nya vänner. Starts 17:00.',NULL,'2024-05-20 10:00:00','2024-07-26 17:00:00','2024-07-26 22:00:00',NULL),(7,1,'Familjedagen på Gården','En rolig dag för hela familjen med många aktiviteter! Pony-ridning för barn, ansiktsmålning, spel och tävlingar. Mat och dryck finns tillgängligt. Vi startar 11:00 och avslutar 16:00.',NULL,'2024-03-10 09:00:00','2024-05-19 11:00:00','2024-05-19 16:00:00','2024-05-15 23:59:00'),(8,1,'Filmkväll: Klassiska svenska filmer','Vi visar klassiska svenska filmer på det stora vita duken. Denna gång visar vi en favorit från 1970-talet! Början 19:30, kaffe och bullar serveras.',NULL,'2024-06-01 15:00:00','2024-08-16 19:30:00','2024-08-16 21:45:00','2024-08-14 23:59:00'),(9,2,'Cykeltur runt sjön','En vacker cykeltur för alla cykelnivåer! Vi åker runt sjön på cirka 20 km. Turen tar omkring 2-3 timmar. Vi stannar för en fika-paus på halva vägen. Börjar 09:00 från parkeringen vid cykelvägen.',NULL,'2024-05-10 08:00:00','2024-09-15 09:00:00','2024-09-15 12:30:00',NULL),(10,2,'Ungdomsdiskoteket - Fredagskväll','Ungdomsdiskoteket är tillbaka! DJ spelar dagens hetaste låtar och klassiker. Åldersgräns: 13-18 år. Ingång: 80 kr. Frukost och dryck finns att köpa. Dörren öppen 19:00-23:00.',NULL,'2024-04-20 16:00:00','2024-09-06 19:00:00','2024-09-06 23:00:00',NULL),(11,2,'Julmarknad med allsång','Vår stora julmarknad med många försäljare, hantverkare och julkort! Vi har också levande musik och allsång av julklassiker. Glögg och pepparkakor är gratis för alla besökare. Marknaden är öppen 10:00-17:00.',NULL,'2024-09-01 10:00:00','2024-11-30 10:00:00','2024-11-30 17:00:00','2024-11-28 23:59:00'),(12,2,'Promenerad för pensionärer','En lugn och mysig promenad för vuxna och pensionärer. Vi går omkring 5 km genom skogar och naturen. Turen tar cirka 1,5 timmar. Vi slutar med kaffe och en pratstund på ett fint café. Börjar 10:00 från biblioteket.',NULL,'2024-05-01 08:30:00','2024-10-10 10:00:00','2024-10-10 11:30:00',NULL),(13,2,'Klassisk körmusik i Kyrkan','En vacker konsert med klassisk körmusik i vår vackra kyrka. Vi uppför både klassiska och moderna körwerk. Entré: 100 kr. Konserten börjar 19:30. Kaffe och bullar serveras efter konserten.',NULL,'2024-07-01 14:00:00','2024-09-28 19:30:00','2024-09-28 21:30:00','2024-09-25 23:59:00'),(14,2,'Trädgårdsmässa och växtshopping','Välkommen till vår årliga trädgårdsmässa! Vi har ett stort utbud av växter, träd och trädgårdsartiklar. Experter på plats som kan ge dig tips för din trädgård. Även försäljning av hemgjorda marmelader och fruktkonserver. Öppet 09:00-16:00.',NULL,'2024-03-15 10:00:00','2024-05-12 09:00:00','2024-05-12 16:00:00','2024-05-10 23:59:00'),(15,2,'Grillkväll med grannar','En avslappnad grillkväll där grannar träffas och umgås! Vi grillär korv och köttbullar, och alla är välkomna att ta med något. Vi sitter ute och njuter av sommaren tillsammans. Börjar 18:00. Helt gratis!',NULL,'2024-06-10 15:00:00','2024-08-09 18:00:00','2024-08-09 22:00:00',NULL),(16,2,'Barn-teater: Sagor från landet långt bort','En spännande barnteater med sagor från exotiska länder! En rolig föreställning för barn 4-10 år. Längd: cirka 45 minuter. Börjar 14:00 på kulturhuset.',NULL,'2024-04-01 11:00:00','2024-06-15 14:00:00','2024-06-15 14:45:00','2024-06-12 23:59:00');
+INSERT INTO `events` VALUES (1,1,'Midsommarfirande i Folkparken','Traditionell midsommarfirande med dansbana, mat och dryck. Vi startar klockan 14:00 med grejer för barn och uppvärmningen på dansbanan. Alla är välkomna!',NULL,'2024-04-15 10:00:00','2024-06-21 14:00:00','2024-06-21 23:00:00','2024-06-19 23:59:00'),(2,1,'Dansbandskväll med Hasse Staffanz','Välkommen till en fantastisk kväll med dansbandet Hasse Staffanz! Dansbanan öppen från 19:00, musik börjar 20:00. Mat och dryck finns tillgängligt.',NULL,'2024-05-01 09:00:00','2024-07-13 19:00:00','2024-07-13 23:30:00','2024-07-10 23:59:00'),(3,1,'Lucia-firande på Torget','År fest med luciatåg, sång och glögg. Vi firar Lucia tillsammans med klassiska lucialåtar och avslutar med fika och pepparkakor. Börjar 17:30 på torget.',NULL,'2024-10-01 08:00:00','2024-12-13 17:30:00','2024-12-13 19:30:00','2024-12-10 23:59:00'),(4,1,'Påskmarknad i Centrum','Traditionell påskmarknad med hantverkare, blomsterförsäljare och påskdekorationer. Mat och kaffe finns på plats. Marknaden är öppen från 10:00-16:00.',NULL,'2024-02-15 11:00:00','2024-03-30 10:00:00','2024-03-30 16:00:00','2024-03-28 23:59:00'),(5,1,'Friidrott-träningen öppet för alla','Kom och träna friidrott tillsammans! Vi tränar på idrottsplatsen varje vecka. Passar för alla åldrar och nivåer. Träningen startar 18:30 på fredagar.',NULL,'2024-04-05 14:00:00','2024-06-07 18:30:00','2024-06-07 20:00:00',NULL),(6,1,'Sommarcafé vid sjön','En mysig sommarkväll vid vattnet! Vi arrangerar ett öppet kafé med hemlagat fika, musik och god miljö. Perfekt för att umgås med grannar och nya vänner. Starts 17:00.',NULL,'2024-05-20 10:00:00','2024-07-26 17:00:00','2024-07-26 22:00:00',NULL),(7,1,'Familjedagen på Gården','En rolig dag för hela familjen med många aktiviteter! Pony-ridning för barn, ansiktsmålning, spel och tävlingar. Mat och dryck finns tillgängligt. Vi startar 11:00 och avslutar 16:00.',NULL,'2024-03-10 09:00:00','2024-05-19 11:00:00','2024-05-19 16:00:00','2024-05-15 23:59:00'),(8,1,'Filmkväll: Klassiska svenska filmer','Vi visar klassiska svenska filmer på det stora vita duken. Denna gång visar vi en favorit från 1970-talet! Början 19:30, kaffe och bullar serveras.',NULL,'2024-06-01 15:00:00','2024-08-16 19:30:00','2024-08-16 21:45:00','2024-08-14 23:59:00'),(9,2,'Cykeltur runt sjön','En vacker cykeltur för alla cykelnivåer! Vi åker runt sjön på cirka 20 km. Turen tar omkring 2-3 timmar. Vi stannar för en fika-paus på halva vägen. Börjar 09:00 från parkeringen vid cykelvägen.',NULL,'2024-05-10 08:00:00','2024-09-15 09:00:00','2024-09-15 12:30:00',NULL),(10,2,'Ungdomsdiskoteket - Fredagskväll','Ungdomsdiskoteket är tillbaka! DJ spelar dagens hetaste låtar och klassiker. Åldersgräns: 13-18 år. Ingång: 80 kr. Frukost och dryck finns att köpa. Dörren öppen 19:00-23:00.',NULL,'2024-04-20 16:00:00','2024-09-06 19:00:00','2024-09-06 23:00:00',NULL),(11,2,'Julmarknad med allsång','Vår stora julmarknad med många försäljare, hantverkare och julkort! Vi har också levande musik och allsång av julklassiker. Glögg och pepparkakor är gratis för alla besökare. Marknaden är öppen 10:00-17:00.',NULL,'2024-09-01 10:00:00','2024-11-30 10:00:00','2024-11-30 17:00:00','2024-11-28 23:59:00'),(12,2,'Promenerad för pensionärer','En lugn och mysig promenad för vuxna och pensionärer. Vi går omkring 5 km genom skogar och naturen. Turen tar cirka 1,5 timmar. Vi slutar med kaffe och en pratstund på ett fint café. Börjar 10:00 från biblioteket.',NULL,'2024-05-01 08:30:00','2024-10-10 10:00:00','2024-10-10 11:30:00',NULL),(13,2,'Klassisk körmusik i Kyrkan','En vacker konsert med klassisk körmusik i vår vackra kyrka. Vi uppför både klassiska och moderna körwerk. Entré: 100 kr. Konserten börjar 19:30. Kaffe och bullar serveras efter konserten.',NULL,'2024-07-01 14:00:00','2024-09-28 19:30:00','2024-09-28 21:30:00','2024-09-25 23:59:00'),(14,2,'Trädgårdsmässa och växtshopping','Välkommen till vår årliga trädgårdsmässa! Vi har ett stort utbud av växter, träd och trädgårdsartiklar. Experter på plats som kan ge dig tips för din trädgård. Även försäljning av hemgjorda marmelader och fruktkonserver. Öppet 09:00-16:00.',NULL,'2024-03-15 10:00:00','2024-05-12 09:00:00','2024-05-12 16:00:00','2024-05-10 23:59:00'),(15,2,'Grillkväll med grannar','En avslappnad grillkväll där grannar träffas och umgås! Vi grillär korv och köttbullar, och alla är välkomna att ta med något. Vi sitter ute och njuter av sommaren tillsammans. Börjar 18:00. Helt gratis!',NULL,'2024-06-10 15:00:00','2024-08-09 18:00:00','2024-08-09 22:00:00',NULL),(16,2,'Barn-teater: Sagor från landet långt bort','En spännande barnteater med sagor från exotiska länder! En rolig föreställning för barn 4-10 år. Längd: cirka 45 minuter. Börjar 14:00 på kulturhuset.',NULL,'2024-04-01 11:00:00','2024-06-15 14:00:00','2024-06-15 14:45:00','2024-06-12 23:59:00'),(17,1,'Matmarknad','Upptäck mat från alla världens hörn på ett och samma ställe. Ett perfekt tillfälle att bekanta sig med nya matkulturer.',NULL,'2025-04-10 12:00:00','2026-06-17 11:00:00',NULL,NULL);
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +135,7 @@ CREATE TABLE `general_posts` (
   KEY `idx_general_posts_user_id` (`user_id`),
   KEY `idx_general_posts_publish_date` (`publish_date`),
   KEY `idx_general_posts_like_count` (`like_count`),
-  CONSTRAINT `fk_general_posts_group` FOREIGN KEY (`group_id`) REFERENCES `group_infos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_general_posts_group` FOREIGN KEY (`group_id`) REFERENCES `bykanalen_groups` (`id`),
   CONSTRAINT `fk_general_posts_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,24 +151,6 @@ INSERT INTO `general_posts` VALUES (1,1,3,'Söker rekommendation för gräsklipp
 UNLOCK TABLES;
 
 --
--- Temporary view structure for view `group_admin_info`
---
-
-DROP TABLE IF EXISTS `group_admin_info`;
-/*!50001 DROP VIEW IF EXISTS `group_admin_info`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `group_admin_info` AS SELECT 
- 1 AS `group_info_id`,
- 1 AS `group_name`,
- 1 AS `user_id`,
- 1 AS `username`,
- 1 AS `first_name`,
- 1 AS `last_name`,
- 1 AS `role`*/;
-SET character_set_client = @saved_cs_client;
-
---
 -- Table structure for table `group_admins`
 --
 
@@ -141,12 +159,12 @@ DROP TABLE IF EXISTS `group_admins`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `group_admins` (
   `user_id` bigint NOT NULL,
-  `group_info_id` bigint NOT NULL,
+  `group_id` bigint NOT NULL,
   `role` enum('moderator','admin') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'moderator',
   `assigned_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`,`group_info_id`),
-  KEY `idx_group_admins_group_id` (`group_info_id`),
-  CONSTRAINT `fk_group_admins_group` FOREIGN KEY (`group_info_id`) REFERENCES `group_infos` (`id`) ON DELETE CASCADE,
+  PRIMARY KEY (`user_id`,`group_id`),
+  KEY `idx_group_admins_group_id` (`group_id`),
+  CONSTRAINT `fk_group_admins_group` FOREIGN KEY (`group_id`) REFERENCES `bykanalen_groups` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_group_admins_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -159,54 +177,6 @@ LOCK TABLES `group_admins` WRITE;
 /*!40000 ALTER TABLE `group_admins` DISABLE KEYS */;
 /*!40000 ALTER TABLE `group_admins` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `group_infos`
---
-
-DROP TABLE IF EXISTS `group_infos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `group_infos` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `group_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `text1` text COLLATE utf8mb4_unicode_ci,
-  `text2` text COLLATE utf8mb4_unicode_ci,
-  `text3` text COLLATE utf8mb4_unicode_ci,
-  `image1` longblob,
-  `image2` longblob,
-  `image3` longblob,
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_group_infos_group_name` (`group_name`),
-  KEY `idx_group_infos_created_date` (`created_date`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `group_infos`
---
-
-LOCK TABLES `group_infos` WRITE;
-/*!40000 ALTER TABLE `group_infos` DISABLE KEYS */;
-INSERT INTO `group_infos` VALUES (1,'Tygelsjö','En vacker by i Skåne med cirka 500 invånare. Här finns både trevliga grannar och många gemensamma aktiviteter under året.','Välkommen till Tygelsjö! Vi är en liten men aktiv gemenskap där alla hjälps åt.','Vi anordnar många evenemang under året - från midsommar till julmarknad.','Missa inte våra regelbundna träffar och aktiviteter för både barn och vuxna!',NULL,NULL,NULL,'2024-01-01 08:00:00'),(2,'Östra Grevinge','En charmig liten by med en stark känsla av gemenskap. Vi samlas ofta för att fira olika högtider och anordna gemensamma aktiviteter.','Östra Grevinge är ett fantastiskt ställe att bo på med trevliga människor.','Vi har många traditioner och aktiviteter som håller gemenskapen levande året runt.','Kom och bli en del av vår växande gemenskap!',NULL,NULL,NULL,'2024-01-05 09:30:00');
-/*!40000 ALTER TABLE `group_infos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Temporary view structure for view `group_member_counts`
---
-
-DROP TABLE IF EXISTS `group_member_counts`;
-/*!50001 DROP VIEW IF EXISTS `group_member_counts`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `group_member_counts` AS SELECT 
- 1 AS `id`,
- 1 AS `group_name`,
- 1 AS `member_count`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `listings`
@@ -251,14 +221,16 @@ DROP TABLE IF EXISTS `memberlist_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `memberlist_groups` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` bigint NOT NULL,
-  `group_info_id` bigint NOT NULL,
+  `group_id` bigint NOT NULL,
   `joined_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`,`group_info_id`),
-  KEY `idx_memberlist_groups_group_info_id` (`group_info_id`),
-  CONSTRAINT `fk_memberlist_groups_group_info` FOREIGN KEY (`group_info_id`) REFERENCES `group_infos` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_memberlist_groups_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `idx_memberlist_groups_group_info_id` (`group_id`),
+  KEY `fk_memberlist_groups_user` (`user_id`),
+  CONSTRAINT `fk_memberlist_groups_group` FOREIGN KEY (`group_id`) REFERENCES `bykanalen_groups` (`id`),
+  CONSTRAINT `fk_memberlist_groups_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,35 +239,8 @@ CREATE TABLE `memberlist_groups` (
 
 LOCK TABLES `memberlist_groups` WRITE;
 /*!40000 ALTER TABLE `memberlist_groups` DISABLE KEYS */;
-INSERT INTO `memberlist_groups` VALUES (1,1,'2024-01-15 10:30:00'),(2,1,'2024-02-03 14:20:00'),(3,1,'2024-02-15 09:45:00'),(4,1,'2024-03-01 11:00:00'),(5,1,'2024-03-10 15:30:00'),(6,2,'2024-03-22 08:15:00'),(7,2,'2024-04-05 12:00:00'),(8,2,'2024-04-18 16:45:00'),(9,1,'2024-05-02 10:20:00'),(10,1,'2024-05-12 13:50:00'),(11,2,'2024-05-25 09:30:00'),(12,2,'2024-06-01 14:15:00'),(13,1,'2024-06-10 11:40:00'),(14,2,'2024-06-20 15:25:00'),(15,2,'2024-07-01 10:00:00'),(16,1,'2024-07-15 12:30:00'),(17,2,'2024-07-28 14:50:00'),(18,1,'2024-08-05 09:20:00'),(19,1,'2024-01-01 08:00:00'),(19,2,'2024-01-01 08:00:00');
+INSERT INTO `memberlist_groups` VALUES (1,1,1,'2024-01-15 10:30:00'),(2,2,1,'2024-02-03 14:20:00'),(3,3,1,'2024-02-15 09:45:00'),(4,4,1,'2024-03-01 11:00:00'),(5,5,1,'2024-03-10 15:30:00'),(6,6,2,'2024-03-22 08:15:00'),(7,7,2,'2024-04-05 12:00:00'),(8,8,2,'2024-04-18 16:45:00'),(9,9,1,'2024-05-02 10:20:00'),(10,10,1,'2024-05-12 13:50:00'),(11,11,2,'2024-05-25 09:30:00'),(12,12,2,'2024-06-01 14:15:00'),(13,13,1,'2024-06-10 11:40:00'),(14,14,2,'2024-06-20 15:25:00'),(15,15,2,'2024-07-01 10:00:00'),(16,16,1,'2024-07-15 12:30:00'),(17,17,2,'2024-07-28 14:50:00'),(18,18,1,'2024-08-05 09:20:00'),(19,19,1,'2024-01-01 08:00:00'),(20,19,2,'2024-01-01 08:00:00'),(21,41,2,'2026-06-07 21:42:55');
 /*!40000 ALTER TABLE `memberlist_groups` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `service_users`
---
-
-DROP TABLE IF EXISTS `service_users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `service_users` (
-  `service_id` bigint NOT NULL,
-  `user_id` bigint NOT NULL,
-  PRIMARY KEY (`service_id`,`user_id`),
-  KEY `idx_service_users_user_id` (`user_id`),
-  CONSTRAINT `fk_service_users_service` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_service_users_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `service_users`
---
-
-LOCK TABLES `service_users` WRITE;
-/*!40000 ALTER TABLE `service_users` DISABLE KEYS */;
-INSERT INTO `service_users` VALUES (1,1),(8,1),(2,2),(15,2),(7,3),(8,3),(3,4),(4,4),(7,5),(10,6),(12,6),(13,7),(15,7),(1,9),(8,9),(11,10),(7,13),(1,16),(11,18);
-/*!40000 ALTER TABLE `service_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -312,10 +257,13 @@ CREATE TABLE `services` (
   `description` text COLLATE utf8mb4_unicode_ci,
   `image` longblob,
   `publish_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_services_group_id` (`group_id`),
   KEY `idx_services_publish_date` (`publish_date`),
-  CONSTRAINT `fk_services_group` FOREIGN KEY (`group_id`) REFERENCES `group_infos` (`id`) ON DELETE CASCADE
+  KEY `fk_services_user_idx` (`user_id`),
+  CONSTRAINT `fk_services_group` FOREIGN KEY (`group_id`) REFERENCES `bykanalen_groups` (`id`),
+  CONSTRAINT `fk_services_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -325,7 +273,6 @@ CREATE TABLE `services` (
 
 LOCK TABLES `services` WRITE;
 /*!40000 ALTER TABLE `services` DISABLE KEYS */;
-INSERT INTO `services` VALUES (1,1,'Gräsklippning','Professionell gräsklippning av privatträdgårdar och större ytor',NULL,'2024-01-10 10:00:00'),(2,1,'Hundpassning','Daglig hundpassning och promenader för arbetande hundsägare',NULL,'2024-01-15 11:30:00'),(3,1,'Cykelreparation','Reparation och service av cyklar - allt från punktering till större reparationer',NULL,'2024-02-01 09:00:00'),(4,1,'Babysitting','Barnomsorg och babysitting för små barn i hemmet',NULL,'2024-02-05 14:20:00'),(5,1,'Möbelflyttning','Hjälp med möbeltransport och flytt av möbler',NULL,'2024-02-10 08:30:00'),(6,1,'Snöskottning','Snöskottning och snöröjning på privata vägar och parkeringsplatser',NULL,'2024-02-15 16:00:00'),(7,1,'Matlagning/Catering','Hemlagad matlagning och catering för mindre sammankomster',NULL,'2024-03-01 12:00:00'),(8,1,'Hemstädning','Professionell städning av hem och lägenheter',NULL,'2024-03-05 10:15:00'),(9,2,'Privatlektion','Privatlektioner i matematik, engelska, svenska och andra ämnen',NULL,'2024-03-10 13:45:00'),(10,2,'Handyman/Liten reparation','Små reparationer, montering och underhåll i hemmet',NULL,'2024-03-15 09:30:00'),(11,2,'Biltvätt','Handtvätt och detaljerande av bilar',NULL,'2024-04-01 11:00:00'),(12,2,'Trädgårdsarbete','Trädgårdsplanering, plantering och trädgårdsarbete',NULL,'2024-04-05 08:45:00'),(13,2,'Hundfrisering','Professionell hundfrisering och grooming',NULL,'2024-04-10 14:30:00'),(14,2,'Målning/Tapetsering','Målning och tapetsering av väggarna i hem',NULL,'2024-04-15 10:00:00'),(15,2,'Hundträning','Grundläggande hundträning och beteendekonsultation',NULL,'2024-05-01 09:00:00');
 /*!40000 ALTER TABLE `services` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,11 +285,14 @@ DROP TABLE IF EXISTS `user_details`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_details` (
   `user_id` bigint NOT NULL,
-  `type` enum('standard','admin') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'standard',
   `is_suspended` tinyint(1) NOT NULL DEFAULT '0',
   `registration_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `age` tinyint NOT NULL,
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`user_id`),
-  KEY `idx_user_details_type` (`type`),
+  UNIQUE KEY `unique_email` (`email`),
   CONSTRAINT `fk_user_details_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -353,7 +303,7 @@ CREATE TABLE `user_details` (
 
 LOCK TABLES `user_details` WRITE;
 /*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
-INSERT INTO `user_details` VALUES (1,'standard',0,'2024-01-15 10:30:00'),(2,'standard',0,'2024-02-03 14:20:00'),(3,'standard',0,'2024-02-15 09:45:00'),(4,'standard',0,'2024-03-01 11:00:00'),(5,'standard',0,'2024-03-10 15:30:00'),(6,'standard',0,'2024-03-22 08:15:00'),(7,'standard',0,'2024-04-05 12:00:00'),(8,'standard',0,'2024-04-18 16:45:00'),(9,'standard',0,'2024-05-02 10:20:00'),(10,'standard',0,'2024-05-12 13:50:00'),(11,'standard',0,'2024-05-25 09:30:00'),(12,'standard',0,'2024-06-01 14:15:00'),(13,'standard',0,'2024-06-10 11:40:00'),(14,'standard',0,'2024-06-20 15:25:00'),(15,'standard',0,'2024-07-01 10:00:00'),(16,'standard',0,'2024-07-15 12:30:00'),(17,'standard',0,'2024-07-28 14:50:00'),(18,'standard',0,'2024-08-05 09:20:00'),(19,'admin',0,'2024-01-01 08:00:00');
+INSERT INTO `user_details` VALUES (1,0,'2024-01-15 10:30:00','anna.nilsson@email.com',42,'Anna','Nilsson'),(2,0,'2024-02-03 14:20:00','erik.lundstrom@email.com',35,'Erik','Lundström'),(3,0,'2024-02-15 09:45:00','maria.andersson@email.com',28,'Maria','Andersson'),(4,0,'2024-03-01 11:00:00','johan.berg@email.com',51,'Johan','Berg'),(5,0,'2024-03-10 15:30:00','lisa.svensson@email.com',33,'Lisa','Svensson'),(6,0,'2024-03-22 08:15:00','magnus.johansson@email.com',45,'Magnus','Johansson'),(7,0,'2024-04-05 12:00:00','sofia.pettersson@email.com',29,'Sofia','Pettersson'),(8,0,'2024-04-18 16:45:00','per.ekstrom@email.com',56,'Per','Ekström'),(9,0,'2024-05-02 10:20:00','karin.lindqvist@email.com',48,'Karin','Lindqvist'),(10,0,'2024-05-12 13:50:00','daniel.holm@email.com',31,'Daniel','Holm'),(11,0,'2024-05-25 09:30:00','eva.larsson@email.com',37,'Eva','Larsson'),(12,0,'2024-06-01 14:15:00','thomas.oberg@email.com',44,'Thomas','Öberg'),(13,0,'2024-06-10 11:40:00','ingrid.blomquist@email.com',62,'Ingrid','Blomquist'),(14,0,'2024-06-20 15:25:00','robert.strom@email.com',40,'Robert','Ström'),(15,0,'2024-07-01 10:00:00','helena.bjork@email.com',34,'Helena','Björk'),(16,0,'2024-07-15 12:30:00','nils.ericsson@email.com',52,'Nils','Ericsson'),(17,0,'2024-07-28 14:50:00','julia.lunden@email.com',26,'Julia','Lundén'),(18,0,'2024-08-05 09:20:00','sven.sundin@email.com',58,'Sven','Sundin'),(19,0,'2024-01-01 08:00:00','anna.admin@email.com',41,'Anna','Admin'),(40,0,'2026-06-06 15:28:33','test@test.com',25,'Test','User'),(41,0,'2026-06-07 21:42:55','hasses@gmail.com',64,'Hasse','Olsson');
 /*!40000 ALTER TABLE `user_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -368,16 +318,10 @@ CREATE TABLE `users` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `age` tinyint unsigned DEFAULT NULL,
-  `first_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('USER','ADMIN','MODERATOR') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'USER',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_users_username` (`username`),
-  UNIQUE KEY `uk_users_email` (`email`),
-  KEY `idx_users_first_name` (`first_name`),
-  KEY `idx_users_last_name` (`last_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `uk_users_username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,45 +330,9 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'anna_nilsson','password123','anna.nilsson@email.com',42,'Anna','Nilsson'),(2,'erik_lundström','password123','erik.lundstrom@email.com',35,'Erik','Lundström'),(3,'maria_andersson','password123','maria.andersson@email.com',28,'Maria','Andersson'),(4,'johan_berg','password123','johan.berg@email.com',51,'Johan','Berg'),(5,'lisa_svensson','password123','lisa.svensson@email.com',33,'Lisa','Svensson'),(6,'magnus_johansson','password123','magnus.johansson@email.com',45,'Magnus','Johansson'),(7,'sofia_pettersson','password123','sofia.pettersson@email.com',29,'Sofia','Pettersson'),(8,'per_ekström','password123','per.ekstrom@email.com',56,'Per','Ekström'),(9,'karin_lindqvist','password123','karin.lindqvist@email.com',48,'Karin','Lindqvist'),(10,'daniel_holm','password123','daniel.holm@email.com',31,'Daniel','Holm'),(11,'eva_larsson','password123','eva.larsson@email.com',37,'Eva','Larsson'),(12,'thomas_öberg','password123','thomas.oberg@email.com',44,'Thomas','Öberg'),(13,'ingrid_blomquist','password123','ingrid.blomquist@email.com',62,'Ingrid','Blomquist'),(14,'robert_ström','password123','robert.strom@email.com',40,'Robert','Ström'),(15,'helena_björk','password123','helena.bjork@email.com',34,'Helena','Björk'),(16,'nils_ericsson','password123','nils.ericsson@email.com',52,'Nils','Ericsson'),(17,'julia_lundén','password123','julia.lunden@email.com',26,'Julia','Lundén'),(18,'sven_sundin','password123','sven.sundin@email.com',58,'Sven','Sundin'),(19,'anna_admin','password123','anna.admin@email.com',41,'Anna','Admin');
+INSERT INTO `users` VALUES (1,'anna_nilsson','password123','USER'),(2,'erik_lundström','password123','USER'),(3,'maria_andersson','password123','USER'),(4,'johan_berg','password123','USER'),(5,'lisa_svensson','password123','USER'),(6,'magnus_johansson','password123','USER'),(7,'sofia_pettersson','password123','USER'),(8,'per_ekström','password123','USER'),(9,'karin_lindqvist','password123','USER'),(10,'daniel_holm','password123','USER'),(11,'eva_larsson','password123','USER'),(12,'thomas_öberg','password123','USER'),(13,'ingrid_blomquist','$2a$10$OWcKp00FP1yl0rCLf12M3ua8cprE7tcni/6fiTo1bmpFyEcMbwav.','USER'),(14,'robert_ström','$2a$10$rSMPYqrCBMOWYRi6L.GLn.TMdWfwkbJrcyXRYJ7IOLYl/lgfZa1xu','USER'),(15,'helena_björk','password123','USER'),(16,'nils_ericsson','password123','USER'),(17,'julia_lundén','password123','USER'),(18,'sven_sundin','password123','USER'),(19,'anna_admin','password123','ADMIN'),(39,'admin','$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.','ADMIN'),(40,'testuser','$2a$10$iV2gXScNb8JLWByHZREbRekT/5pzzTG85P7yVIjncAPahEmxE/hIe','USER'),(41,'hasse_olsson','$2a$10$.Lsh3biAjtx9eBBybiTz5ePUyDGa0ihrKI8KnRqRs25KzHQ44BzmS','USER');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Final view structure for view `group_admin_info`
---
-
-/*!50001 DROP VIEW IF EXISTS `group_admin_info`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `group_admin_info` AS select `ga`.`group_info_id` AS `group_info_id`,`gi`.`group_name` AS `group_name`,`ga`.`user_id` AS `user_id`,`u`.`username` AS `username`,`u`.`first_name` AS `first_name`,`u`.`last_name` AS `last_name`,`ga`.`role` AS `role` from ((`group_admins` `ga` join `group_infos` `gi` on((`ga`.`group_info_id` = `gi`.`id`))) join `users` `u` on((`ga`.`user_id` = `u`.`id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `group_member_counts`
---
-
-/*!50001 DROP VIEW IF EXISTS `group_member_counts`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `group_member_counts` AS select `gi`.`id` AS `id`,`gi`.`group_name` AS `group_name`,count(`mg`.`user_id`) AS `member_count` from (`group_infos` `gi` left join `memberlist_groups` `mg` on((`gi`.`id` = `mg`.`group_info_id`))) group by `gi`.`id`,`gi`.`group_name` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -435,4 +343,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-03 13:04:34
+-- Dump completed on 2026-06-08 13:53:28

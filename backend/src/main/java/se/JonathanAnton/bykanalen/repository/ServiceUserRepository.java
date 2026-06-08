@@ -1,7 +1,6 @@
 package se.JonathanAnton.bykanalen.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import se.JonathanAnton.bykanalen.model.ServiceUser;
 
 import java.util.List;
 import java.util.Optional;

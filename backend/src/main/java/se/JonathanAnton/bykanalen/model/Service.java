@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "services")
@@ -30,15 +28,22 @@ public class Service {
     @CreationTimestamp
     private LocalDateTime publishDate;
 
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ServiceUser> serviceUsers = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Service() {}
 
-    public Service(String title, String description, byte[] image) {
+    public Service(String title, String description, byte[] image, Group group, User user) {
         this.title = title;
         this.description = description;
         this.image = image;
+        this.group = group;
+        this.user = user;
     }
 
     public Long getId() {
@@ -81,11 +86,19 @@ public class Service {
         this.publishDate = publishDate;
     }
 
-    public List<ServiceUser> getServiceUsers() {
-        return serviceUsers;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setServiceUsers(List<ServiceUser> serviceUsers) {
-        this.serviceUsers = serviceUsers;
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

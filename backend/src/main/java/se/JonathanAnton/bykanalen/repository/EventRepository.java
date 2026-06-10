@@ -7,17 +7,20 @@ import se.JonathanAnton.bykanalen.model.Event;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     // Hitta events som börjar efter ett visst datum
-    List<Event> findByStartDateAfterOrderByStartDateDesc(LocalDateTime startDate);
+    List<Event> findByGroupIdAndStartDateAfterOrderByStartDateDesc(Long groupId, LocalDateTime startDate);
 
     // Hitta events som börjar före ett visst datum
-    List<Event> findByStartDateBeforeOrderByStartDateDesc(LocalDateTime startDate);
+    List<Event> findByGroupIdAndStartDateBeforeOrderByStartDateDesc(Long groupId, LocalDateTime startDate);
 
     // Hitta events efter publiceringsdatum
-    List<Event> findByPublishDateAfterOrderByPublishDateDesc(LocalDateTime publishDate);
+    List<Event> findByGroupIdAndPublishDateAfterOrderByPublishDateDesc(Long groupId, LocalDateTime publishDate);
+
+    Optional<Event> findByGroupIdAndId(Long groupId, Long id);
 
     // Custom query för att hitta events där registrering fortfarande är öppen
     @Query("SELECT e FROM Event e WHERE e.closeRegistrationDate IS NULL OR e.closeRegistrationDate > :now")

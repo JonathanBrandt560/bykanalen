@@ -39,12 +39,16 @@ public class Event {
 
     private LocalDateTime closeRegistrationDate;
 
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventRegistration> registrations = new ArrayList<>();
 
     public Event() {}
 
-    public Event(String title, byte[] image, String description, LocalDateTime publishDate, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime closeRegistrationDate) {
+    public Event(String title, byte[] image, String description, LocalDateTime publishDate, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime closeRegistrationDate, Group group) {
         this.title = title;
         this.image = image;
         this.description = description;
@@ -52,6 +56,7 @@ public class Event {
         this.startDate = startDate;
         this.endDate = endDate;
         this.closeRegistrationDate = closeRegistrationDate;
+        this.group = group;
     }
 
     public Long getId() {
@@ -124,5 +129,13 @@ public class Event {
 
     public void setRegistrations(List<EventRegistration> registrations) {
         this.registrations = registrations;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

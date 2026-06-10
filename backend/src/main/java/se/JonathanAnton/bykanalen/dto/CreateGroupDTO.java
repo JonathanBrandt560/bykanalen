@@ -2,9 +2,7 @@ package se.JonathanAnton.bykanalen.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-import java.time.LocalDateTime;
-
-public class CreateGroupInfoDTO {
+public class CreateGroupDTO {
 
     @NotBlank(message = "Gruppnamn får inte vara tomt")
     private String groupName;
@@ -21,11 +19,9 @@ public class CreateGroupInfoDTO {
 
     private byte[] image3;
 
-    private LocalDateTime createdAt;
+    public CreateGroupDTO() {}
 
-    public CreateGroupInfoDTO() {}
-
-    public CreateGroupInfoDTO(String groupName, String text1, String text2, String text3, byte[] image1, byte[] image2, byte[] image3, LocalDateTime createdAt) {
+    public CreateGroupDTO(String groupName, String text1, String text2, String text3, byte[] image1, byte[] image2, byte[] image3) {
         this.groupName = groupName;
         this.text1 = text1;
         this.text2 = text2;
@@ -33,7 +29,6 @@ public class CreateGroupInfoDTO {
         this.image1 = image1;
         this.image2 = image2;
         this.image3 = image3;
-        this.createdAt = createdAt;
     }
 
     public String getGroupName() {
@@ -90,13 +85,5 @@ public class CreateGroupInfoDTO {
 
     public void setImage3(byte[] image3) {
         this.image3 = image3;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }

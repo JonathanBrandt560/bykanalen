@@ -11,10 +11,11 @@ public class ListingDTO {
     private LocalDateTime publishDate;
     private Integer price;
     private String location;
+    private long userId;
 
     public ListingDTO() {}
 
-    public ListingDTO(Long id, String title, String description, byte[] image, LocalDateTime publishDate, Integer price, String location) {
+    public ListingDTO(Long id, String title, String description, byte[] image, LocalDateTime publishDate, Integer price, String location, long userId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -22,6 +23,7 @@ public class ListingDTO {
         this.publishDate = publishDate;
         this.price = price;
         this.location = location;
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -32,47 +34,27 @@ public class ListingDTO {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public byte[] getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
     public LocalDateTime getPublishDate() {
         return publishDate;
-    }
-
-    public void setPublishDate(LocalDateTime publishDate) {
-        this.publishDate = publishDate;
     }
 
     public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
     public String getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public long getUserId() {
+        return userId;
     }
 }

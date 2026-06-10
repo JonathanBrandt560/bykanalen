@@ -2,65 +2,57 @@ package se.JonathanAnton.bykanalen.dto;
 
 import java.time.LocalDateTime;
 
-public class GeneralPostDTO {
+public class GeneralPostDetailDTO {
 
-    private Long id;
     private String title;
     private byte[] image;
     private LocalDateTime publishDate;
     private String description;
     private int likeCount;
+    private Long userId;
+    private Long groupId;
+    private String username;
 
-    public GeneralPostDTO() {}
+    public GeneralPostDetailDTO() {}
 
-    public GeneralPostDTO(Long id, String title, byte[] image, LocalDateTime publishDate, String description, int likeCount) {
-        this.id = id;
+    public GeneralPostDetailDTO(String title, byte[] image, LocalDateTime publishDate, String description, int likeCount, Long userId, Long groupId, String username) {
         this.title = title;
         this.image = image;
         this.publishDate = publishDate;
         this.description = description;
         this.likeCount = likeCount;
+        this.userId = userId;
+        this.groupId = groupId;
+        this.username = username;
     }
-
-    public Long getId() {return id;}
 
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public byte[] getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
     public LocalDateTime getPublishDate() {
         return publishDate;
-    }
-
-    public void setPublishDate(LocalDateTime publishDate) {
-        this.publishDate = publishDate;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public int getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public Long getUserId() {
+        return userId;
     }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public String getUsername() {return username;}
 }

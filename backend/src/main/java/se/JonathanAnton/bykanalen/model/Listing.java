@@ -33,16 +33,17 @@ public class Listing {
 
     private String location;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Listing(){}
+    public Listing() {}
 
-    public Listing(String title, String description, byte[] image, Integer price, String location, User user) {
+    public Listing(String title, String description, byte[] image, LocalDateTime publishedDate, Integer price, String location, User user) {
         this.title = title;
         this.description = description;
         this.image = image;
+        this.publishDate = publishedDate;
         this.price = price;
         this.location = location;
         this.user = user;

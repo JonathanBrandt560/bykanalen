@@ -44,7 +44,8 @@ public class GlobalExceptionHandler {
     // Oväntade fel
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneral(Exception ex) {
-        ErrorResponse error = new ErrorResponse(500, "Något gick fel");
+        ex.printStackTrace(); // lägg till denna rad
+        ErrorResponse error = new ErrorResponse(500, ex.getMessage()); // visa faktiska felet
         return ResponseEntity.status(500).body(error);
     }
 }

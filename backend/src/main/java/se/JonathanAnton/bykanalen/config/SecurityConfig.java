@@ -29,10 +29,10 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/login", "/auth/**")
+                        .ignoringRequestMatchers("/login", "/auth/**", "/listings/**")
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/**", "/listings/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

@@ -36,15 +36,20 @@ public class GeneralPost {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
+
     public GeneralPost() {}
 
-    public GeneralPost(String title, byte[] image, LocalDateTime publishDate, String description, int likeCount, User user) {
+    public GeneralPost(String title, byte[] image, LocalDateTime publishDate, String description, int likeCount, User user, Group group) {
         this.title = title;
         this.image = image;
         this.publishDate = publishDate;
         this.description = description;
         this.likeCount = likeCount;
         this.user = user;
+        this.group = group;
     }
 
     public Long getId() {
@@ -101,5 +106,13 @@ public class GeneralPost {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="bykanalen@localhost" uuid="f31f8579-eab3-4655-91d0-ac653157258b">
+    <data-source source="LOCAL" name="bykanalen@localhost" uuid="cfa7868e-5bbd-4db0-91cc-7d6e8eaee5f7">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/backend/src/main/resources/application.properties</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/bykanalen</jdbc-url>
       <jdbc-additional-properties>

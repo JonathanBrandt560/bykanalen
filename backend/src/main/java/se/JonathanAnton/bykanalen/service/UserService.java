@@ -1,6 +1,12 @@
 package se.JonathanAnton.bykanalen.service;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import se.JonathanAnton.bykanalen.dto.LoginDTO;
 import se.JonathanAnton.bykanalen.dto.RegisterDTO;
 import se.JonathanAnton.bykanalen.exception.ResourceNotFoundException;
 import se.JonathanAnton.bykanalen.mapper.UserMapper;
@@ -21,15 +27,22 @@ public class UserService {
     private final MemberlistGroupRepository memberlistGroupRepository;
     private final GroupRepository groupRepository;
     private final UserMapper userMapper;
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
+    private final se.JonathanAnton.bykanalen.service.JwtService jwtService;
 
-    public UserService(UserRepository userRepository, UserDetailRepository userDetailRepository, MemberlistGroupRepository memberlistGroupRepository, GroupRepository groupRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserDetailRepository userDetailRepository, MemberlistGroupRepository memberlistGroupRepository, GroupRepository groupRepository, UserMapper userMapper, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, se.JonathanAnton.bykanalen.service.JwtService jwtService) {
         this.userRepository = userRepository;
         this.userDetailRepository = userDetailRepository;
         this.memberlistGroupRepository = memberlistGroupRepository;
         this.groupRepository = groupRepository;
         this.userMapper = userMapper;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtService = jwtService;
     }
 
+    @Transactional
     public void register(RegisterDTO dto) {
         User user = userMapper.toUserEntity(dto);
         userRepository.save(user);
@@ -41,5 +54,13 @@ public class UserService {
 
         MemberlistGroup memberlistGroup = userMapper.toMemberlistGroupEntity(user, group);
         memberlistGroupRepository.save(memberlistGroup);
+    }
+
+    public String login(LoginDTO dto) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword())
+        );
+        UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getUsername());
+        return jwtService.generateToken(userDetails);
     }
 }

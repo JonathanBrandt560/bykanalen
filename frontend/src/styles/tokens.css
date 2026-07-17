@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+    /* Färg */
+    --color-bg: #F7F3EC;
+    --color-bg-raised: #FFFFFF;
+    --color-ink: #2B2420;
+    --color-ink-muted: #6B5F52;
+    --color-falu: #8B3A2F;
+    --color-falu-dark: #6E2E25;
+    --color-forest: #2F4739;
+    --color-ochre: #C89B3C;
+    --color-line: #E1D6C4;
+
+    /* Typografi */
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+}
+
+body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    margin: 0;
+}

@@ -1,35 +1,27 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
-function LoginPage({ onLogin }) {
+function LoginPage() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-
-        const formData = new URLSearchParams();
-        formData.append("username", username);
-        formData.append("password", password);
+        setIsSubmitting(true);
 
         try {
-            const response = await fetch("/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                credentials: "include",
-                body: formData
-            });
-
-            if (response.ok) {
-                onLogin();
-            } else {
-                setError("Fel användarnamn eller lösenord");
-            }
+            await login(username, password);
+            navigate("/");
         } catch (err) {
-            setError("Något gick fel, försök igen");
+            setError(err.message || "Fel användarnamn eller lösenord");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -54,7 +46,9 @@ function LoginPage({ onLogin }) {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <button type="submit">Logga in</button>
+                <button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? "Loggar in…" : "Logga in"}
+                </button>
             </form>
         </div>
     );

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { getDayAndMonth } from "../../utils/dateHelpers";
+import { getPostDate } from "../../utils/dateHelpers";
 import styles from "./GeneralPostCard.module.css";
 
 function GeneralPostCard({ generalPost }) {
-    const { day, month } = getDayAndMonth(generalPost.publishDate);
+    const date = getPostDate(generalPost.publishDate);
 
     const [hasLiked, setHasLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(generalPost.likeCount);
@@ -15,7 +15,6 @@ function GeneralPostCard({ generalPost }) {
 
     return (
         <article className={styles.card}>
-            <h3 className={styles.title}>{generalPost.title}</h3>           
             <div className={styles.likes}>
                 <button onClick={handleToggleLike} aria-pressed={hasLiked} className={styles.likeButton}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill={hasLiked ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
@@ -24,10 +23,15 @@ function GeneralPostCard({ generalPost }) {
                     <span>{likeCount}</span>
                 </button>
             </div>
-
-            <div className={styles.dateBlock}>
-                <span className={styles.day}>{day}</span>
-                <span className={styles.month}>{month}</span>
+            
+            <h3 className={styles.title}>{generalPost.title}</h3>           
+            
+            <div className={styles.dateLine}>
+                <p className={styles.name}>
+                    <span>Av </span>
+                    <span>{generalPost.name} </span>
+                </p>
+                <p className={styles.date}>{date}</p>
             </div>
         </article>
     );

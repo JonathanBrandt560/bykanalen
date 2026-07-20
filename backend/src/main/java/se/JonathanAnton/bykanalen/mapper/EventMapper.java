@@ -5,7 +5,7 @@ import se.JonathanAnton.bykanalen.dto.CreateEventDTO;
 import se.JonathanAnton.bykanalen.dto.EventDetailDTO;
 import se.JonathanAnton.bykanalen.dto.EventSummaryDTO;
 import se.JonathanAnton.bykanalen.model.Event;
-import se.JonathanAnton.bykanalen.model.Group;
+import se.JonathanAnton.bykanalen.model.GroupInfo;
 
 @Component
 public class EventMapper {
@@ -34,7 +34,7 @@ public class EventMapper {
         );
     }
 
-    public Event toEntity(CreateEventDTO dto, Group group){
+    public Event toEntity(CreateEventDTO dto, GroupInfo groupInfo){
         Event event = new Event();
         event.setTitle(dto.getTitle());
         event.setImage(dto.getImage());
@@ -42,7 +42,7 @@ public class EventMapper {
         event.setStartDate(dto.getStartDate());
         event.setEndDate(dto.getEndDate());
         event.setCloseRegistrationDate(dto.getCloseRegistrationDate());
-        event.setGroup(group);
+        event.setGroup(groupInfo);
         return event;
     }
 }

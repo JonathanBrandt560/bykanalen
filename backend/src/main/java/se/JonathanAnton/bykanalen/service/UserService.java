@@ -10,11 +10,8 @@ import se.JonathanAnton.bykanalen.dto.LoginDTO;
 import se.JonathanAnton.bykanalen.dto.RegisterDTO;
 import se.JonathanAnton.bykanalen.exception.ResourceNotFoundException;
 import se.JonathanAnton.bykanalen.mapper.UserMapper;
-import se.JonathanAnton.bykanalen.model.Group;
-import se.JonathanAnton.bykanalen.model.MemberlistGroup;
-import se.JonathanAnton.bykanalen.model.User;
-import se.JonathanAnton.bykanalen.model.UserDetail;
-import se.JonathanAnton.bykanalen.repository.GroupRepository;
+import se.JonathanAnton.bykanalen.model.*;
+import se.JonathanAnton.bykanalen.repository.GroupInfoRepository;
 import se.JonathanAnton.bykanalen.repository.MemberlistGroupRepository;
 import se.JonathanAnton.bykanalen.repository.UserDetailRepository;
 import se.JonathanAnton.bykanalen.repository.UserRepository;
@@ -25,17 +22,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserDetailRepository userDetailRepository;
     private final MemberlistGroupRepository memberlistGroupRepository;
-    private final GroupRepository groupRepository;
+    private final GroupInfoRepository groupInfoRepository;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final se.JonathanAnton.bykanalen.service.JwtService jwtService;
 
-    public UserService(UserRepository userRepository, UserDetailRepository userDetailRepository, MemberlistGroupRepository memberlistGroupRepository, GroupRepository groupRepository, UserMapper userMapper, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, se.JonathanAnton.bykanalen.service.JwtService jwtService) {
+    public UserService(UserRepository userRepository, UserDetailRepository userDetailRepository, MemberlistGroupRepository memberlistGroupRepository, GroupInfoRepository groupInfoRepository, UserMapper userMapper, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, se.JonathanAnton.bykanalen.service.JwtService jwtService) {
         this.userRepository = userRepository;
         this.userDetailRepository = userDetailRepository;
         this.memberlistGroupRepository = memberlistGroupRepository;
-        this.groupRepository = groupRepository;
+        this.groupInfoRepository = groupInfoRepository;
         this.userMapper = userMapper;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
@@ -50,9 +47,9 @@ public class UserService {
         UserDetail userDetail = userMapper.toUserDetailEntity(dto, user);
         userDetailRepository.save(userDetail);
 
-        Group group = groupRepository.findById(dto.getGroupId()).orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + dto.getGroupId() + " hittades inte"));
+        GroupInfo groupInfo = groupInfoRepository.findById(dto.getGroupId()).orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + dto.getGroupId() + " hittades inte"));
 
-        MemberlistGroup memberlistGroup = userMapper.toMemberlistGroupEntity(user, group);
+        MemberlistGroup memberlistGroup = userMapper.toMemberlistGroupEntity(user, groupInfo);
         memberlistGroupRepository.save(memberlistGroup);
     }
 

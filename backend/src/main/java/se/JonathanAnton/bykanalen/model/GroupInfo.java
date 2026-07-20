@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "bykanalen_groups")
-public class Group {
+@Table(name = "group_infos")
+public class GroupInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,9 +57,9 @@ public class Group {
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Service> services = new ArrayList<>();
 
-    public Group() {}
+    public GroupInfo() {}
 
-    public Group(String groupName, String text1, String text2, String text3, byte[] image1, byte[] image2, byte[] image3) {
+    public GroupInfo(String groupName, String text1, String text2, String text3, byte[] image1, byte[] image2, byte[] image3) {
         this.groupName = groupName;
         this.text1 = text1;
         this.text2 = text2;

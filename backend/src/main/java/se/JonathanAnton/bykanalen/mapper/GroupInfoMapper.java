@@ -1,4 +1,4 @@
 package se.JonathanAnton.bykanalen.mapper;
 
-public class GroupMapper {
+public class GroupInfoMapper {
 }

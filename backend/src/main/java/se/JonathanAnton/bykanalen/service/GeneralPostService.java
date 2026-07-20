@@ -7,10 +7,10 @@ import se.JonathanAnton.bykanalen.dto.GeneralPostSummaryDTO;
 import se.JonathanAnton.bykanalen.exception.ResourceNotFoundException;
 import se.JonathanAnton.bykanalen.mapper.GeneralPostMapper;
 import se.JonathanAnton.bykanalen.model.GeneralPost;
-import se.JonathanAnton.bykanalen.model.Group;
+import se.JonathanAnton.bykanalen.model.GroupInfo;
 import se.JonathanAnton.bykanalen.model.User;
 import se.JonathanAnton.bykanalen.repository.GeneralPostRepository;
-import se.JonathanAnton.bykanalen.repository.GroupRepository;
+import se.JonathanAnton.bykanalen.repository.GroupInfoRepository;
 import se.JonathanAnton.bykanalen.repository.UserRepository;
 
 import java.util.List;
@@ -21,14 +21,14 @@ public class GeneralPostService {
     private final GeneralPostRepository generalPostRepository;
     private final GeneralPostMapper generalPostMapper;
     private final UserRepository userRepository;
-    private final GroupRepository groupRepository;
+    private final GroupInfoRepository groupInfoRepository;
     private final AuthorizationService authorizationService;
 
-    public GeneralPostService(GeneralPostRepository generalPostRepository, GeneralPostMapper generalPostMapper, UserRepository userRepository, GroupRepository groupRepository, AuthorizationService authorizationService) {
+    public GeneralPostService(GeneralPostRepository generalPostRepository, GeneralPostMapper generalPostMapper, UserRepository userRepository, GroupInfoRepository groupInfoRepository, AuthorizationService authorizationService) {
         this.generalPostRepository = generalPostRepository;
         this.generalPostMapper = generalPostMapper;
         this.userRepository = userRepository;
-        this.groupRepository = groupRepository;
+        this.groupInfoRepository = groupInfoRepository;
         this.authorizationService = authorizationService;
     }
 
@@ -58,8 +58,8 @@ public class GeneralPostService {
     public GeneralPostDetailDTO createGeneralPost(CreateGeneralPostDTO dto, Long groupId, Long userId) {
         authorizationService.verifyGroupMembership(groupId);
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Användare med id " + userId + " hittades inte" ));
-        Group group = groupRepository.findById(groupId).orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + groupId + " hittades inte" ));
-        GeneralPost generalPost = generalPostMapper.toEntity(dto, group, user);
+        GroupInfo groupInfo = groupInfoRepository.findById(groupId).orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + groupId + " hittades inte" ));
+        GeneralPost generalPost = generalPostMapper.toEntity(dto, groupInfo, user);
         GeneralPost saved = generalPostRepository.save(generalPost);
         return generalPostMapper.toGeneralPostDetailDTO(saved);
     }

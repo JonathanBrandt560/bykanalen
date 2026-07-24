@@ -5,7 +5,9 @@ import LoginPage from "./features/auth/LoginPage";
 import RegisterPage from "./features/auth/RegisterPage";
 import EventListPage from "./features/events/EventListPage";
 import GeneralPostListPage from "./features/generalPosts/GeneralPostListPage";
- 
+import ListingPage from "./features/listings/ListingPage";
+import ListingDetailPage from "./features/listings/ListingDetailPage";
+
 function HomePage() {
     return (
         <div>
@@ -13,7 +15,7 @@ function HomePage() {
         </div>
     );
 }
- 
+
 function App() {
     return (
         <AuthProvider>
@@ -38,10 +40,15 @@ function App() {
                 />
                 {/* TILLFÄLLIGa routes för att testa statisk layout utan inloggning — ta bort innan ni kopplar på riktig auth/API */}
                 <Route path="/preview-events" element={<EventListPage />} />
-                <Route path="/preview-generalposts" element={<GeneralPostListPage />} />
+                <Route
+                    path="/preview-generalposts"
+                    element={<GeneralPostListPage />}
+                />
+                <Route path="/preview-listingpage" element={<ListingPage />} />
+                <Route path="/listings/:id" element={<ListingDetailPage />} />
             </Routes>
         </AuthProvider>
     );
 }
- 
+
 export default App;

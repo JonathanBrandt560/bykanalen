@@ -47,7 +47,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
+                        // Tillåter autentisering, event, tjänster och inlägg utan spärr under utveckling
+                        .requestMatchers("/auth/**", "/api/auth/**", "/groups/**", "/api/groups/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

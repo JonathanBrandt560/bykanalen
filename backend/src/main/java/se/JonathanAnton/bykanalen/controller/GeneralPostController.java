@@ -30,13 +30,16 @@ public class GeneralPostController {
         return ResponseEntity.ok(generalPostService.getAllGeneralPostsByLikes(groupId));
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<GeneralPostDetailDTO> getGeneralPostById(@PathVariable Long groupId,@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneralPostDetailDTO> getGeneralPostById(@PathVariable Long groupId, @PathVariable Long id) {
         return ResponseEntity.ok(generalPostService.getGeneralPostById(groupId, id));
     }
 
     @PostMapping
-    public ResponseEntity<GeneralPostDetailDTO> createGeneralPost(@Valid @RequestBody CreateGeneralPostDTO dto, @PathVariable Long groupId, Long userId) {
+    public ResponseEntity<GeneralPostDetailDTO> createGeneralPost(
+            @Valid @RequestBody CreateGeneralPostDTO dto,
+            @PathVariable Long groupId,
+            @RequestParam Long userId) {
         return ResponseEntity.status(201).body(generalPostService.createGeneralPost(dto, groupId, userId));
     }
 }

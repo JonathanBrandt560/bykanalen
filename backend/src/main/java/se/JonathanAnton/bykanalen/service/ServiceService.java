@@ -96,4 +96,3 @@ public class ServiceService {
         );
     }
 }
-```[cite: 15]

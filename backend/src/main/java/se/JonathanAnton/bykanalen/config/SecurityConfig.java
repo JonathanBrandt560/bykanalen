@@ -20,6 +20,7 @@ import se.JonathanAnton.bykanalen.JwtAuthEntryPoint;
 import se.JonathanAnton.bykanalen.security.JwtAuthFilter;
 
 import java.util.List;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -48,8 +49,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Tillåter autentisering, event, tjänster och inlägg utan spärr under utveckling
-                        .requestMatchers("/auth/**", "/api/auth/**", "/groups/**", "/api/groups/**").permitAll()
-                        .anyRequest().authenticated()
+                      .requestMatchers("/auth/**", "/api/auth/**", "/groups/**", "/api/groups/**", "/listings/**").permitAll()
+                      .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex

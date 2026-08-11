@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { mockListingPage } from "./mockListingPage";
+import { useState, useMemo, useEffect } from "react";
+import { fetchListings } from "../../api/listingsApi";
 import ListingCard from "./ListingCard";
 import styles from "./ListingPage.module.css";
 
@@ -12,10 +12,6 @@ const SORT_OPTIONS = [
     { value: "priceHigh", label: "Pris: högst först" },
     { value: "alphabetical", label: "Titel (A-Ö)" },
 ];
-
-function getPriceNumber(priceString) {
-    return parseInt(priceString.replace(/\D/g, ""), 10) || 0;
-}
 
 function sortListings(listings, sortBy) {
     const sorted = [...listings];
@@ -30,13 +26,9 @@ function sortListings(listings, sortBy) {
                 (a, b) => new Date(a.publishDate) - new Date(b.publishDate),
             );
         case "priceLow":
-            return sorted.sort(
-                (a, b) => getPriceNumber(a.price) - getPriceNumber(b.price),
-            );
+            return sorted.sort((a, b) => a.price - b.price);
         case "priceHigh":
-            return sorted.sort(
-                (a, b) => getPriceNumber(b.price) - getPriceNumber(a.price),
-            );
+            return sorted.sort((a, b) => b.price - a.price);
         case "alphabetical":
             return sorted.sort((a, b) => a.title.localeCompare(b.title, "sv"));
         default:
@@ -45,17 +37,32 @@ function sortListings(listings, sortBy) {
 }
 
 function ListingPage() {
+    const [listings, setListings] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const [sortBy, setSortBy] = useState("newest");
     const [searchTerm, setSearchTerm] = useState("");
 
+    useEffect(() => {
+        fetchListings()
+            .then((data) => {
+                setListings(data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
+    }, []);
+
     const filteredListings = useMemo(() => {
         const term = searchTerm.trim().toLowerCase();
-        if (!term) return mockListingPage;
-        return mockListingPage.filter((listing) =>
+        if (!term) return listings;
+        return listings.filter((listing) =>
             listing.title.toLowerCase().includes(term),
         );
-    }, [searchTerm]);
+    }, [listings, searchTerm]);
 
     const sortedListings = useMemo(
         () => sortListings(filteredListings, sortBy),
@@ -77,6 +84,14 @@ function ListingPage() {
     function handleSearchChange(event) {
         setSearchTerm(event.target.value);
         setVisibleCount(PAGE_SIZE);
+    }
+
+    if (loading) {
+        return <p className={styles.noResults}>Laddar annonser...</p>;
+    }
+
+    if (error) {
+        return <p className={styles.noResults}>Något gick fel: {error}</p>;
     }
 
     return (

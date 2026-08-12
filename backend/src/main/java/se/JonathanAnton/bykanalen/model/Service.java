@@ -30,7 +30,7 @@ public class Service {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private Group group;
+    private GroupInfo groupInfo;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -38,11 +38,11 @@ public class Service {
 
     public Service() {}
 
-    public Service(String title, String description, byte[] image, Group group, User user) {
+    public Service(String title, String description, byte[] image, GroupInfo groupInfo, User user) {
         this.title = title;
         this.description = description;
         this.image = image;
-        this.group = group;
+        this.groupInfo = groupInfo;
         this.user = user;
     }
 
@@ -86,12 +86,12 @@ public class Service {
         this.publishDate = publishDate;
     }
 
-    public Group getGroup() {
-        return group;
+    public GroupInfo getGroup() {
+        return groupInfo;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroup(GroupInfo groupInfo) {
+        this.groupInfo = groupInfo;
     }
 
     public User getUser() {

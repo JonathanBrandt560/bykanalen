@@ -1,3 +1,6 @@
+import { isToday, isYesterday, formatDistanceToNow } from "date-fns";
+import { sv } from "date-fns/locale";
+
 const MONTHS_SHORT = [
     "JAN", "FEB", "MAR", "APR", "MAJ", "JUN",
     "JUL", "AUG", "SEP", "OKT", "NOV", "DEC",
@@ -25,3 +28,19 @@ export function formatTimeRange(startIso, endIso) {
     if (!endIso) return format(startIso);
     return `${format(startIso)}–${format(endIso)}`;
 }
+
+// Formaterar en ISO-datumsträng till "idag/igår + klockslag" eller annars till "YYYY-MM-DD"
+export function getPostDate(isoDateString) {
+    const date = new Date(isoDateString);
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    
+    if (isToday(date)) {
+        return `idag ${hours}:${minutes}`;
+    } else if (isYesterday(date)) {
+        return `igår ${hours}:${minutes}`;
+    } else {
+        return isoDateString.split("T")[0];
+    }
+}
+

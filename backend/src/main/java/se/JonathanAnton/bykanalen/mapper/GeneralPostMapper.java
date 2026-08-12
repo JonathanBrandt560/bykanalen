@@ -5,7 +5,7 @@ import se.JonathanAnton.bykanalen.dto.CreateGeneralPostDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostDetailDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostSummaryDTO;
 import se.JonathanAnton.bykanalen.model.GeneralPost;
-import se.JonathanAnton.bykanalen.model.Group;
+import se.JonathanAnton.bykanalen.model.GroupInfo;
 import se.JonathanAnton.bykanalen.model.User;
 
 @Component
@@ -33,12 +33,12 @@ public class GeneralPostMapper {
         );
     }
 
-    public GeneralPost toEntity(CreateGeneralPostDTO dto, Group group, User user) {
+    public GeneralPost toEntity(CreateGeneralPostDTO dto, GroupInfo groupInfo, User user) {
         GeneralPost generalPost = new GeneralPost();
         generalPost.setTitle(dto.getTitle());
         generalPost.setImage(dto.getImage());
         generalPost.setDescription(dto.getDescription());
-        generalPost.setGroup(group);
+        generalPost.setGroup(groupInfo);
         generalPost.setUser(user);
         return generalPost;
     }

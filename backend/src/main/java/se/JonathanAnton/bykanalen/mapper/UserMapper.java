@@ -4,10 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import se.JonathanAnton.bykanalen.dto.RegisterDTO;
 import se.JonathanAnton.bykanalen.enums.Role;
-import se.JonathanAnton.bykanalen.model.Group;
-import se.JonathanAnton.bykanalen.model.MemberlistGroup;
-import se.JonathanAnton.bykanalen.model.User;
-import se.JonathanAnton.bykanalen.model.UserDetail;
+import se.JonathanAnton.bykanalen.model.*;
 
 @Component
 public class UserMapper {
@@ -37,7 +34,7 @@ public class UserMapper {
         );
     }
 
-    public MemberlistGroup toMemberlistGroupEntity(User user, Group group) {
-        return new MemberlistGroup(user, group);
+    public MemberlistGroup toMemberlistGroupEntity(User user, GroupInfo groupInfo) {
+        return new MemberlistGroup(user, groupInfo);
     }
 }

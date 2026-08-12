@@ -7,10 +7,10 @@ import se.JonathanAnton.bykanalen.dto.EventSummaryDTO;
 import se.JonathanAnton.bykanalen.exception.ResourceNotFoundException;
 import se.JonathanAnton.bykanalen.mapper.EventMapper;
 import se.JonathanAnton.bykanalen.model.Event;
-import se.JonathanAnton.bykanalen.model.Group;
+import se.JonathanAnton.bykanalen.model.GroupInfo;
 import se.JonathanAnton.bykanalen.repository.EventRegistrationRepository;
 import se.JonathanAnton.bykanalen.repository.EventRepository;
-import se.JonathanAnton.bykanalen.repository.GroupRepository;
+import se.JonathanAnton.bykanalen.repository.GroupInfoRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ public class EventService {
     private final EventRepository eventRepository;
     private final EventRegistrationRepository eventRegistrationRepository;
     private final EventMapper eventMapper;
-    private final GroupRepository groupRepository;
+    private final GroupInfoRepository groupInfoRepository;
     private final AuthorizationService authorizationService;
 
     public EventService(EventRepository eventRepository,
@@ -33,7 +33,7 @@ public class EventService {
         this.eventRepository = eventRepository;
         this.eventRegistrationRepository = eventRegistrationRepository;
         this.eventMapper = eventMapper;
-        this.groupRepository = groupRepository;
+        this.groupInfoRepository = groupInfoRepository;
         this.authorizationService = authorizationService;
     }
 

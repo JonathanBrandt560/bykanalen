@@ -1,0 +1,31 @@
+.card {
+    display: grid;
+    grid-template-columns: 60px 1fr 150px;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 20px 16px 0;
+    border-bottom: 2px solid var(--color-line);
+    transition: background 0.15s ease;
+}
+
+.card:hover {
+    background: rgba(213, 221, 219, 0.588);
+}
+
+.likes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    margin: 0;
+}
+
+.name {
+    margin-bottom: 2px;
+}
+
+.date {
+    margin-top: 2px;
+} 

@@ -25,7 +25,11 @@ public class EventService {
     private final GroupInfoRepository groupInfoRepository;
     private final AuthorizationService authorizationService;
 
-    public EventService(EventRepository eventRepository, EventRegistrationRepository eventRegistrationRepository, EventMapper eventMapper, GroupInfoRepository groupInfoRepository, AuthorizationService authorizationService) {
+    public EventService(EventRepository eventRepository,
+                        EventRegistrationRepository eventRegistrationRepository,
+                        EventMapper eventMapper,
+                        GroupRepository groupRepository,
+                        AuthorizationService authorizationService) {
         this.eventRepository = eventRepository;
         this.eventRegistrationRepository = eventRegistrationRepository;
         this.eventMapper = eventMapper;
@@ -36,7 +40,7 @@ public class EventService {
     public List<EventSummaryDTO> getUpcomingEvents(Long groupId) {
         authorizationService.verifyGroupMembership(groupId);
         LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
-        List<Event> events = eventRepository.findByGroupIdAndStartDateAfterOrderByStartDateDesc(groupId ,startOfDay);
+        List<Event> events = eventRepository.findByGroupIdAndStartDateAfterOrderByStartDateDesc(groupId, startOfDay);
         return events.stream()
                 .map(eventMapper::toEventSummaryDTO)
                 .toList();
@@ -70,8 +74,9 @@ public class EventService {
 
     public EventDetailDTO createEvent(CreateEventDTO dto, Long groupId) {
         authorizationService.verifyGroupMembership(groupId);
-        GroupInfo groupInfo = groupInfoRepository.findById(groupId).orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + groupId + " hittades inte"));
-        Event event = eventMapper.toEntity(dto, groupInfo);
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + groupId + " hittades inte"));
+        Event event = eventMapper.toEntity(dto, group);
         Event saved = eventRepository.save(event);
         return eventMapper.toEventDetailDTO(saved, 0);
     }

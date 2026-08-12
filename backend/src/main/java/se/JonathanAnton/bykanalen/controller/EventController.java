@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/groups/{groupId}/events")
 public class EventController {
+
     private final EventService eventService;
 
     public EventController(EventService eventService) {
@@ -32,17 +33,16 @@ public class EventController {
 
     @GetMapping("/before")
     public ResponseEntity<List<EventSummaryDTO>> getEventsBeforeDate(@PathVariable Long groupId, @RequestParam LocalDate date) {
-        return ResponseEntity.ok(eventService.getEventsBeforeDate(groupId ,date));
+        return ResponseEntity.ok(eventService.getEventsBeforeDate(groupId, date));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EventDetailDTO> getEventById(@PathVariable Long groupId, @PathVariable Long id) {
-        return ResponseEntity.ok(eventService.getEventById(groupId,id));
+        return ResponseEntity.ok(eventService.getEventById(groupId, id));
     }
 
     @PostMapping
-    public ResponseEntity<EventDetailDTO> createEvent(@PathVariable Long groupId, @Valid @RequestBody  CreateEventDTO dto) {
+    public ResponseEntity<EventDetailDTO> createEvent(@PathVariable Long groupId, @Valid @RequestBody CreateEventDTO dto) {
         return ResponseEntity.status(201).body(eventService.createEvent(dto, groupId));
     }
-
 }

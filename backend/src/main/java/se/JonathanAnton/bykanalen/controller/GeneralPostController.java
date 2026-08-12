@@ -30,13 +30,26 @@ public class GeneralPostController {
         return ResponseEntity.ok(generalPostService.getAllGeneralPostsByLikes(groupId));
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<GeneralPostDetailDTO> getGeneralPostById(@PathVariable Long groupId,@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneralPostDetailDTO> getGeneralPostById(@PathVariable Long groupId, @PathVariable Long id) {
         return ResponseEntity.ok(generalPostService.getGeneralPostById(groupId, id));
     }
 
+    /**
+     * HTTP POST-slutpunkt för att skapa ett nytt allmänt inlägg (GeneralPost) i en specifik grupp.
+     *
+     * @Valid Aktiverar automatisk validering av DTO:n (t.ex. att fält inte får vara tomma).
+     * @RequestBody Omvandlar inkommande JSON-data från anropets body till ett CreateGeneralPostDTO-objekt.
+     * @PathVariable Hämtar 'groupId' från URL-sökvägen.
+     * @RequestParam Hämtar 'userId' från URL-parametern (query parameter).
+     *
+     * @return ResponseEntity som innehåller det skapade inlägget (GeneralPostDetailDTO) och HTTP-status 201 Created.
+     */
     @PostMapping
-    public ResponseEntity<GeneralPostDetailDTO> createGeneralPost(@Valid @RequestBody CreateGeneralPostDTO dto, @PathVariable Long groupId, Long userId) {
+    public ResponseEntity<GeneralPostDetailDTO> createGeneralPost(
+            @Valid @RequestBody CreateGeneralPostDTO dto,
+            @PathVariable Long groupId,
+            @RequestParam Long userId) {
         return ResponseEntity.status(201).body(generalPostService.createGeneralPost(dto, groupId, userId));
     }
 }

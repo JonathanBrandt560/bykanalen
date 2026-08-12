@@ -1,0 +1,180 @@
+.page {
+    max-width: 2000px; /* bredare container, var 720px */
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+}
+
+.header {
+    margin-bottom: 32px;
+}
+
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-falu);
+    margin: 0 0 6px;
+}
+
+.heading {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: 0.005em;
+    margin: 0 0 8px;
+    color: var(--color-ink);
+}
+
+.subheading {
+    font-family: var(--font-body);
+    font-size: 17px;
+    color: var(--color-ink-muted);
+    margin: 0;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    border-top: none; /* linjen under varje kort funkar sämre i grid, se ListingCard-kommentar nedan */
+}
+
+.showMoreWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.showMoreButton {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border: 1px solid var(--color-falu);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--color-falu);
+    cursor: pointer;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.showMoreButton:hover {
+    background: var(--color-falu);
+    color: #fbf6ee;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.sortLabel {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.sortSelect {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+    background: #fbf6ee;
+    color: var(--color-ink);
+    cursor: pointer;
+}
+
+.sortSelect:focus {
+    outline: 2px solid var(--color-falu);
+    outline-offset: 1px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.searchInput {
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 10px 14px;
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+    background: #fbf6ee;
+    color: var(--color-ink);
+    flex: 1;
+    min-width: 200px;
+}
+
+.searchInput:focus {
+    outline: 2px solid var(--color-falu);
+    outline-offset: 1px;
+}
+
+.sortWrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sortLabel {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+.sortSelect {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+    background: #fbf6ee;
+    color: var(--color-ink);
+    cursor: pointer;
+}
+
+.sortSelect:focus {
+    outline: 2px solid var(--color-falu);
+    outline-offset: 1px;
+}
+
+.noResults {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--color-ink-muted);
+    padding: 40px 0;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .heading {
+        font-size: 34px;
+    }
+    .list {
+        grid-template-columns: 1fr;
+    }
+}

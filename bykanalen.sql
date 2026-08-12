@@ -55,8 +55,8 @@ DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `group_id` bigint NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `image` longblob,
   `publish_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `start_date` datetime NOT NULL,
@@ -81,6 +81,33 @@ INSERT INTO `events` VALUES (1,1,'Midsommarfirande i Folkparken','Traditionell m
 UNLOCK TABLES;
 
 --
+-- Table structure for table `general_post_likes`
+--
+
+DROP TABLE IF EXISTS `general_post_likes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `general_post_likes` (
+  `user_id` bigint NOT NULL,
+  `post_id` bigint NOT NULL,
+  `liked_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`,`post_id`),
+  KEY `idx_general_post_likes_post_id` (`post_id`),
+  CONSTRAINT `fk_general_post_likes_post` FOREIGN KEY (`post_id`) REFERENCES `general_posts` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_general_post_likes_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `general_post_likes`
+--
+
+LOCK TABLES `general_post_likes` WRITE;
+/*!40000 ALTER TABLE `general_post_likes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `general_post_likes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `general_posts`
 --
 
@@ -91,8 +118,8 @@ CREATE TABLE `general_posts` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `group_id` bigint NOT NULL,
   `user_id` bigint NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `image` longblob,
   `publish_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `like_count` int NOT NULL DEFAULT '0',
@@ -144,7 +171,7 @@ DROP TABLE IF EXISTS `group_admins`;
 CREATE TABLE `group_admins` (
   `user_id` bigint NOT NULL,
   `group_info_id` bigint NOT NULL,
-  `role` enum('moderator','admin') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'moderator',
+  `role` enum('moderator','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'moderator',
   `assigned_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`,`group_info_id`),
   KEY `idx_group_admins_group_id` (`group_info_id`),
@@ -171,11 +198,11 @@ DROP TABLE IF EXISTS `group_infos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `group_infos` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `group_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `text1` text COLLATE utf8mb4_unicode_ci,
-  `text2` text COLLATE utf8mb4_unicode_ci,
-  `text3` text COLLATE utf8mb4_unicode_ci,
+  `group_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `text1` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `text2` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `text3` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `image1` longblob,
   `image2` longblob,
   `image3` longblob,
@@ -220,12 +247,12 @@ DROP TABLE IF EXISTS `listings`;
 CREATE TABLE `listings` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` bigint NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `image` longblob,
   `publish_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `price` int NOT NULL,
-  `location` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `location` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_listings_user_id` (`user_id`),
   KEY `idx_listings_publish_date` (`publish_date`),
@@ -284,8 +311,8 @@ CREATE TABLE `services` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `group_id` bigint NOT NULL,
   `user_id` bigint NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `image` longblob,
   `publish_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -316,7 +343,7 @@ DROP TABLE IF EXISTS `user_details`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_details` (
   `user_id` bigint NOT NULL,
-  `type` enum('standard','admin') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'standard',
+  `type` enum('standard','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'standard',
   `is_suspended` tinyint(1) NOT NULL DEFAULT '0',
   `registration_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
@@ -344,12 +371,12 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `age` tinyint unsigned DEFAULT NULL,
-  `first_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_users_username` (`username`),
   UNIQUE KEY `uk_users_email` (`email`),
@@ -413,4 +440,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-07-20 12:18:12
+-- Dump completed on 2026-07-20 12:55:16

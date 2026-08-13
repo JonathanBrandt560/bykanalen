@@ -10,7 +10,7 @@ import java.util.List;
 public interface ServiceRepository extends JpaRepository<Service, Long> {
 
     // Hitta alla tjänster kopplade till en grupp/by
-    List<Service> findByGroupId(Long groupId);
+    List<Service> findByGroupInfoId(Long groupId);
 
     List<Service> findAllByOrderByPublishDateDesc();
 

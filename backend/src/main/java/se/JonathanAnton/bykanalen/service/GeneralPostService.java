@@ -34,7 +34,7 @@ public class GeneralPostService {
 
     public List<GeneralPostSummaryDTO> getAllGeneralPostsLatest(Long groupId) {
         authorizationService.verifyGroupMembership(groupId);
-        List<GeneralPost> generalPosts = generalPostRepository.findByGroupIdOrderByPublishDateDesc(groupId);
+        List<GeneralPost> generalPosts = generalPostRepository.findByGroupInfoIdOrderByPublishDateDesc(groupId);
         return generalPosts.stream()
                 .map(generalPostMapper::toGeneralPostSummaryDTO)
                 .toList();
@@ -42,23 +42,25 @@ public class GeneralPostService {
 
     public List<GeneralPostSummaryDTO> getAllGeneralPostsByLikes(Long groupId) {
         authorizationService.verifyGroupMembership(groupId);
-        List<GeneralPost>  generalPosts = generalPostRepository.findByGroupIdOrderByLikeCountDesc(groupId);
+        List<GeneralPost>  generalPosts = generalPostRepository.findByGroupInfoIdOrderByLikeCountDesc(groupId);
         return generalPosts.stream()
                 .map(generalPostMapper::toGeneralPostSummaryDTO)
                 .toList();
     }
 
 
-    public GeneralPostDetailDTO getGeneralPostById(Long id, Long groupId) {
+    public GeneralPostDetailDTO getGeneralPostById(Long groupId, Long id) {
         authorizationService.verifyGroupMembership(groupId);
-        GeneralPost generalPost = generalPostRepository.findByIdAndGroupId(id, groupId).orElseThrow(() -> new ResourceNotFoundException("Inlägg med id " + id + " hittades inte"));
+        GeneralPost generalPost = generalPostRepository.findByGroupInfoIdAndId(groupId, id).orElseThrow(() -> new ResourceNotFoundException("Inlägg med id " + id + " hittades inte"));
         return generalPostMapper.toGeneralPostDetailDTO(generalPost);
     }
 
-    public GeneralPostDetailDTO createGeneralPost(CreateGeneralPostDTO dto, Long groupId, Long userId) {
+    public GeneralPostDetailDTO createGeneralPost(CreateGeneralPostDTO dto, Long groupId, String username) {
         authorizationService.verifyGroupMembership(groupId);
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Användare med id " + userId + " hittades inte" ));
-        GroupInfo groupInfo = groupInfoRepository.findById(groupId).orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + groupId + " hittades inte" ));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Användare hittades inte"));
+        GroupInfo groupInfo = groupInfoRepository.findById(groupId)
+                .orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + groupId + " hittades inte" ));
         GeneralPost generalPost = generalPostMapper.toEntity(dto, groupInfo, user);
         GeneralPost saved = generalPostRepository.save(generalPost);
         return generalPostMapper.toGeneralPostDetailDTO(saved);

@@ -18,7 +18,7 @@ public class MemberlistGroup {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id", nullable = false)
+    @JoinColumn(name = "group_info_id", nullable = false)
     private GroupInfo groupInfo;
 
     @Column(nullable = false)

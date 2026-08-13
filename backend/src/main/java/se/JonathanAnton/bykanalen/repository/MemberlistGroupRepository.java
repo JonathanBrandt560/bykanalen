@@ -12,14 +12,14 @@ public interface MemberlistGroupRepository extends JpaRepository<MemberlistGroup
     List<MemberlistGroup> findByUserId(Long userId);
 
     // Hitta alla medlemmar i en grupp
-    List<MemberlistGroup> findByGroupId(Long groupId);
+    List<MemberlistGroup> findByGroupInfoId(Long groupId);
 
     // Kontrollera om en user är medlem i en grupp
-    boolean existsByUserIdAndGroupId(Long userId, Long groupId);
+    boolean existsByUserIdAndGroupInfoId(Long userId, Long groupId);
 
     // Hitta ett specifikt medlemskap
-    Optional<MemberlistGroup> findByUserIdAndGroupId(Long userId, Long groupId);
+    Optional<MemberlistGroup> findByUserIdAndGroupInfoId(Long userId, Long groupId);
 
     // Få antalet medlemmar i en grupp
-    long countByGroupId(Long groupId);
+    long countByGroupInfoId(Long groupId);
 }

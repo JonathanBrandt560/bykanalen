@@ -1,7 +1,6 @@
 package se.JonathanAnton.bykanalen.model;
 
 import jakarta.persistence.*;
-import se.JonathanAnton.bykanalen.enums.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +20,15 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String email;
+
+    private Byte age;
+
+    @Column(name= "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetail userDetail;
@@ -44,10 +50,13 @@ public class User {
 
     public User() {}
 
-    public User(String username, String password, Role role) {
+    public User(String username, String password, String email, Byte age, String firstName, String lastName) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.email = email;
+        this.age = age;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Long getId() {
@@ -74,12 +83,36 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Byte getAge() {
+        return age;
+    }
+
+    public void setAge(Byte age) {
+        this.age = age;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public UserDetail getUserDetail() {

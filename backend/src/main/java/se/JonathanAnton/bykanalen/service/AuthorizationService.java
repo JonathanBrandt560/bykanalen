@@ -27,7 +27,7 @@ public class AuthorizationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Användare hittades inte"));
 
         boolean isMember = memberlistGroupRepository
-                .existsByUserIdAndGroupId(user.getId(), groupId);
+                .existsByUserIdAndGroupInfoId(user.getId(), groupId);
 
         if(!isMember) {
             throw new ResourceNotFoundException("Du har inte tillgång till denna grupp");

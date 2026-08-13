@@ -2,6 +2,8 @@ package se.JonathanAnton.bykanalen.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import se.JonathanAnton.bykanalen.dto.CreateGeneralPostDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostDetailDTO;
@@ -41,7 +43,6 @@ public class GeneralPostController {
      * @Valid Aktiverar automatisk validering av DTO:n (t.ex. att fält inte får vara tomma).
      * @RequestBody Omvandlar inkommande JSON-data från anropets body till ett CreateGeneralPostDTO-objekt.
      * @PathVariable Hämtar 'groupId' från URL-sökvägen.
-     * @RequestParam Hämtar 'userId' från URL-parametern (query parameter).
      *
      * @return ResponseEntity som innehåller det skapade inlägget (GeneralPostDetailDTO) och HTTP-status 201 Created.
      */
@@ -49,7 +50,9 @@ public class GeneralPostController {
     public ResponseEntity<GeneralPostDetailDTO> createGeneralPost(
             @Valid @RequestBody CreateGeneralPostDTO dto,
             @PathVariable Long groupId,
-            @RequestParam Long userId) {
-        return ResponseEntity.status(201).body(generalPostService.createGeneralPost(dto, groupId, userId));
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.status(201).body(
+                generalPostService.createGeneralPost(dto, groupId, userDetails.getUsername())
+        );
     }
 }

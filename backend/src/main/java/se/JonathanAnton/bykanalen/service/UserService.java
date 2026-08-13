@@ -41,6 +41,13 @@ public class UserService {
 
     @Transactional
     public void register(RegisterDTO dto) {
+        if(userRepository.existsByUsername(dto.getUsername())) {
+            throw new IllegalArgumentException("Användarnamn är redan upptaget");
+        }
+        if(userRepository.existsByEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("Email-adress används redan");
+        }
+
         User user = userMapper.toUserEntity(dto);
         userRepository.save(user);
 

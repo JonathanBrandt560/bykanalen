@@ -28,7 +28,7 @@ public class EventService {
     public EventService(EventRepository eventRepository,
                         EventRegistrationRepository eventRegistrationRepository,
                         EventMapper eventMapper,
-                        GroupRepository groupRepository,
+                        GroupInfoRepository groupInfoRepository,
                         AuthorizationService authorizationService) {
         this.eventRepository = eventRepository;
         this.eventRegistrationRepository = eventRegistrationRepository;
@@ -40,7 +40,7 @@ public class EventService {
     public List<EventSummaryDTO> getUpcomingEvents(Long groupId) {
         authorizationService.verifyGroupMembership(groupId);
         LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
-        List<Event> events = eventRepository.findByGroupIdAndStartDateAfterOrderByStartDateDesc(groupId, startOfDay);
+        List<Event> events = eventRepository.findByGroupInfoIdAndStartDateAfterOrderByStartDateDesc(groupId, startOfDay);
         return events.stream()
                 .map(eventMapper::toEventSummaryDTO)
                 .toList();
@@ -49,7 +49,7 @@ public class EventService {
     public List<EventSummaryDTO> getEventsAfterDate(Long groupId, LocalDate date) {
         authorizationService.verifyGroupMembership(groupId);
         LocalDateTime startOfDay = date.atStartOfDay();
-        List<Event> events = eventRepository.findByGroupIdAndStartDateAfterOrderByStartDateDesc(groupId, startOfDay);
+        List<Event> events = eventRepository.findByGroupInfoIdAndStartDateAfterOrderByStartDateDesc(groupId, startOfDay);
         return events.stream()
                 .map(eventMapper::toEventSummaryDTO)
                 .toList();
@@ -58,7 +58,7 @@ public class EventService {
     public List<EventSummaryDTO> getEventsBeforeDate(Long groupId, LocalDate date) {
         authorizationService.verifyGroupMembership(groupId);
         LocalDateTime startOfDay = date.atStartOfDay();
-        List<Event> events = eventRepository.findByGroupIdAndStartDateBeforeOrderByStartDateDesc(groupId, startOfDay);
+        List<Event> events = eventRepository.findByGroupInfoIdAndStartDateBeforeOrderByStartDateDesc(groupId, startOfDay);
         return events.stream()
                 .map(eventMapper::toEventSummaryDTO)
                 .toList();
@@ -66,7 +66,7 @@ public class EventService {
 
     public EventDetailDTO getEventById(Long groupId, Long id) {
         authorizationService.verifyGroupMembership(groupId);
-        Event event = eventRepository.findByGroupIdAndId(groupId, id)
+        Event event = eventRepository.findByGroupInfoIdAndId(groupId, id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event med id " + id + " hittades inte"));
         long count = eventRegistrationRepository.countByEventId(id);
         return eventMapper.toEventDetailDTO(event, count);
@@ -74,7 +74,7 @@ public class EventService {
 
     public EventDetailDTO createEvent(CreateEventDTO dto, Long groupId) {
         authorizationService.verifyGroupMembership(groupId);
-        Group group = groupRepository.findById(groupId)
+        GroupInfo group = groupInfoRepository.findById(groupId)
                 .orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + groupId + " hittades inte"));
         Event event = eventMapper.toEntity(dto, group);
         Event saved = eventRepository.save(event);

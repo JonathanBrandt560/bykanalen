@@ -1,19 +1,19 @@
 package se.JonathanAnton.bykanalen.dto;
 
-import se.JonathanAnton.bykanalen.enums.Role;
+import se.JonathanAnton.bykanalen.enums.UserType;
 
 import java.time.LocalDateTime;
 
 public class UserDetailDTO {
 
     private Long userId;
-    private Role type;
+    private UserType type;
     private boolean isSuspended;
     private LocalDateTime registrationDate;
 
     public UserDetailDTO() {}
 
-    public UserDetailDTO(Long userId, Role type, boolean isSuspended, LocalDateTime registrationDate) {
+    public UserDetailDTO(Long userId, UserType type, boolean isSuspended, LocalDateTime registrationDate) {
         this.userId = userId;
         this.type = type;
         this.isSuspended = isSuspended;
@@ -24,7 +24,7 @@ public class UserDetailDTO {
         return userId;
     }
 
-    public Role getType() {
+    public UserType getType() {
         return type;
     }
 

@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 import se.JonathanAnton.bykanalen.dto.CreateServiceDTO;
 import se.JonathanAnton.bykanalen.dto.ServiceDTO;
 import se.JonathanAnton.bykanalen.exception.ResourceNotFoundException;
-import se.JonathanAnton.bykanalen.model.Group;
+import se.JonathanAnton.bykanalen.model.GroupInfo;
 import se.JonathanAnton.bykanalen.model.User;
-import se.JonathanAnton.bykanalen.repository.GroupRepository;
+import se.JonathanAnton.bykanalen.repository.GroupInfoRepository;
 import se.JonathanAnton.bykanalen.repository.ServiceRepository;
 import se.JonathanAnton.bykanalen.repository.UserRepository;
 
@@ -22,17 +22,17 @@ public class ServiceService {
 
     // Dependencies för databaseåtkomst
     private final ServiceRepository serviceRepository;
-    private final GroupRepository groupRepository;
+    private final GroupInfoRepository groupInfoRepository;
     private final UserRepository userRepository;
 
     /**
      * Constructor för Dependency Injection (Spring skickar in repositories automatiskt).
      */
     public ServiceService(ServiceRepository serviceRepository,
-                          GroupRepository groupRepository,
+                          GroupInfoRepository groupInfoRepository,
                           UserRepository userRepository) {
         this.serviceRepository = serviceRepository;
-        this.groupRepository = groupRepository;
+        this.groupInfoRepository = groupInfoRepository;
         this.userRepository = userRepository;
     }
 
@@ -43,7 +43,7 @@ public class ServiceService {
      * @return En lista med ServiceDTO-objekt.
      */
     public List<ServiceDTO> getServicesByGroup(Long groupId) {
-        return serviceRepository.findByGroupId(groupId).stream()
+        return serviceRepository.findByGroupInfoId(groupId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -58,7 +58,7 @@ public class ServiceService {
      */
     public ServiceDTO createService(Long groupId, Long userId, CreateServiceDTO dto) {
         // 1. Verifiera att gruppen finns i databasen, annars kasta ett undantag
-        Group group = groupRepository.findById(groupId)
+        GroupInfo group = groupInfoRepository.findById(groupId)
                 .orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + groupId + " hittades inte"));
 
         // 2. Verifiera att användaren finns i databasen, annars kasta ett undantag

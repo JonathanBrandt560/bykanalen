@@ -1,7 +1,7 @@
 package se.JonathanAnton.bykanalen.dto;
-
 import java.time.LocalDateTime;
 
+/** DTO för detalj-vy av evenemang */
 public class EventDetailDTO {
 
     private String title;

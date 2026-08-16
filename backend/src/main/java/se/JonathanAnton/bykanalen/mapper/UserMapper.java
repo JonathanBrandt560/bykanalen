@@ -1,11 +1,11 @@
 package se.JonathanAnton.bykanalen.mapper;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import se.JonathanAnton.bykanalen.dto.RegisterDTO;
 import se.JonathanAnton.bykanalen.enums.UserType;
 import se.JonathanAnton.bykanalen.model.*;
 
+/** Mapper för user-dtos */
 @Component
 public class UserMapper {
 

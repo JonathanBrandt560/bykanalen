@@ -1,7 +1,7 @@
 package se.JonathanAnton.bykanalen.dto;
-
 import java.time.LocalDateTime;
 
+/** DTO för informationssida för specifik grupp/by */
 public class GroupInfoDTO {
 
     private Long id;

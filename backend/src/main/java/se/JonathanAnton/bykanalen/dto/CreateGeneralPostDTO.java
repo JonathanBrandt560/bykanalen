@@ -3,6 +3,7 @@ package se.JonathanAnton.bykanalen.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/** DTO för skapande av ett nytt allmänt inlägg */
 public class CreateGeneralPostDTO {
 
     @NotBlank(message = "Titel får inte vara tom")

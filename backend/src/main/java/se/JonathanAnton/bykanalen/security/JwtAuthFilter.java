@@ -1,5 +1,4 @@
 package se.JonathanAnton.bykanalen.security;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import se.JonathanAnton.bykanalen.service.JwtService;
-
 import java.io.IOException;
 
 @Component

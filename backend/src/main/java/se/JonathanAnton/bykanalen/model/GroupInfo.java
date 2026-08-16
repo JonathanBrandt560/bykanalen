@@ -1,11 +1,11 @@
 package se.JonathanAnton.bykanalen.model;
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Entitetsklass för grupp/by (groupinfos) */
 @Entity
 @Table(name = "group_infos")
 public class GroupInfo {
@@ -45,15 +45,19 @@ public class GroupInfo {
     @CreationTimestamp
     private LocalDateTime createdDate;
 
+    // En grupp kan ha många användare. En användare kan tillhöra många grupper
     @OneToMany(mappedBy = "groupInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberlistGroup> memberlistGroups = new ArrayList<>();
 
+    // En grupp kan ha många evenemang. Ett evenemang kan tillhöra en grupp
     @OneToMany(mappedBy = "groupInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> events = new ArrayList<>();
 
+    // Enn grupp kan ha många allmänna inlägg. Ett allmänt inlägg kan tillhöra en grupp
     @OneToMany(mappedBy = "groupInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GeneralPost> generalPosts = new ArrayList<>();
 
+    // En grupp kan ha många tjänster. En tjänst kan tillhöra en grupp
     @OneToMany(mappedBy = "groupInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Service> services = new ArrayList<>();
 

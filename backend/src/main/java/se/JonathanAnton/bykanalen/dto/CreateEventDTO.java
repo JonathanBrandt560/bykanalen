@@ -1,10 +1,9 @@
 package se.JonathanAnton.bykanalen.dto;
-
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
-
 import java.time.LocalDateTime;
 
+/** DTO för skapande av ett nytt evenemang */
 public class CreateEventDTO {
 
     @NotBlank(message = "Titel får inte vara tom")

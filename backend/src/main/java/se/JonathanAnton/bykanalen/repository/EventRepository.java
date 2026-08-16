@@ -20,6 +20,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     // Hitta events efter publiceringsdatum
     List<Event> findByGroupInfoIdAndPublishDateAfterOrderByPublishDateDesc(Long groupId, LocalDateTime publishDate);
 
+    // Hitta event utfrån grupp-id och evenemangs-id
     Optional<Event> findByGroupInfoIdAndId(Long groupId, Long id);
 
     // Custom query för att hitta events där registrering fortfarande är öppen

@@ -18,9 +18,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import se.JonathanAnton.bykanalen.JwtAuthEntryPoint;
 import se.JonathanAnton.bykanalen.security.JwtAuthFilter;
-
 import java.util.List;
-import org.springframework.http.HttpMethod;
+
 
 @Configuration
 @EnableWebSecurity

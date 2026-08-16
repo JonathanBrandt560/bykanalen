@@ -11,14 +11,12 @@ import se.JonathanAnton.bykanalen.model.GroupInfo;
 import se.JonathanAnton.bykanalen.repository.EventRegistrationRepository;
 import se.JonathanAnton.bykanalen.repository.EventRepository;
 import se.JonathanAnton.bykanalen.repository.GroupInfoRepository;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class EventService {
-
     private final EventRepository eventRepository;
     private final EventRegistrationRepository eventRegistrationRepository;
     private final EventMapper eventMapper;
@@ -39,6 +37,7 @@ public class EventService {
 
     public List<EventSummaryDTO> getUpcomingEvents(Long groupId) {
         authorizationService.verifyGroupMembership(groupId);
+        // Initierar variabel som räknar ut dagens datum klockan 00.00 i lokal tidszon
         LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
         List<Event> events = eventRepository.findByGroupInfoIdAndStartDateAfterOrderByStartDateDesc(groupId, startOfDay);
         return events.stream()
@@ -48,6 +47,7 @@ public class EventService {
 
     public List<EventSummaryDTO> getEventsAfterDate(Long groupId, LocalDate date) {
         authorizationService.verifyGroupMembership(groupId);
+        // Initierar variabel som tar emot ett datum från parameter och omvandlar till klockan 00.00 i lokal tidszon
         LocalDateTime startOfDay = date.atStartOfDay();
         List<Event> events = eventRepository.findByGroupInfoIdAndStartDateAfterOrderByStartDateDesc(groupId, startOfDay);
         return events.stream()
@@ -68,6 +68,7 @@ public class EventService {
         authorizationService.verifyGroupMembership(groupId);
         Event event = eventRepository.findByGroupInfoIdAndId(groupId, id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event med id " + id + " hittades inte"));
+        // Initierar variabel som hämtar antalet evenemangsregistreringar för specifikt event-id
         long count = eventRegistrationRepository.countByEventId(id);
         return eventMapper.toEventDetailDTO(event, count);
     }

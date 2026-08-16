@@ -1,10 +1,13 @@
 package se.JonathanAnton.bykanalen.model;
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 
+/** Entitetsklass för grupptillhörigheter för användare.
+ * Motsvarar kopplingstabell (junction table) då användare och grupper/byar
+ * har M-M-relation. En användare kan tillhöra många grupper. En grupp kan
+ * ha många användare.
+ */
 @Entity
 @Table(name = "memberlist_groups")
 public class MemberlistGroup {

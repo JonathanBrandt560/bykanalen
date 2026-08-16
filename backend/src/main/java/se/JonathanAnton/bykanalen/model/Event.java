@@ -1,14 +1,11 @@
 package se.JonathanAnton.bykanalen.model;
-
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/** Entitetsklass för evenemang (events) */
 @Entity
 @Table(name = "events")
 public class Event {
@@ -39,10 +36,12 @@ public class Event {
 
     private LocalDateTime closeRegistrationDate;
 
+    // Ett evenemang kan tillhöra en grupp. En grupp kan ha många evenemang
     @ManyToOne
     @JoinColumn(name = "group_id")
     private GroupInfo groupInfo;
 
+    // Ett evenemang kan ha många användarregistreringar. En användarregistrering kan tillhöra ett evenemang.
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventRegistration> registrations = new ArrayList<>();
 

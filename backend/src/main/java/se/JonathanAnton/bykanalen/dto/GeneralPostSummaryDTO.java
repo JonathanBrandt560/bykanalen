@@ -1,13 +1,14 @@
 package se.JonathanAnton.bykanalen.dto;
-
 import java.time.LocalDateTime;
 
+/** DTO för list-vy av ett allmänt inlägg */
 public class GeneralPostSummaryDTO {
 
     private Long id;
     private String title;
     private LocalDateTime publishDate;
     private int likeCount;
+    private boolean likedByCurrentUser;
 
     public GeneralPostSummaryDTO() {}
 
@@ -33,4 +34,10 @@ public class GeneralPostSummaryDTO {
     public int getLikeCount() {
         return likeCount;
     }
+
+    public boolean isLikedByCurrentUser() {return likedByCurrentUser;}
+
+    public void setLikedByCurrentUser(boolean likedByCurrentUser) {
+        this.likedByCurrentUser = likedByCurrentUser;}
+
 }

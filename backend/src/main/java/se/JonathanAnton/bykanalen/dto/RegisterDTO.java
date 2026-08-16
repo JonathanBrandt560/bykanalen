@@ -1,9 +1,9 @@
 package se.JonathanAnton.bykanalen.dto;
-
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+/** DTO för registrering av ny medlem på hemsidan */
 public class RegisterDTO {
 
     @NotBlank(message = "Användarnamn får inte vara tomt")

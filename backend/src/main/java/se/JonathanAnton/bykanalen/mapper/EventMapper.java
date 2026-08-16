@@ -1,5 +1,4 @@
 package se.JonathanAnton.bykanalen.mapper;
-
 import org.springframework.stereotype.Component;
 import se.JonathanAnton.bykanalen.dto.CreateEventDTO;
 import se.JonathanAnton.bykanalen.dto.EventDetailDTO;
@@ -7,6 +6,7 @@ import se.JonathanAnton.bykanalen.dto.EventSummaryDTO;
 import se.JonathanAnton.bykanalen.model.Event;
 import se.JonathanAnton.bykanalen.model.GroupInfo;
 
+/** Mapper för evenemang-dtos */
 @Component
 public class EventMapper {
 

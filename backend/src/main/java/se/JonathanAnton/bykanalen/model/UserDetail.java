@@ -1,11 +1,12 @@
 package se.JonathanAnton.bykanalen.model;
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import se.JonathanAnton.bykanalen.enums.UserType;
-
 import java.time.LocalDateTime;
 
+/** Entitetsklass för användardetaljer (userdetails)
+ * 1-1-relation mellan användare (user) och användardetaljer
+ */
 @Entity
 @Table(name = "user_details")
 public class UserDetail {
@@ -13,6 +14,7 @@ public class UserDetail {
     @Id
     private Long userId;
 
+    // En användardetaljer kan tillhöra en användare. En användare ha en användardetaljer
     @OneToOne
     @JoinColumn(name = "user_id")
     @MapsId // Säger att userId är både PK och FK

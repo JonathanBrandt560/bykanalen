@@ -1,10 +1,9 @@
 package se.JonathanAnton.bykanalen.model;
-
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/** Entitetsklass för användare (users) */
 @Entity
 @Table(name = "users")
 public class User {
@@ -30,21 +29,26 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    // En användare kan ha en användardetaljer. En användardetaljer kan tillhöra en användare
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetail userDetail;
 
+    // En användare kan ha många allmänna inlägg. Ett allmänt inlägg kan tillhöra en användare
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<GeneralPost> generalPosts = new ArrayList<>();
 
+    // En användare kan ha många annonser. En annons kan tillhöra en användare
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Listing> listings = new ArrayList<>();
 
+    // En användare kan ha många evenemangsregistreringar. En evenemangsregistrering kan tillhöra en användare
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventRegistration> eventRegistrations = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberlistGroup> memberlistGroups = new ArrayList<>();
 
+    // En användare kan ha många tjänster. En tjänst kan tillhöra en användare
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Service> services = new ArrayList<>();
 

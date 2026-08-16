@@ -1,7 +1,7 @@
 package se.JonathanAnton.bykanalen.dto;
-
 import java.time.LocalDateTime;
 
+/** DTO för detalj-vy av ett allmänt inlägg */
 public class GeneralPostDetailDTO {
 
     private String title;

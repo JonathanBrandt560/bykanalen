@@ -1,5 +1,4 @@
 package se.JonathanAnton.bykanalen.mapper;
-
 import org.springframework.stereotype.Component;
 import se.JonathanAnton.bykanalen.dto.CreateGeneralPostDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostDetailDTO;
@@ -8,6 +7,7 @@ import se.JonathanAnton.bykanalen.model.GeneralPost;
 import se.JonathanAnton.bykanalen.model.GroupInfo;
 import se.JonathanAnton.bykanalen.model.User;
 
+/** Mapper för allmänna inlägg-dtos */
 @Component
 public class GeneralPostMapper {
 

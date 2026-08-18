@@ -14,10 +14,13 @@ public interface GeneralPostRepository extends JpaRepository<GeneralPost, Long> 
     // Hitta alla inlägg sorterade efter publiceringsdatum (senaste först)
     List<GeneralPost> findByGroupInfoIdOrderByPublishDateDesc(Long groupId);
 
-    // Hitta inlägg sorterade efter likes
+    // Hitta alla inlägg sorterade efter likes
     List<GeneralPost> findByGroupInfoIdOrderByLikeCountDesc(Long groupId);
 
     // Hitta inlägg sorterat efter Id
     Optional<GeneralPost> findByGroupInfoIdAndId(Long groupId, Long id);
+
+    // Hitta inlägg filtrerat på användar-id och allmänt-inlägg-id.
+    Optional<GeneralPost> findByUserIdAndId(Long userId, Long id);
 
 }

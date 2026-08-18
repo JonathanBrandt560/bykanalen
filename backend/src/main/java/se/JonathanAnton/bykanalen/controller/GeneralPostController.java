@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import se.JonathanAnton.bykanalen.dto.CreateGeneralPostDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostDetailDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostSummaryDTO;
+import se.JonathanAnton.bykanalen.dto.PatchGeneralPostDTO;
 import se.JonathanAnton.bykanalen.service.GeneralPostService;
 
 import java.util.List;
@@ -61,5 +62,16 @@ public class GeneralPostController {
         return ResponseEntity.status(201).body(
                 generalPostService.createGeneralPost(dto, groupId, userDetails.getUsername())
         );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteGeneralPostById(@PathVariable Long groupId, @PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        generalPostService.deleteGeneralPost(groupId, id, userDetails.getUsername());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<GeneralPostDetailDTO> patchGeneralPost(@PathVariable Long groupId, @PathVariable Long id, @Valid @RequestBody PatchGeneralPostDTO dto, @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(generalPostService.patchGeneralPost(groupId, id, dto, userDetails.getUsername()));
     }
 }

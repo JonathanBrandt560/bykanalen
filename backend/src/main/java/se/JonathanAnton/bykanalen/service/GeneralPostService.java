@@ -1,9 +1,11 @@
 package se.JonathanAnton.bykanalen.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.JonathanAnton.bykanalen.dto.CreateGeneralPostDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostDetailDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostSummaryDTO;
+import se.JonathanAnton.bykanalen.dto.PatchGeneralPostDTO;
 import se.JonathanAnton.bykanalen.exception.ResourceNotFoundException;
 import se.JonathanAnton.bykanalen.mapper.GeneralPostMapper;
 import se.JonathanAnton.bykanalen.model.GeneralPost;
@@ -87,5 +89,35 @@ public class GeneralPostService {
         GeneralPost generalPost = generalPostMapper.toEntity(dto, groupInfo, user);
         GeneralPost saved = generalPostRepository.save(generalPost);
         return generalPostMapper.toGeneralPostDetailDTO(saved);
+    }
+
+    @Transactional
+    public void deleteGeneralPost(Long groupId, Long id, String username) {
+        authorizationService.verifyGroupMembership(groupId);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Användare hittades inte"));
+        GeneralPost generalPost = generalPostRepository.findByUserIdAndId(user.getId(), id)
+                .orElseThrow(() -> new ResourceNotFoundException("Inlägg med id " + id + " hittades inte"));
+        likeRepository.deleteAllByPostId(id);
+        generalPostRepository.delete(generalPost);
+    }
+
+    @Transactional
+    public GeneralPostDetailDTO patchGeneralPost(Long groupId, Long id, PatchGeneralPostDTO dto, String username) {
+        authorizationService.verifyGroupMembership(groupId);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Användare hittades inte"));
+        GeneralPost generalPost = generalPostRepository.findByUserIdAndId(user.getId(), id)
+                .orElseThrow(() -> new ResourceNotFoundException("Inlägg med id " + id + " hittades inte"));
+
+        if (dto.getTitle() != null) {
+            generalPost.setTitle(dto.getTitle());
+        }
+        if (dto.getDescription() != null) {
+            generalPost.setDescription(dto.getDescription());
+        }
+
+        GeneralPost updated = generalPostRepository.save(generalPost);
+        return generalPostMapper.toGeneralPostDetailDTO(updated);
     }
 }

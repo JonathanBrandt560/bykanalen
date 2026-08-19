@@ -44,17 +44,24 @@ public class EventController {
         return ResponseEntity.ok(eventService.getEventsBeforeDate(groupId, date));
     }
 
-    /* Endpoint som hämtar det evenemang vars id specificerats.
+    /* Endpoint som hämtar det evenemang vars id specificerats
     Returnerar en detaljvy av evenemanget */
     @GetMapping("/{id}")
     public ResponseEntity<EventDetailDTO> getEventById(@PathVariable Long groupId, @PathVariable Long id) {
         return ResponseEntity.ok(eventService.getEventById(groupId, id));
     }
 
-    /* Endpoint som skickar ett nytt evenemang.
+    /* Endpoint som skickar ett nytt evenemang
     Validering på variablerna som skickas in (@Valid) */
     @PostMapping
     public ResponseEntity<EventDetailDTO> createEvent(@PathVariable Long groupId, @Valid @RequestBody CreateEventDTO dto) {
         return ResponseEntity.status(201).body(eventService.createEvent(dto, groupId));
+    }
+
+    // Endpoint som tar bort det evenemang vars id specificerats
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long groupId, @PathVariable Long id) {
+        eventService.deleteEvent(groupId, id);
+        return ResponseEntity.noContent().build();
     }
 }

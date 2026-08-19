@@ -1,8 +1,6 @@
 package se.JonathanAnton.bykanalen.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import se.JonathanAnton.bykanalen.service.EventRegistrationService;
 
@@ -23,26 +21,20 @@ public class EventRegistrationController {
 
     // Endpoint för registrering till evenemang
     @PostMapping
-    public ResponseEntity<Void> registerForEvent(@PathVariable Long groupId,
-                                                 @PathVariable Long eventId,
-                                                 @AuthenticationPrincipal UserDetails userDetails) {
-        eventRegistrationService.registerForEvent(groupId, eventId, userDetails.getUsername());
+    public ResponseEntity<Void> registerForEvent(@PathVariable Long groupId, @PathVariable Long eventId) {
+        eventRegistrationService.registerForEvent(groupId, eventId);
         return ResponseEntity.status(201).build();
     }
 
     // Endpoint för avregistrering till evenemang
     @DeleteMapping
-    public ResponseEntity<Void> unregisterFromEvent(@PathVariable Long groupId,
-                                                    @PathVariable Long eventId,
-                                                    @AuthenticationPrincipal UserDetails userDetails) {
-        eventRegistrationService.unregisterFromEvent(groupId, eventId, userDetails.getUsername());
+    public ResponseEntity<Void> unregisterFromEvent(@PathVariable Long groupId, @PathVariable Long eventId) {
+        eventRegistrationService.unregisterFromEvent(groupId, eventId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public ResponseEntity<Boolean> getRegistrationStatus(@PathVariable Long groupId,
-                                                         @PathVariable Long eventId,
-                                                         @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(eventRegistrationService.isRegistered(groupId, eventId, userDetails.getUsername()));
+    public ResponseEntity<Boolean> getRegistrationStatus(@PathVariable Long groupId, @PathVariable Long eventId) {
+        return ResponseEntity.ok(eventRegistrationService.isRegistered(groupId, eventId));
     }
 }

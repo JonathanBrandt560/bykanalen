@@ -1,8 +1,6 @@
 package se.JonathanAnton.bykanalen.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import se.JonathanAnton.bykanalen.service.GeneralPostLikeService;
 import se.JonathanAnton.bykanalen.dto.LikeResult;
@@ -22,17 +20,15 @@ public class GeneralPostLikeController {
         this.likeService = likeService;
     }
 
+    // Endpoint som hanterar like-knapp-input från användare för ett specifikt allmänt inlägg
     @PostMapping("/{postId}/like")
-    public ResponseEntity<LikeResult> toggleLike(@PathVariable Long groupId,
-                                                 @PathVariable Long postId,
-                                                 @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(likeService.toggleLike(groupId, postId, userDetails.getUsername()));
+    public ResponseEntity<LikeResult> toggleLike(@PathVariable Long groupId, @PathVariable Long postId) {
+        return ResponseEntity.ok(likeService.toggleLike(groupId, postId));
     }
 
+    // Endpoint som hämtar like-info för en specifik användare och ett specifikt allmänt inlägg
     @GetMapping("/{postId}/like-status")
-    public ResponseEntity<Boolean> getLikeStatus(@PathVariable Long groupId,
-                                                 @PathVariable Long postId,
-                                                 @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(likeService.hasUserLiked(groupId, postId, userDetails.getUsername()));
+    public ResponseEntity<Boolean> getLikeStatus(@PathVariable Long groupId, @PathVariable Long postId) {
+        return ResponseEntity.ok(likeService.hasUserLiked(groupId, postId));
     }
 }

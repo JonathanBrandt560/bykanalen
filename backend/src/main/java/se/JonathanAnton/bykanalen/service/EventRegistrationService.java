@@ -28,15 +28,15 @@ public class EventRegistrationService {
         this.authorizationService = authorizationService;
     }
 
+    /* Registrerar en användare till det evenemang id vars id specificerats.
+    Utförs som en transaktion för att se till så att all eller ingentillhörande information sparas */
     @Transactional
-    public void registerForEvent(Long groupId, Long eventId, String username) {
-        authorizationService.verifyGroupMembership(groupId);
+    public void registerForEvent(Long groupId, Long eventId) {
+        User user = authorizationService.getCurrentUser();
+        authorizationService.verifyGroupMembership(groupId, user.getId());
 
         Event event = eventRepository.findByGroupInfoIdAndId(groupId, eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event med id: " + eventId + " hittades inte"));
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Användare hittades inte"));
 
         if (eventRegistrationRepository.existsByUserIdAndEventId(user.getId(), eventId)) {
             throw new IllegalStateException("Du är redan registrerad på detta event");
@@ -45,12 +45,11 @@ public class EventRegistrationService {
         eventRegistrationRepository.save(new EventRegistration(user, event));
     }
 
+    // Avregistrerar en användare från ett evenemang som denne registrerat sig till
     @Transactional
-    public void unregisterFromEvent(Long groupId, Long eventId, String username) {
-        authorizationService.verifyGroupMembership(groupId);
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Användare hittades inte"));
+    public void unregisterFromEvent(Long groupId, Long eventId) {
+        User user = authorizationService.getCurrentUser();
+        authorizationService.verifyGroupMembership(groupId,  user.getId());
 
         EventRegistration registration = eventRegistrationRepository
                 .findByUserIdAndEventId(user.getId(), eventId)
@@ -59,11 +58,10 @@ public class EventRegistrationService {
         eventRegistrationRepository.delete(registration);
     }
 
-    public boolean isRegistered(Long groupId, Long eventId, String username) {
-        authorizationService.verifyGroupMembership(groupId);
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Användare hittades inte"));
+    // Undersöker om en användare är registrerad till ett evenemangg vars id specificerats
+    public boolean isRegistered(Long groupId, Long eventId) {
+        User user = authorizationService.getCurrentUser();
+        authorizationService.verifyGroupMembership(groupId,  user.getId());
 
         return eventRegistrationRepository.existsByUserIdAndEventId(user.getId(), eventId);
     }

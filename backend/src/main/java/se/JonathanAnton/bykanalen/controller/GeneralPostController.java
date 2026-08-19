@@ -2,8 +2,6 @@ package se.JonathanAnton.bykanalen.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import se.JonathanAnton.bykanalen.dto.CreateGeneralPostDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostDetailDTO;
@@ -29,20 +27,18 @@ public class GeneralPostController {
 
     // Endpoint som hämtar allmänna inlägg sorterat efter datum (nyast först)
     @GetMapping("/orderlatest")
-    public ResponseEntity<List<GeneralPostSummaryDTO>> getAllLatestGeneralPosts(@PathVariable Long groupId,
-                                                                                @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(generalPostService.getAllGeneralPostsLatest(groupId, userDetails.getUsername()));
+    public ResponseEntity<List<GeneralPostSummaryDTO>> getAllLatestGeneralPosts(@PathVariable Long groupId) {
+        return ResponseEntity.ok(generalPostService.getAllGeneralPostsLatest(groupId));
     }
 
     // Endpoint som hämtar allmänna inlägg sorterat efter flest likes
     @GetMapping("/orderlikes")
-    public ResponseEntity<List<GeneralPostSummaryDTO>> getAllGeneralPostsByLikes(@PathVariable Long groupId,
-                                                                                 @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(generalPostService.getAllGeneralPostsByLikes(groupId, userDetails.getUsername()));
+    public ResponseEntity<List<GeneralPostSummaryDTO>> getAllGeneralPostsByLikes(@PathVariable Long groupId) {
+        return ResponseEntity.ok(generalPostService.getAllGeneralPostsByLikes(groupId));
     }
 
-    /* Endpoint som hämtar det allmänna inlägg vars id specificerats.
-    Returnerar en detaljvy av foruminlägget */
+    /* Endpoint som hämtar det allmänna inlägg vars id specificerats
+    Returnerar en detaljvy av det allmänna inlägget */
     @GetMapping("/{id}")
     public ResponseEntity<GeneralPostDetailDTO> getGeneralPostById(@PathVariable Long groupId, @PathVariable Long id) {
         return ResponseEntity.ok(generalPostService.getGeneralPostById(groupId, id));
@@ -57,21 +53,24 @@ public class GeneralPostController {
     @PostMapping
     public ResponseEntity<GeneralPostDetailDTO> createGeneralPost(
             @Valid @RequestBody CreateGeneralPostDTO dto,
-            @PathVariable Long groupId,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @PathVariable Long groupId) {
         return ResponseEntity.status(201).body(
-                generalPostService.createGeneralPost(dto, groupId, userDetails.getUsername())
+                generalPostService.createGeneralPost(dto, groupId)
         );
     }
 
+    // Endpoint som tar bort det allmänna inlägg vars id specificerats
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGeneralPostById(@PathVariable Long groupId, @PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        generalPostService.deleteGeneralPost(groupId, id, userDetails.getUsername());
+    public ResponseEntity<Void> deleteGeneralPostById(@PathVariable Long groupId, @PathVariable Long id) {
+        generalPostService.deleteGeneralPost(groupId, id);
         return ResponseEntity.noContent().build();
     }
 
+    // Endpoint som uppdaterar det allmänna inlägg vars id specificerats
     @PatchMapping("/{id}")
-    public ResponseEntity<GeneralPostDetailDTO> patchGeneralPost(@PathVariable Long groupId, @PathVariable Long id, @Valid @RequestBody PatchGeneralPostDTO dto, @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(generalPostService.patchGeneralPost(groupId, id, dto, userDetails.getUsername()));
+    public ResponseEntity<GeneralPostDetailDTO> patchGeneralPost(@PathVariable Long groupId,
+                                                                 @PathVariable Long id,
+                                                                 @Valid @RequestBody PatchGeneralPostDTO dto) {
+        return ResponseEntity.ok(generalPostService.patchGeneralPost(groupId, id, dto));
     }
 }

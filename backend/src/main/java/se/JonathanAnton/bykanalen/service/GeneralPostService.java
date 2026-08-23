@@ -14,7 +14,6 @@ import se.JonathanAnton.bykanalen.model.User;
 import se.JonathanAnton.bykanalen.repository.GeneralPostLikeRepository;
 import se.JonathanAnton.bykanalen.repository.GeneralPostRepository;
 import se.JonathanAnton.bykanalen.repository.GroupInfoRepository;
-import se.JonathanAnton.bykanalen.repository.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;

@@ -1,0 +1,135 @@
+.page {
+    min-height: 100vh;
+    padding: 56px 64px;
+    background:
+        radial-gradient(circle at 1px 1px, rgba(43, 36, 32, 0.06) 1px, transparent 0) 0 0/18px 18px,
+        var(--color-forest);
+}
+ 
+.loading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: #FBF6EE;
+    text-align: center;
+    margin-top: 120px;
+}
+ 
+.header {
+    margin-bottom: 48px;
+}
+ 
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ochre);
+    margin: 0 0 8px;
+}
+ 
+.heading {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 700;
+    color: #FBF6EE;
+    margin: 0 0 16px;
+}
+ 
+.groupSwitch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: rgba(251, 246, 238, 0.8);
+}
+ 
+.groupSelect {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(251, 246, 238, 0.3);
+    background: transparent;
+    color: #FBF6EE;
+}
+ 
+/* Anslagslapp med byns egen information (text1-3, image1-3 från GroupInfoDTO) */
+.notice {
+    position: relative;
+    background: #FBF6EE;
+    max-width: 720px;
+    padding: 44px 40px 36px;
+    border-radius: 2px;
+    transform: rotate(-0.6deg);
+    box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.2), 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+ 
+.pin {
+    position: absolute;
+    top: -10px;
+    left: 44px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-falu);
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.35);
+}
+ 
+.heroImage {
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    border-radius: 2px;
+    margin-bottom: 24px;
+}
+ 
+.introText {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--color-ink);
+    margin: 0 0 28px;
+}
+ 
+.columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+    border-top: 1px solid var(--color-line);
+    padding-top: 24px;
+}
+ 
+.column p {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-ink-muted);
+    margin: 0;
+}
+ 
+.columnImage {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 2px;
+    margin-bottom: 12px;
+}
+ 
+.error {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-falu-dark);
+}
+ 
+@media (max-width: 700px) {
+    .page {
+        padding: 40px 24px;
+    }
+    .heading {
+        font-size: 40px;
+    }
+    .notice {
+        padding: 32px 24px 28px;
+    }
+}

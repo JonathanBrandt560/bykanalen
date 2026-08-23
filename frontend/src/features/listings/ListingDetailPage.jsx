@@ -27,14 +27,14 @@ function ListingDetailPage() {
         return (
             <div className={styles.page}>
                 <p>Annonsen hittades inte.</p>
-                <Link to="/preview-listingpage">Tillbaka till listan</Link>
+                <Link to="/listings">Tillbaka till listan</Link>
             </div>
         );
     }
 
     return (
         <div className={styles.page}>
-            <Link to="/preview-listingpage" className={styles.back}>
+            <Link to="/listings" className={styles.back}>
                 ← Tillbaka
             </Link>
 

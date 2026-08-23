@@ -15,7 +15,7 @@ import java.util.List;
  * Alla anrop till denna controller startar med bas-URL:en /groups/{groupId}/events
  */
 @RestController
-@RequestMapping("/groups/{groupId}/events")
+@RequestMapping("/api/groups/{groupId}/events")
 public class EventController {
 
     private final EventService eventService;

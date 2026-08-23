@@ -10,7 +10,7 @@ import se.JonathanAnton.bykanalen.service.EventRegistrationService;
  * Alla anrop till denna controller startar med bas-URL:en /groups/{groupId}/events/{eventId}/registration
  */
 @RestController
-@RequestMapping("/groups/{groupId}/events/{eventId}/registration")
+@RequestMapping("/api/groups/{groupId}/events/{eventId}/registration")
 public class EventRegistrationController {
 
     private final EventRegistrationService eventRegistrationService;

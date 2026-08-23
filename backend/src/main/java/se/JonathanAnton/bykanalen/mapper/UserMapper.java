@@ -2,6 +2,7 @@ package se.JonathanAnton.bykanalen.mapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import se.JonathanAnton.bykanalen.dto.RegisterDTO;
+import se.JonathanAnton.bykanalen.dto.UserDetailDTO;
 import se.JonathanAnton.bykanalen.enums.UserType;
 import se.JonathanAnton.bykanalen.model.*;
 
@@ -36,5 +37,15 @@ public class UserMapper {
 
     public MemberlistGroup toMemberlistGroupEntity(User user, GroupInfo groupInfo) {
         return new MemberlistGroup(user, groupInfo);
+    }
+
+    public UserDetailDTO toUserDetailDTO(User user) {
+        return new UserDetailDTO(
+                user.getUserDetail().getUserId(),
+                user.getUsername(),
+                user.getUserDetail().getType(),
+                user.getUserDetail().isSuspended(),
+                user.getUserDetail().getRegistrationDate()
+        );
     }
 }

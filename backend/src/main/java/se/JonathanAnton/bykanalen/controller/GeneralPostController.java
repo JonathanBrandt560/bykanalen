@@ -16,7 +16,7 @@ import java.util.List;
  * Alla anrop till denna controller startar med bas-URL:en /groups/{groupId}/generalposts
  */
 @RestController
-@RequestMapping("/groups/{groupId}/generalposts")
+@RequestMapping("/api/groups/{groupId}/generalposts")
 public class GeneralPostController {
 
     private final GeneralPostService generalPostService;

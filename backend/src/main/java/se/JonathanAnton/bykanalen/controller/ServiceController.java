@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.JonathanAnton.bykanalen.dto.CreateServiceDTO;
 import se.JonathanAnton.bykanalen.dto.ServiceDTO;
+import se.JonathanAnton.bykanalen.model.User;
+import se.JonathanAnton.bykanalen.service.AuthorizationService;
 import se.JonathanAnton.bykanalen.service.ServiceService;
 
 import java.util.List;
@@ -19,9 +21,12 @@ import java.util.List;
 @RequestMapping("/api/groups/{groupId}/services")
 public class ServiceController {
 
-    // Injektering av servicelagret som innehåller affärslogiken
+    // Injektering av servicelagren som innehåller affärslogiken
     @Autowired
     private ServiceService serviceService;
+
+    @Autowired
+    private AuthorizationService authorizationService;
 
     /**
      * HTTP GET-slutpunkt för att hämta alla tjänster som tillhör en viss grupp/by.
@@ -44,20 +49,18 @@ public class ServiceController {
      * Exempel: POST /api/groups/1/services?userId=2
      *
      * @param groupId Hämtas från URL-sökvägen ({groupId})
-     * @param userId Hämtas från URL-parametern (?userId=2)
+     *
      * @param dto JSON-datan i anropets body som valideras automatisk via @Valid
      * @return Den skapade tjänsten (ServiceDTO) och HTTP-status 201 Created
      */
     @PostMapping
     public ResponseEntity<ServiceDTO> createService(
             @PathVariable Long groupId,
-            @RequestParam Long userId,
             @Valid @RequestBody CreateServiceDTO dto) {
 
-        // Skickar vidare data till servicelagret för att skapa och spara tjänsten
-        ServiceDTO createdService = serviceService.createService(groupId, userId, dto);
+        User currentUser = authorizationService.getCurrentUser();
+        ServiceDTO createdService = serviceService.createService(groupId, currentUser.getId(), dto);
 
-        // Returnerar det skapade objektet med statuskod 201 Created
         return ResponseEntity.status(HttpStatus.CREATED).body(createdService);
     }
 }

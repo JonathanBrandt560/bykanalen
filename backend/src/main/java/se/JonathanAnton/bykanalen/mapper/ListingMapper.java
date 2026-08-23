@@ -1,6 +1,7 @@
 package se.JonathanAnton.bykanalen.mapper;
 
 import org.springframework.stereotype.Component;
+import se.JonathanAnton.bykanalen.dto.CreateListingDTO;
 import se.JonathanAnton.bykanalen.dto.ListingDTO;
 import se.JonathanAnton.bykanalen.model.Listing;
 import se.JonathanAnton.bykanalen.model.User;
@@ -31,5 +32,16 @@ public class ListingMapper {
                   listing.setLocation(dto.getLocation());
                   listing.setUser(user);
                  return listing;
+      }
+
+      public Listing toEntity(CreateListingDTO dto, User user) {
+            Listing listing = new Listing();
+            listing.setTitle(dto.getTitle());
+            listing.setDescription(dto.getDescription());
+            listing.setImage(dto.getImage());
+            listing.setPrice(dto.getPrice());
+            listing.setLocation(dto.getLocation());
+            listing.setUser(user);
+            return listing;
       }
 }

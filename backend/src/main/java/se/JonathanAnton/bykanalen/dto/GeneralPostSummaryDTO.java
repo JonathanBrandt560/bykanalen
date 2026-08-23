@@ -9,14 +9,16 @@ public class GeneralPostSummaryDTO {
     private LocalDateTime publishDate;
     private int likeCount;
     private boolean likedByCurrentUser;
+    private String username;
 
     public GeneralPostSummaryDTO() {}
 
-    public GeneralPostSummaryDTO(Long id, String title, LocalDateTime publishDate, int likeCount) {
+    public GeneralPostSummaryDTO(Long id, String title, LocalDateTime publishDate, int likeCount, String username) {
         this.id = id;
         this.title = title;
         this.publishDate = publishDate;
         this.likeCount = likeCount;
+        this.username = username;
     }
 
     public Long getId() {
@@ -40,4 +42,7 @@ public class GeneralPostSummaryDTO {
     public void setLikedByCurrentUser(boolean likedByCurrentUser) {
         this.likedByCurrentUser = likedByCurrentUser;}
 
+    public String getUsername() {
+        return username;
+    }
 }

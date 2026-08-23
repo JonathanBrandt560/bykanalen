@@ -1,0 +1,100 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px 32px;
+    background: var(--color-forest);
+    border-bottom: 3px solid var(--color-falu);
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: #FBF6EE;
+    text-decoration: none;
+}
+
+.groupName {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-ochre);
+    padding: 4px 10px;
+    border: 1px solid rgba(251, 246, 238, 0.3);
+    border-radius: 3px;
+}
+
+.groupSelect {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(251, 246, 238, 0.3);
+    background: transparent;
+    color: #FBF6EE;
+}
+
+.links {
+    display: flex;
+    gap: 28px;
+}
+
+.link, .linkActive {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(251, 246, 238, 0.75);
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.link:hover {
+    color: #FBF6EE;
+}
+
+.linkActive {
+    color: #FBF6EE;
+    border-bottom-color: var(--color-ochre);
+}
+
+.logoutButton {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(251, 246, 238, 0.4);
+    color: #FBF6EE;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.logoutButton:hover {
+    background: var(--color-falu);
+    border-color: var(--color-falu);
+}
+
+@media (max-width: 700px) {
+    .navbar {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .links {
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+    }
+}

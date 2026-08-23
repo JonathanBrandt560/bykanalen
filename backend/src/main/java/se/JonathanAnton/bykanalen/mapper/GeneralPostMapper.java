@@ -29,7 +29,8 @@ public class GeneralPostMapper {
                 generalPost.getId(),
                 generalPost.getTitle(),
                 generalPost.getPublishDate(),
-                generalPost.getLikeCount()
+                generalPost.getLikeCount(),
+                generalPost.getUser() != null ? generalPost.getUser().getUsername() : null
         );
     }
 

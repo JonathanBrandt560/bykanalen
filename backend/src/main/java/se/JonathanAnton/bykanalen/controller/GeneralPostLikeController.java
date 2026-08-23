@@ -11,7 +11,7 @@ import se.JonathanAnton.bykanalen.dto.LikeResult;
  * Alla anrop till denna controller startar med bas-URL:en /groups/{groupId}/events
  */
 @RestController
-@RequestMapping("/groups/{groupId}/generalposts")
+@RequestMapping("/api/groups/{groupId}/generalposts")
 public class GeneralPostLikeController {
 
     private final GeneralPostLikeService likeService;

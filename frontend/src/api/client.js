@@ -1,5 +1,3 @@
-const BASE_URL = "/auth"; // OBS: se kommentar om vite.config.js nedan
-
 // Enkel wrapper runt fetch som automatiskt lägger på Authorization-header
 // när ett token finns sparat, samt hanterar JSON-body/parsing.
 export async function apiFetch(path, { method = "GET", body, auth = true } = {}) {

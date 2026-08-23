@@ -1,51 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { getPostDate } from "../../utils/dateHelpers";
+import { toggleLike } from "../../api/generalPostApi";
 import styles from "./GeneralPostCard.module.css";
 
-function GeneralPostCard({ generalPost, userId }) {
+function GeneralPostCard({ generalPost, groupId, onDelete }) {
+    const navigate = useNavigate();
+    const { username } = useAuth();
     const date = getPostDate(generalPost.publishDate);
+    const isOwnPost = generalPost.username === username;
+    console.log("DEBUG:", { postUsername: generalPost.username, contextUsername: username, isOwnPost });
 
-    const [hasLiked, setHasLiked] = useState(false);
+    const [hasLiked, setHasLiked] = useState(generalPost.likedByCurrentUser);
     const [likeCount, setLikeCount] = useState(generalPost.likeCount);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        async function fetchLikeStatus() {
-            try {
-                const res = await fetch(
-                    `/api/general-posts/${generalPost.id}/like-status?userId=${userId}`
-                );
-                if (res.ok) {
-                    setHasLiked(await res.json());
-                }
-            } catch (err) {
-                console.error("Kunde inte hämta gilla-status:", err);
-            }
-        }
-        fetchLikeStatus();
-    }, [generalPost.id, userId]);
-
-    async function handleToggleLike() {
+    async function handleToggleLike(e) {
+        e.stopPropagation();
         if (isLoading) return;
         setIsLoading(true);
 
-        // Optimistisk uppdatering för snabb respons i UI:t
         const wasLiked = hasLiked;
         setHasLiked(!wasLiked);
         setLikeCount((prev) => (wasLiked ? prev - 1 : prev + 1));
 
         try {
-            const res = await fetch(
-                `/api/general-posts/${generalPost.id}/like?userId=${userId}`,
-                { method: "POST" }
-            );
-            if (!res.ok) throw new Error("Serverfel vid gillning");
-
-            const result = await res.json();
+            const result = await toggleLike(groupId, generalPost.id);
             setHasLiked(result.liked);
             setLikeCount(result.likeCount);
         } catch (err) {
-            // Rulla tillbaka om anropet misslyckas
             setHasLiked(wasLiked);
             setLikeCount((prev) => (wasLiked ? prev + 1 : prev - 1));
             console.error("Kunde inte uppdatera gillning:", err);
@@ -54,8 +38,27 @@ function GeneralPostCard({ generalPost, userId }) {
         }
     }
 
+    function handleDeleteClick(e) {
+        e.stopPropagation();
+        onDelete?.(generalPost.id);
+    }
+
+    function handleCardClick() {
+        navigate(`/groups/${groupId}/generalposts/${generalPost.id}`);
+    }
+
+    function handleKeyDown(e) {
+        if (e.key === "Enter") handleCardClick();
+    }
+
     return (
-        <article className={styles.card}>
+        <article
+            className={styles.card}
+            onClick={handleCardClick}
+            role="link"
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+        >
             <div className={styles.likes}>
                 <button
                     onClick={handleToggleLike}
@@ -72,12 +75,20 @@ function GeneralPostCard({ generalPost, userId }) {
 
             <h3 className={styles.title}>{generalPost.title}</h3>
 
-            <div className={styles.dateLine}>
-                <p className={styles.name}>
-                    <span>Av </span>
-                    <span>{generalPost.name} </span>
-                </p>
-                <p className={styles.date}>{date}</p>
+            <div className={styles.metaRow}>
+                <div className={styles.dateLine}>
+                    <p className={styles.name}>
+                        <span>Av </span>
+                        <span>{generalPost.username}</span>
+                    </p>
+                    <p className={styles.date}>{date}</p>
+                </div>
+
+                {isOwnPost && (
+                    <button onClick={handleDeleteClick} className={styles.deleteButton}>
+                        Ta bort
+                    </button>
+                )}
             </div>
         </article>
     );

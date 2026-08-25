@@ -1,6 +1,7 @@
 package se.JonathanAnton.bykanalen.service;
 
 import org.springframework.stereotype.Service;
+import se.JonathanAnton.bykanalen.dto.CreateListingDTO;
 import se.JonathanAnton.bykanalen.dto.ListingDTO;
 import se.JonathanAnton.bykanalen.mapper.ListingMapper;
 import se.JonathanAnton.bykanalen.model.Listing;
@@ -62,8 +63,7 @@ public class ListingService {
                   .toList();
       }
 
-      // Skapar en ny annons kopplad till den inloggade användaren
-      public ListingDTO createListing(ListingDTO dto, String username) {
+      public ListingDTO createListing(CreateListingDTO dto, String username) {
             User user = userRepository.findByUsername(username)
                   .orElseThrow(() -> new RuntimeException("Användare hittades inte: " + username));
             Listing listing = listingMapper.toEntity(dto, user);

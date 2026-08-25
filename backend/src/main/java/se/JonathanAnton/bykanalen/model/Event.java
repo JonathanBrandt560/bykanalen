@@ -1,14 +1,11 @@
 package se.JonathanAnton.bykanalen.model;
-
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/** Entitetsklass för evenemang (events) */
 @Entity
 @Table(name = "events")
 public class Event {
@@ -39,16 +36,18 @@ public class Event {
 
     private LocalDateTime closeRegistrationDate;
 
+    // Ett evenemang kan tillhöra en grupp. En grupp kan ha många evenemang
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private Group group;
+    private GroupInfo groupInfo;
 
+    // Ett evenemang kan ha många användarregistreringar. En användarregistrering kan tillhöra ett evenemang.
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventRegistration> registrations = new ArrayList<>();
 
     public Event() {}
 
-    public Event(String title, byte[] image, String description, LocalDateTime publishDate, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime closeRegistrationDate, Group group) {
+    public Event(String title, byte[] image, String description, LocalDateTime publishDate, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime closeRegistrationDate, GroupInfo groupInfo) {
         this.title = title;
         this.image = image;
         this.description = description;
@@ -56,7 +55,7 @@ public class Event {
         this.startDate = startDate;
         this.endDate = endDate;
         this.closeRegistrationDate = closeRegistrationDate;
-        this.group = group;
+        this.groupInfo = groupInfo;
     }
 
     public Long getId() {
@@ -131,11 +130,11 @@ public class Event {
         this.registrations = registrations;
     }
 
-    public Group getGroup() {
-        return group;
+    public GroupInfo getGroup() {
+        return groupInfo;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroup(GroupInfo groupInfo) {
+        this.groupInfo = groupInfo;
     }
 }

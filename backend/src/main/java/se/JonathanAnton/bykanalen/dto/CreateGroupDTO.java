@@ -2,6 +2,7 @@ package se.JonathanAnton.bykanalen.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
+/** DTO för skapande av en ny grupp/by */
 public class CreateGroupDTO {
 
     @NotBlank(message = "Gruppnamn får inte vara tomt")

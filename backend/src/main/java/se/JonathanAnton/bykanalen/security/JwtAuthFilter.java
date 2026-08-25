@@ -1,5 +1,4 @@
 package se.JonathanAnton.bykanalen.security;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import se.JonathanAnton.bykanalen.service.JwtService;
-
 import java.io.IOException;
 
 @Component
@@ -38,17 +36,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        try {
+            String username = jwtService.extractUsername(token);
 
-            if (jwtService.isTokenValid(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken =
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                if (jwtService.isTokenValid(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+        } catch (Exception e) {
+            // Ogiltig/utgången token — behandla som oautentiserad istället för att krascha.
+            // SecurityContext förblir tom; permitAll-endpoints fungerar ändå,
+            // och skyddade endpoints kommer korrekt neka åtkomst längre fram i kedjan.
+            SecurityContextHolder.clearContext();
         }
 
         filterChain.doFilter(request, response);

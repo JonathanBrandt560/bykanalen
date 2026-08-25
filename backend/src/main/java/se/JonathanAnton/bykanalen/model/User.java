@@ -1,11 +1,9 @@
 package se.JonathanAnton.bykanalen.model;
-
 import jakarta.persistence.*;
-import se.JonathanAnton.bykanalen.enums.Role;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/** Entitetsklass för användare (users) */
 @Entity
 @Table(name = "users")
 public class User {
@@ -21,33 +19,48 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String email;
 
+    private Byte age;
+
+    @Column(name= "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    // En användare kan ha en användardetaljer. En användardetaljer kan tillhöra en användare
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetail userDetail;
 
+    // En användare kan ha många allmänna inlägg. Ett allmänt inlägg kan tillhöra en användare
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<GeneralPost> generalPosts = new ArrayList<>();
 
+    // En användare kan ha många annonser. En annons kan tillhöra en användare
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Listing> listings = new ArrayList<>();
 
+    // En användare kan ha många evenemangsregistreringar. En evenemangsregistrering kan tillhöra en användare
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventRegistration> eventRegistrations = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberlistGroup> memberlistGroups = new ArrayList<>();
 
+    // En användare kan ha många tjänster. En tjänst kan tillhöra en användare
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Service> services = new ArrayList<>();
 
     public User() {}
 
-    public User(String username, String password, Role role) {
+    public User(String username, String password, String email, Byte age, String firstName, String lastName) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.email = email;
+        this.age = age;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Long getId() {
@@ -74,12 +87,36 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Byte getAge() {
+        return age;
+    }
+
+    public void setAge(Byte age) {
+        this.age = age;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public UserDetail getUserDetail() {

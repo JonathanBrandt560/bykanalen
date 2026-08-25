@@ -1,10 +1,11 @@
 import { useState, useMemo, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { fetchListings } from "../../api/listingsApi";
 import ListingCard from "./ListingCard";
 import styles from "./ListingPage.module.css";
-
+ 
 const PAGE_SIZE = 20;
-
+ 
 const SORT_OPTIONS = [
     { value: "newest", label: "Nyast först" },
     { value: "oldest", label: "Äldst först" },
@@ -12,10 +13,10 @@ const SORT_OPTIONS = [
     { value: "priceHigh", label: "Pris: högst först" },
     { value: "alphabetical", label: "Titel (A-Ö)" },
 ];
-
+ 
 function sortListings(listings, sortBy) {
     const sorted = [...listings];
-
+ 
     switch (sortBy) {
         case "newest":
             return sorted.sort(
@@ -35,7 +36,7 @@ function sortListings(listings, sortBy) {
             return sorted;
     }
 }
-
+ 
 function ListingPage() {
     const [listings, setListings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -43,7 +44,7 @@ function ListingPage() {
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const [sortBy, setSortBy] = useState("newest");
     const [searchTerm, setSearchTerm] = useState("");
-
+ 
     useEffect(() => {
         fetchListings()
             .then((data) => {
@@ -55,7 +56,7 @@ function ListingPage() {
                 setLoading(false);
             });
     }, []);
-
+ 
     const filteredListings = useMemo(() => {
         const term = searchTerm.trim().toLowerCase();
         if (!term) return listings;
@@ -63,37 +64,37 @@ function ListingPage() {
             listing.title.toLowerCase().includes(term),
         );
     }, [listings, searchTerm]);
-
+ 
     const sortedListings = useMemo(
         () => sortListings(filteredListings, sortBy),
         [filteredListings, sortBy],
     );
-
+ 
     const visibleListings = sortedListings.slice(0, visibleCount);
     const hasMore = visibleCount < sortedListings.length;
-
+ 
     function handleShowMore() {
         setVisibleCount((prev) => prev + PAGE_SIZE);
     }
-
+ 
     function handleSortChange(event) {
         setSortBy(event.target.value);
         setVisibleCount(PAGE_SIZE);
     }
-
+ 
     function handleSearchChange(event) {
         setSearchTerm(event.target.value);
         setVisibleCount(PAGE_SIZE);
     }
-
+ 
     if (loading) {
         return <p className={styles.noResults}>Laddar annonser...</p>;
     }
-
+ 
     if (error) {
         return <p className={styles.noResults}>Något gick fel: {error}</p>;
     }
-
+ 
     return (
         <div className={styles.page}>
             <header className={styles.header}>
@@ -103,8 +104,12 @@ function ListingPage() {
                     Loppisar, föreningsmöten och fester — allt på ett ställe.
                 </p>
             </header>
-
+ 
             <div className={styles.controls}>
+                <Link to="/listings/new" className={styles.addButton}>
+                    + Ny annons
+                </Link>
+ 
                 <input
                     type="text"
                     className={styles.searchInput}
@@ -112,7 +117,7 @@ function ListingPage() {
                     value={searchTerm}
                     onChange={handleSearchChange}
                 />
-
+ 
                 <div className={styles.sortWrap}>
                     <label className={styles.sortLabel} htmlFor="sort">
                         Sortera efter
@@ -130,7 +135,7 @@ function ListingPage() {
                     </select>
                 </div>
             </div>
-
+ 
             {sortedListings.length === 0 ? (
                 <p className={styles.noResults}>
                     Inga annonser matchade "{searchTerm}".
@@ -142,7 +147,7 @@ function ListingPage() {
                     ))}
                 </div>
             )}
-
+ 
             {hasMore && (
                 <div className={styles.showMoreWrap}>
                     <button
@@ -156,5 +161,5 @@ function ListingPage() {
         </div>
     );
 }
-
+ 
 export default ListingPage;

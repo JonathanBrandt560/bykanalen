@@ -1,14 +1,12 @@
 package se.JonathanAnton.bykanalen.mapper;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import se.JonathanAnton.bykanalen.dto.RegisterDTO;
-import se.JonathanAnton.bykanalen.enums.Role;
-import se.JonathanAnton.bykanalen.model.Group;
-import se.JonathanAnton.bykanalen.model.MemberlistGroup;
-import se.JonathanAnton.bykanalen.model.User;
-import se.JonathanAnton.bykanalen.model.UserDetail;
+import se.JonathanAnton.bykanalen.dto.UserDetailDTO;
+import se.JonathanAnton.bykanalen.enums.UserType;
+import se.JonathanAnton.bykanalen.model.*;
 
+/** Mapper för user-dtos */
 @Component
 public class UserMapper {
 
@@ -22,22 +20,32 @@ public class UserMapper {
         return new User(
                 dto.getUsername(),
                 passwordEncoder.encode(dto.getPassword()),
-                Role.USER
+                dto.getEmail(),
+                dto.getAge(),
+                dto.getFirstName(),
+                dto.getLastName()
         );
     }
 
     public UserDetail toUserDetailEntity(RegisterDTO dto, User user) {
         return new UserDetail(
                 user,
-                dto.getEmail(),
-                dto.getAge(),
-                dto.getFirstName(),
-                dto.getLastName(),
+                UserType.standard,
                 false
         );
     }
 
-    public MemberlistGroup toMemberlistGroupEntity(User user, Group group) {
-        return new MemberlistGroup(user, group);
+    public MemberlistGroup toMemberlistGroupEntity(User user, GroupInfo groupInfo) {
+        return new MemberlistGroup(user, groupInfo);
+    }
+
+    public UserDetailDTO toUserDetailDTO(User user) {
+        return new UserDetailDTO(
+                user.getUserDetail().getUserId(),
+                user.getUsername(),
+                user.getUserDetail().getType(),
+                user.getUserDetail().isSuspended(),
+                user.getUserDetail().getRegistrationDate()
+        );
     }
 }

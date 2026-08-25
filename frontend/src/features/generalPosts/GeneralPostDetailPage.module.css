@@ -1,0 +1,92 @@
+.page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+}
+
+.back {
+    display: inline-block;
+    margin-bottom: 24px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--color-ink-muted);
+    text-decoration: none;
+}
+
+.back:hover {
+    color: var(--color-falu);
+}
+
+.card {
+    padding: 20px 0;
+    border-bottom: 2px solid var(--color-line);
+}
+
+.image {
+    width: 100%;
+    max-height: 320px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--color-forest);
+    margin-bottom: 20px;
+}
+
+.image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin: 0 0 10px;
+    color: var(--color-ink);
+}
+
+.meta {
+    display: flex;
+    gap: 16px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    margin: 0 0 20px;
+}
+
+.description {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--color-ink);
+    margin: 0 0 20px;
+    white-space: pre-wrap;
+}
+
+.likeCount {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-falu);
+}
+
+.editLink {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1px solid var(--color-falu);
+    border-radius: 4px;
+    color: var(--color-falu);
+    text-decoration: none;
+}
+
+.editLink:hover {
+    background: var(--color-falu);
+    color: #FBF6EE;
+}

@@ -1,17 +1,18 @@
 package se.JonathanAnton.bykanalen.controller;
 
-import org.springframework.http.HttpStatus;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import se.JonathanAnton.bykanalen.dto.CreateListingDTO;
 import se.JonathanAnton.bykanalen.dto.ListingDTO;
 import se.JonathanAnton.bykanalen.service.ListingService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/listings")
+@RequestMapping("/api/listings")
 public class ListingController {
 
       private final ListingService listingService;
@@ -56,7 +57,7 @@ public class ListingController {
       // Skapar en ny annons; kopplas till den inloggade användaren via userDetails
       @PostMapping
       public ResponseEntity<ListingDTO> createListing(
-            @RequestBody ListingDTO dto,
+            @Valid @RequestBody CreateListingDTO dto,
             @AuthenticationPrincipal UserDetails userDetails
       ) {
             return ResponseEntity.status(201).body(listingService.createListing(dto, userDetails.getUsername()));

@@ -22,4 +22,7 @@ public interface EventRegistrationRepository extends JpaRepository<EventRegistra
 
     // Få antalet registrerade deltagare för ett event
     long countByEventId(Long eventId);
+
+    // Ta bort alla registreringar kopplade till ett event
+    void deleteAllByEventId(Long eventId);
 }

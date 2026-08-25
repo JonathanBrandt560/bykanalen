@@ -1,0 +1,37 @@
+.button, .registered {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.button {
+    border: 1px solid var(--color-falu);
+    background: transparent;
+    color: var(--color-falu);
+}
+
+.button:hover {
+    background: var(--color-falu);
+    color: #FBF6EE;
+}
+
+.registered {
+    border: 1px solid var(--color-forest);
+    background: var(--color-forest);
+    color: #FBF6EE;
+}
+
+.registered:hover {
+    opacity: 0.85;
+}
+
+.button:disabled, .registered:disabled {
+    opacity: 0.6;
+    cursor: default;
+}

@@ -1,0 +1,221 @@
+.page {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    min-height: 100vh;
+    align-items: center;
+}
+
+.hero {
+    padding: 60px 64px;
+    max-width: 640px;
+}
+
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-falu);
+    margin: 0 0 10px;
+}
+
+.heading {
+    font-family: var(--font-display);
+    font-size: 76px;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: 0.005em;
+    margin: 0 0 20px;
+    color: var(--color-ink);
+}
+
+.lead {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--color-ink-muted);
+    margin: 0 0 36px;
+    max-width: 520px;
+}
+
+.features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 32px;
+}
+
+.features li {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-ink-muted);
+    line-height: 1.5;
+    border-top: 1px solid var(--color-line);
+    padding-top: 10px;
+}
+
+.featureLabel {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-forest);
+    margin-bottom: 4px;
+}
+
+/* Anslagstavlan: en subtil korkyta bakom den fastnålade lappen */
+.noticeboard {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background:
+        radial-gradient(circle at 1px 1px, rgba(43, 36, 32, 0.06) 1px, transparent 0) 0 0/18px 18px,
+        var(--color-forest);
+}
+
+.pinnedNote {
+    position: relative;
+    background: #FBF6EE;
+    width: 100%;
+    max-width: 380px;
+    padding: 40px 32px 32px;
+    border-radius: 2px;
+    transform: rotate(-1.2deg);
+    box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.2), 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.pin {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-falu);
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.35);
+}
+
+.noticeEyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-falu);
+    margin: 0 0 8px;
+}
+
+.noticeText {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-ink-muted);
+    margin: 0 0 24px;
+}
+
+.error {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-falu);
+    margin: 0 0 16px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+}
+
+.input {
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 10px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 3px;
+    background: #fff;
+    color: var(--color-ink);
+}
+
+.input:focus {
+    outline: 2px solid var(--color-falu);
+    outline-offset: 1px;
+}
+
+.submitButton {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 12px;
+    margin-top: 4px;
+    border: none;
+    border-radius: 3px;
+    background: var(--color-falu);
+    color: #FBF6EE;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.submitButton:hover {
+    background: var(--color-falu-dark);
+}
+
+.submitButton:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.registerLine {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-ink-muted);
+    text-align: center;
+    margin: 20px 0 0;
+}
+
+.registerLine a {
+    color: var(--color-falu);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.registerLine a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .page {
+        grid-template-columns: 1fr;
+    }
+    .hero {
+        padding: 48px 24px 24px;
+    }
+    .heading {
+        font-size: 52px;
+    }
+    .features {
+        grid-template-columns: 1fr;
+    }
+    .noticeboard {
+        min-height: auto;
+        padding: 24px;
+    }
+}

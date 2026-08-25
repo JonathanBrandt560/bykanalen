@@ -1,8 +1,8 @@
 package se.JonathanAnton.bykanalen.dto;
-
 import java.time.LocalDateTime;
 
-public class GroupDTO {
+/** DTO för informationssida för specifik grupp/by */
+public class GroupInfoDTO {
 
     private Long id;
     private String groupName;
@@ -14,9 +14,9 @@ public class GroupDTO {
     private byte[] image3;
     private LocalDateTime createdDate;
 
-    public GroupDTO() {}
+    public GroupInfoDTO() {}
 
-    public GroupDTO(Long id, String groupName, String text1, String text2, String text3, byte[] image1, byte[] image2, byte[] image3, LocalDateTime createdDate) {
+    public GroupInfoDTO(Long id, String groupName, String text1, String text2, String text3, byte[] image1, byte[] image2, byte[] image3, LocalDateTime createdDate) {
         this.id = id;
         this.groupName = groupName;
         this.text1 = text1;

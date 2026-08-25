@@ -2,13 +2,11 @@ package se.JonathanAnton.bykanalen.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import se.JonathanAnton.bykanalen.enums.UserType;
 import se.JonathanAnton.bykanalen.model.UserDetail;
-
-import java.util.Optional;
 
 public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
 
-    Optional<UserDetail> findByEmail(String email);
-
-    boolean existsByEmail(String email);
+    // Kontrollerar att användare finns och vilken behörighetstyp den har
+    boolean existsByUserIdAndType(Long userId, UserType type);
 }

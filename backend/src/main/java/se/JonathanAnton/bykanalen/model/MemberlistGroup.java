@@ -1,10 +1,13 @@
 package se.JonathanAnton.bykanalen.model;
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 
+/** Entitetsklass för grupptillhörigheter för användare.
+ * Motsvarar kopplingstabell (junction table) då användare och grupper/byar
+ * har M-M-relation. En användare kan tillhöra många grupper. En grupp kan
+ * ha många användare.
+ */
 @Entity
 @Table(name = "memberlist_groups")
 public class MemberlistGroup {
@@ -18,8 +21,8 @@ public class MemberlistGroup {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id", nullable = false)
-    private Group group;
+    @JoinColumn(name = "group_info_id", nullable = false)
+    private GroupInfo groupInfo;
 
     @Column(nullable = false)
     @CreationTimestamp
@@ -27,9 +30,9 @@ public class MemberlistGroup {
 
     public MemberlistGroup() {}
 
-    public MemberlistGroup(User user, Group group) {
+    public MemberlistGroup(User user, GroupInfo groupInfo) {
         this.user = user;
-        this.group = group;
+        this.groupInfo = groupInfo;
     }
 
     public Long getId() {
@@ -48,12 +51,12 @@ public class MemberlistGroup {
         this.user = user;
     }
 
-    public Group getGroup() {
-        return group;
+    public GroupInfo getGroup() {
+        return groupInfo;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroup(GroupInfo groupInfo) {
+        this.groupInfo = groupInfo;
     }
 
     public LocalDateTime getJoinedDate() {

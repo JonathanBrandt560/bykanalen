@@ -1,9 +1,12 @@
 package se.JonathanAnton.bykanalen.model;
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import se.JonathanAnton.bykanalen.enums.UserType;
 import java.time.LocalDateTime;
 
+/** Entitetsklass för användardetaljer (userdetails)
+ * 1-1-relation mellan användare (user) och användardetaljer
+ */
 @Entity
 @Table(name = "user_details")
 public class UserDetail {
@@ -11,22 +14,15 @@ public class UserDetail {
     @Id
     private Long userId;
 
+    // En användardetaljer kan tillhöra en användare. En användare ha en användardetaljer
     @OneToOne
     @JoinColumn(name = "user_id")
     @MapsId // Säger att userId är både PK och FK
     private User user;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Byte age;
-
-    @Column(nullable = false)
-    private String firstName;
-
-    @Column(nullable = false)
-    private String lastName;
+    private UserType type;
 
     @Column(nullable = false)
     private boolean isSuspended;
@@ -37,12 +33,9 @@ public class UserDetail {
 
     public UserDetail() {}
 
-    public UserDetail(User user, String email, Byte age, String firstName, String lastName, boolean isSuspended) {
+    public UserDetail(User user, UserType type, boolean isSuspended) {
         this.user = user;
-        this.email = email;
-        this.age = age;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.type = type;
         this.isSuspended = isSuspended;
     }
 
@@ -58,36 +51,12 @@ public class UserDetail {
         return user;
     }
 
-    public String getEmail() {
-        return email;
+    public UserType getType() {
+        return type;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Byte getAge() {
-        return age;
-    }
-
-    public void setAge(Byte age) {
-        this.age = age;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setType(UserType type) {
+        this.type = type;
     }
 
     public boolean isSuspended() {

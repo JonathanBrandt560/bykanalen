@@ -1,13 +1,13 @@
 package se.JonathanAnton.bykanalen.mapper;
-
 import org.springframework.stereotype.Component;
 import se.JonathanAnton.bykanalen.dto.CreateGeneralPostDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostDetailDTO;
 import se.JonathanAnton.bykanalen.dto.GeneralPostSummaryDTO;
 import se.JonathanAnton.bykanalen.model.GeneralPost;
-import se.JonathanAnton.bykanalen.model.Group;
+import se.JonathanAnton.bykanalen.model.GroupInfo;
 import se.JonathanAnton.bykanalen.model.User;
 
+/** Mapper för allmänna inlägg-dtos */
 @Component
 public class GeneralPostMapper {
 
@@ -29,16 +29,17 @@ public class GeneralPostMapper {
                 generalPost.getId(),
                 generalPost.getTitle(),
                 generalPost.getPublishDate(),
-                generalPost.getLikeCount()
+                generalPost.getLikeCount(),
+                generalPost.getUser() != null ? generalPost.getUser().getUsername() : null
         );
     }
 
-    public GeneralPost toEntity(CreateGeneralPostDTO dto, Group group, User user) {
+    public GeneralPost toEntity(CreateGeneralPostDTO dto, GroupInfo groupInfo, User user) {
         GeneralPost generalPost = new GeneralPost();
         generalPost.setTitle(dto.getTitle());
         generalPost.setImage(dto.getImage());
         generalPost.setDescription(dto.getDescription());
-        generalPost.setGroup(group);
+        generalPost.setGroup(groupInfo);
         generalPost.setUser(user);
         return generalPost;
     }

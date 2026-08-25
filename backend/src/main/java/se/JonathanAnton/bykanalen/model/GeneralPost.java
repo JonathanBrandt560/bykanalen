@@ -1,11 +1,9 @@
 package se.JonathanAnton.bykanalen.model;
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 
-
+/** Entitetsklass för allmänna inlägg (generalposts) */
 @Entity
 @Table(name = "general_posts")
 public class GeneralPost {
@@ -32,24 +30,26 @@ public class GeneralPost {
     @Column(name = "like_count", nullable = false)
     private int likeCount;
 
+    // Ett allmänt inlägg kan tillhöra en användare. En användare kan ha många allmänna inlägg
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    // Ett allmänt inlägg kan tillhöra en grupp/by. En grupp kan ha många allmänna inlägg
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private Group group;
+    private GroupInfo groupInfo;
 
     public GeneralPost() {}
 
-    public GeneralPost(String title, byte[] image, LocalDateTime publishDate, String description, int likeCount, User user, Group group) {
+    public GeneralPost(String title, byte[] image, LocalDateTime publishDate, String description, int likeCount, User user, GroupInfo groupInfo) {
         this.title = title;
         this.image = image;
         this.publishDate = publishDate;
         this.description = description;
         this.likeCount = likeCount;
         this.user = user;
-        this.group = group;
+        this.groupInfo = groupInfo;
     }
 
     public Long getId() {
@@ -108,11 +108,11 @@ public class GeneralPost {
         this.user = user;
     }
 
-    public Group getGroup() {
-        return group;
+    public GroupInfo getGroup() {
+        return groupInfo;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroup(GroupInfo groupInfo) {
+        this.groupInfo = groupInfo;
     }
 }

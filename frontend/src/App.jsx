@@ -1,51 +1,130 @@
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import LoginPage from "./features/auth/LoginPage";
+import Navbar from "./components/Navbar";
+import HomePage from "./features/home/HomePage";
 import RegisterPage from "./features/auth/RegisterPage";
 import EventListPage from "./features/events/EventListPage";
+import EventDetailPage from "./features/events/EventDetailPage";
+import CreateEventPage from "./features/events/CreateEventPage";
 import GeneralPostListPage from "./features/generalPosts/GeneralPostListPage";
+import GeneralPostDetailPage from "./features/generalPosts/GeneralPostDetailPage";
+import CreateGeneralPostPage from "./features/generalPosts/CreateGeneralPostPage";
+import EditGeneralPostPage from "./features/generalPosts/EditGeneralPostPage";
 import ListingPage from "./features/listings/ListingPage";
 import ListingDetailPage from "./features/listings/ListingDetailPage";
-
-function HomePage() {
-    return (
-        <div>
-            <h1>Välkommen!</h1>
-        </div>
-    );
-}
+import CreateListingPage from "./features/listings/CreateListingPage";
+import ServiceListPage from "./features/services/ServiceListPage";
+import CreateServicePage from "./features/services/CreateServicePage";
 
 function App() {
     return (
         <AuthProvider>
+            <Navbar />
             <Routes>
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/" element={<HomePage />} />
                 <Route path="/register" element={<RegisterPage />} />
+
                 <Route
-                    path="/"
-                    element={
-                        <ProtectedRoute>
-                            <HomePage />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/events"
+                    path="/groups/:groupId/events"
                     element={
                         <ProtectedRoute>
                             <EventListPage />
                         </ProtectedRoute>
                     }
                 />
-                {/* TILLFÄLLIGa routes för att testa statisk layout utan inloggning — ta bort innan ni kopplar på riktig auth/API */}
-                <Route path="/preview-events" element={<EventListPage />} />
                 <Route
-                    path="/preview-generalposts"
-                    element={<GeneralPostListPage />}
+                    path="/groups/:groupId/events/:id"
+                    element={
+                        <ProtectedRoute>
+                            <EventDetailPage />
+                        </ProtectedRoute>
+                    }
                 />
-                <Route path="/preview-listingpage" element={<ListingPage />} />
-                <Route path="/listings/:id" element={<ListingDetailPage />} />
+                <Route
+                    path="/groups/:groupId/events/new"
+                    element={
+                        <ProtectedRoute>
+                            <CreateEventPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/groups/:groupId/generalposts"
+                    element={
+                        <ProtectedRoute>
+                            <GeneralPostListPage />
+                        </ProtectedRoute>
+                    }
+                />          
+                <Route
+                    path="/groups/:groupId/generalposts/:id"
+                    element={
+                        <ProtectedRoute>
+                            <GeneralPostDetailPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/groups/:groupId/generalposts/new"
+                    element={
+                        <ProtectedRoute>
+                            <CreateGeneralPostPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/groups/:groupId/generalposts/:id/edit"
+                    element={
+                        <ProtectedRoute>
+                            <EditGeneralPostPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/listings"
+                    element={
+                        <ProtectedRoute>
+                            <ListingPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/listings/:id"
+                    element={
+                        <ProtectedRoute>
+                            <ListingDetailPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/listings/new"
+                    element={
+                        <ProtectedRoute>
+                            <CreateListingPage />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/groups/:groupId/services"
+                    element={
+                        <ProtectedRoute>
+                            <ServiceListPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/groups/:groupId/services/new"
+                    element={
+                        <ProtectedRoute>
+                            <CreateServicePage />
+                        </ProtectedRoute>
+                    }
+                />
+                {/* TILLFÄLLIGA routes för att testa statisk layout — ta bort innan produktion */}
+                <Route path="/preview-events" element={<EventListPage />} />
+                <Route path="/preview-generalposts" element={<GeneralPostListPage />} />
             </Routes>
         </AuthProvider>
     );

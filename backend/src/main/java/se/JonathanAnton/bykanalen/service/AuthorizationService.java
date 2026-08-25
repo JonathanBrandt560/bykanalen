@@ -13,7 +13,6 @@ import org.springframework.security.access.AccessDeniedException;
 /** Service-klass som verifierar användares behörighet  */
 @Service
 public class AuthorizationService {
-
     private final UserRepository userRepository;
     private final MemberlistGroupRepository memberlistGroupRepository;
     private final UserDetailRepository userDetailRepository;

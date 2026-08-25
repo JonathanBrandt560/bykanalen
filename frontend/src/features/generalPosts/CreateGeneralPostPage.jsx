@@ -10,8 +10,18 @@ function CreateGeneralPostPage() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [imageBase64, setImageBase64] = useState(null);
-    const [error, setError] = useState("");
+    const [fieldErrors, setFieldErrors] = useState({});
+    const [generalError, setGeneralError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    function clearFieldError(name) {
+        setFieldErrors((prev) => {
+            if (!prev[name]) return prev;
+            const next = { ...prev };
+            delete next[name];
+            return next;
+        });
+    }
 
     function handleImageChange(e) {
         const file = e.target.files[0];
@@ -20,16 +30,14 @@ function CreateGeneralPostPage() {
             return;
         }
         const reader = new FileReader();
-        reader.onload = () => {
-            // reader.result har formen "data:image/jpeg;base64,XXXX" — vi vill bara ha delen efter kommatecknet
-            setImageBase64(reader.result.split(",")[1]);
-        };
+        reader.onload = () => setImageBase64(reader.result.split(",")[1]);
         reader.readAsDataURL(file);
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
-        setError("");
+        setGeneralError("");
+        setFieldErrors({});
         setIsSubmitting(true);
 
         try {
@@ -40,7 +48,11 @@ function CreateGeneralPostPage() {
             });
             navigate(`/groups/${groupId}/generalposts`);
         } catch (err) {
-            setError(err.message || "Kunde inte skapa inlägget");
+            if (err.fieldErrors) {
+                setFieldErrors(err.fieldErrors);
+            } else {
+                setGeneralError(err.message || "Kunde inte skapa inlägget");
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -53,29 +65,43 @@ function CreateGeneralPostPage() {
             </Link>
             <h1 className={styles.heading}>Nytt inlägg</h1>
 
-            {error && <p className={styles.error}>{error}</p>}
+            {generalError && <p className={styles.generalError}>{generalError}</p>}
 
-            <form onSubmit={handleSubmit} className={styles.form}>
+            <form onSubmit={handleSubmit} className={styles.form} noValidate>
                 <label className={styles.label}>
                     Titel
                     <input
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className={styles.input}
+                        onChange={(e) => {
+                            setTitle(e.target.value);
+                            clearFieldError("title");
+                        }}
+                        className={fieldErrors.title ? `${styles.input} ${styles.inputError}` : styles.input}
                         maxLength={100}
-                        required
                     />
+                    {fieldErrors.title && <span className={styles.fieldError}>{fieldErrors.title}</span>}
                 </label>
+
                 <label className={styles.label}>
                     Beskrivning
                     <textarea
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className={styles.textarea}
+                        onChange={(e) => {
+                            setDescription(e.target.value);
+                            clearFieldError("description");
+                        }}
+                        className={
+                            fieldErrors.description ? `${styles.textarea} ${styles.inputError}` : styles.textarea
+                        }
                         rows={5}
-                        maxLength={2000}
+                        maxLength={500}
                     />
+                    <span className={styles.charCount}>{description.length}/500</span>
+                    {fieldErrors.description && (
+                        <span className={styles.fieldError}>{fieldErrors.description}</span>
+                    )}
                 </label>
+
                 <label className={styles.label}>
                     Bild (valfritt)
                     <input type="file" accept="image/*" onChange={handleImageChange} />

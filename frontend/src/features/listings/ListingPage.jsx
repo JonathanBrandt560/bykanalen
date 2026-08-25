@@ -98,10 +98,10 @@ function ListingPage() {
     return (
         <div className={styles.page}>
             <header className={styles.header}>
-                <p className={styles.eyebrow}>Kalender</p>
-                <h1 className={styles.heading}>Vad händer i stan?</h1>
+                <p className={styles.eyebrow}>Marknad</p>
+                <h1 className={styles.heading}>Köp och sälj medlemmar emellan</h1>
                 <p className={styles.subheading}>
-                    Loppisar, föreningsmöten och fester — allt på ett ställe.
+                    Gör fynd eller tjäna dig en hacka på saker du ändå tänkt slänga.
                 </p>
             </header>
  

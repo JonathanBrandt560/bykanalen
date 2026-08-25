@@ -8,23 +8,18 @@ import se.JonathanAnton.bykanalen.model.EventRegistration;
 import se.JonathanAnton.bykanalen.model.User;
 import se.JonathanAnton.bykanalen.repository.EventRegistrationRepository;
 import se.JonathanAnton.bykanalen.repository.EventRepository;
-import se.JonathanAnton.bykanalen.repository.UserRepository;
 
 @Service
 public class EventRegistrationService {
-
     private final EventRegistrationRepository eventRegistrationRepository;
     private final EventRepository eventRepository;
-    private final UserRepository userRepository;
     private final AuthorizationService authorizationService;
 
     public EventRegistrationService(EventRegistrationRepository eventRegistrationRepository,
                                     EventRepository eventRepository,
-                                    UserRepository userRepository,
                                     AuthorizationService authorizationService) {
         this.eventRegistrationRepository = eventRegistrationRepository;
         this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
         this.authorizationService = authorizationService;
     }
 

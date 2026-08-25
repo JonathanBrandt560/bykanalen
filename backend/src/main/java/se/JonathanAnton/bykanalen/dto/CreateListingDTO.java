@@ -3,6 +3,7 @@ package se.JonathanAnton.bykanalen.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +12,7 @@ public class CreateListingDTO {
     @NotBlank(message = "Titel får inte vara tom")
     private String title;
 
+    @Size(max = 500, message = "Beskrivning får vara max 500 tecken")
     private String description;
 
     private byte[] image;

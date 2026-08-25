@@ -1,4 +1,5 @@
 package se.JonathanAnton.bykanalen.dto;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ public class RegisterDTO {
     private String password;
 
     @NotBlank(message = "Email får inte vara tomt")
+    @Email(message = "Ogiltig e-postadress")
     private String email;
 
     @NotNull(message = "Ålder får inte vara tomt")

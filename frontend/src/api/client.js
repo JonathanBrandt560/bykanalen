@@ -1,5 +1,3 @@
-// Enkel wrapper runt fetch som automatiskt lägger på Authorization-header
-// när ett token finns sparat, samt hanterar JSON-body/parsing.
 export async function apiFetch(path, { method = "GET", body, auth = true } = {}) {
     const headers = { "Content-Type": "application/json" };
 
@@ -17,15 +15,18 @@ export async function apiFetch(path, { method = "GET", body, auth = true } = {})
     });
 
     if (!response.ok) {
-        // Backend (GlobalExceptionHandler) skickar ErrorResponse som JSON vid fel
         let message = "Något gick fel";
+        let fieldErrors = null;
         try {
             const errorData = await response.json();
             message = errorData.message || message;
+            fieldErrors = errorData.fieldErrors || null;
         } catch {
             // svaret var inte JSON, t.ex. vid 401 från JwtAuthEntryPoint
         }
-        throw new Error(message);
+        const error = new Error(message);
+        error.fieldErrors = fieldErrors;
+        throw error;
     }
 
     return response;

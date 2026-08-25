@@ -1,7 +1,8 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useSearchParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getUpcomingEvents, getEventsAfterDate, getEventsBeforeDate, deleteEvent } from "../../api/eventApi";
 import { useAuth } from "../../context/AuthContext";
+import { groupByMonth } from "../../utils/dateHelpers";
 import EventCard from "./EventCard";
 import styles from "./EventListPage.module.css";
 
@@ -18,8 +19,9 @@ function EventListPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const [filterMode, setFilterMode] = useState("upcoming");
-    const [selectedDate, setSelectedDate] = useState("");
+    const [searchParams, setSearchParams] = useSearchParams();
+    const filterMode = searchParams.get("filter") ?? "upcoming";
+    const selectedDate = searchParams.get("date") ?? "";
 
     useEffect(() => {
         if (filterMode !== "upcoming" && !selectedDate) return;
@@ -43,8 +45,16 @@ function EventListPage() {
     }, [groupId, filterMode, selectedDate]);
 
     function handleFilterModeChange(e) {
-        setFilterMode(e.target.value);
-        if (e.target.value === "upcoming") setSelectedDate("");
+        const newMode = e.target.value;
+        if (newMode === "upcoming") {
+            setSearchParams({ filter: newMode });
+        } else {
+            setSearchParams({ filter: newMode, date: selectedDate });
+        }
+    }
+
+    function handleDateChange(e) {
+        setSearchParams({ filter: filterMode, date: e.target.value });
     }
 
     async function handleDeleteEvent(eventId) {
@@ -85,7 +95,7 @@ function EventListPage() {
                         type="date"
                         className={styles.dateInput}
                         value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
+                        onChange={handleDateChange}
                     />
                 )}
             </div>
@@ -102,14 +112,19 @@ function EventListPage() {
                     {events.length === 0 ? (
                         <p className={styles.hint}>Inga events hittades.</p>
                     ) : (
-                        events.map((event) => (
-                            <EventCard
-                                key={event.id}
-                                event={event}
-                                groupId={groupId}
-                                isAdmin={isAdmin}
-                                onDelete={handleDeleteEvent}
-                            />
+                        groupByMonth(events).map((group) => (
+                            <div key={group.key} className={styles.monthGroup}>
+                                <h2 className={styles.monthHeading}>{group.label}</h2>
+                                {group.items.map((event) => (
+                                    <EventCard
+                                        key={event.id}
+                                        event={event}
+                                        groupId={groupId}
+                                        isAdmin={isAdmin}
+                                        onDelete={handleDeleteEvent}
+                                    />
+                                ))}
+                            </div>
                         ))
                     )}
                 </div>

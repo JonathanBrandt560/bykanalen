@@ -2,7 +2,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getEventById, deleteEvent } from "../../api/eventApi";
 import { useAuth } from "../../context/AuthContext";
-import { formatTimeRange } from "../../utils/dateHelpers";
+import { formatFullDateTimeRange, formatFullDate } from "../../utils/dateHelpers";
 import EventRegistrationButton from "./EventRegistrationButton";
 import styles from "./EventDetailPage.module.css";
 
@@ -48,9 +48,9 @@ function EventDetailPage() {
 
     return (
         <div className={styles.page}>
-            <Link to={`/groups/${groupId}/events`} className={styles.back}>
+            <button onClick={() => navigate(-1)} className={styles.back}>
                 ← Tillbaka
-            </Link>
+            </button>
 
             <article className={styles.card}>
                 <div className={styles.image}>
@@ -64,8 +64,14 @@ function EventDetailPage() {
                 <div className={styles.info}>
                     <h1 className={styles.title}>{event.title}</h1>
                     <p className={styles.time}>
-                        {formatTimeRange(event.startDate, event.endDate)}
+                        {formatFullDateTimeRange(event.startDate, event.endDate)}
                     </p>
+
+                    {event.closeRegistrationDate && (
+                        <p className={styles.registrationDeadline}>
+                            Sista anmälningsdag: {formatFullDate(event.closeRegistrationDate)}
+                        </p>
+                    )}
 
                     <p className={styles.description}>{event.description}</p>
 

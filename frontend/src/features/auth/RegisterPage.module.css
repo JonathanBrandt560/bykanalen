@@ -1,20 +1,19 @@
 .page {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 32px 20px 80px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: var(--color-forest);
 }
 
-.back {
-    display: inline-block;
-    margin-bottom: 24px;
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--color-ink-muted);
-    text-decoration: none;
-}
-
-.back:hover {
-    color: var(--color-falu);
+.card {
+    width: 100%;
+    max-width: 440px;
+    background: #FBF6EE;
+    padding: 40px 32px;
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 }
 
 .heading {
@@ -25,10 +24,17 @@
     margin: 0 0 24px;
 }
 
+.generalError {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-falu);
+    margin: 0 0 16px;
+}
+
 .form {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
 }
 
 .label {
@@ -42,7 +48,7 @@
     color: var(--color-ink-muted);
 }
 
-.input, .textarea {
+.input {
     font-family: var(--font-body);
     font-size: 15px;
     padding: 10px 12px;
@@ -52,13 +58,21 @@
     color: var(--color-ink);
 }
 
-.textarea {
-    resize: vertical;
-}
-
-.input:focus, .textarea:focus {
+.input:focus {
     outline: 2px solid var(--color-falu);
     outline-offset: 1px;
+}
+
+.inputError {
+    border-color: var(--color-falu);
+}
+
+.fieldError {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--color-falu);
 }
 
 .submitButton {
@@ -83,32 +97,4 @@
 .submitButton:disabled {
     opacity: 0.6;
     cursor: default;
-}
-
-.generalError {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--color-falu);
-    margin: 0 0 16px;
-}
-
-.inputError {
-    border-color: var(--color-falu);
-}
-
-.fieldError {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: normal;
-    text-transform: none;
-    color: var(--color-falu);
-}
-
-.charCount {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: normal;
-    text-transform: none;
-    color: var(--color-ink-muted);
-    text-align: right;
 }

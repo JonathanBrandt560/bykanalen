@@ -50,6 +50,7 @@
 
 .image {
     width: 96px;
+    height: 96px;
     border-radius: 4px;
     overflow: hidden;
     background: var(--color-forest);

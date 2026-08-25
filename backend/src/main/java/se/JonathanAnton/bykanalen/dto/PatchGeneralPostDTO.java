@@ -7,7 +7,7 @@ public class PatchGeneralPostDTO {
     @Size(min = 1, max = 100, message = "Titel måste var mellan 1 och 100 tecken")
     private String title;
 
-    @Size(max = 2000, message = "Beskrivning får vara max 2000 tecken")
+    @Size(max = 500, message = "Beskrivning får vara max 500 tecken")
     private String description;
 
     public String getTitle() {

@@ -12,7 +12,7 @@ public class CreateGeneralPostDTO {
 
     private byte[] image;
 
-    @Size(max = 2000, message = "Beskrivning får vara max 2000 tecken")
+    @Size(max = 500, message = "Beskrivning får vara max 500 tecken")
     private String description;
 
     public CreateGeneralPostDTO() {}

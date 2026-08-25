@@ -92,6 +92,21 @@
     color: #FBF6EE;
 }
 
+.monthGroup:first-of-type .monthHeading {
+    margin-top: 0;
+}
+
+.monthHeading {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-falu);
+    margin: 32px 0 4px;
+    padding-bottom: 8px;
+}
+
 @media (max-width: 560px) {
     .heading {
         font-size: 34px;

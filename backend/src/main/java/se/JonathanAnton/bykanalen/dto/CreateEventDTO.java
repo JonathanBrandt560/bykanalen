@@ -1,4 +1,5 @@
 package se.JonathanAnton.bykanalen.dto;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -90,5 +91,23 @@ public class CreateEventDTO {
 
     public void setCloseRegistrationDate(LocalDateTime closeRegistrationDate) {
         this.closeRegistrationDate = closeRegistrationDate;
+    }
+
+    @AssertTrue(message = "Slutdatum måste vara efter startdatum")
+    public boolean isEndDateValid() {
+        // Om något av datumen saknas hoppar vi över den här kollen -
+        // @Future sköter redan att startDate/endDate är giltiga var för sig
+        if (startDate == null || endDate == null) {
+            return true;
+        }
+        return endDate.isAfter(startDate);
+    }
+
+    @AssertTrue(message = "Sista anmälningsdag måste vara innan startdatum")
+    public boolean isCloseRegistrationDateValid() {
+        if (closeRegistrationDate == null || startDate == null) {
+            return true;
+        }
+        return closeRegistrationDate.isBefore(startDate);
     }
 }

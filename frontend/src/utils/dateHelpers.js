@@ -44,3 +44,52 @@ export function getPostDate(isoDateString) {
     }
 }
 
+const MONTHS_FULL = [
+    "januari", "februari", "mars", "april", "maj", "juni",
+    "juli", "augusti", "september", "oktober", "november", "december",
+];
+
+// Formaterar till "18 juli 2026 · 18:00–21:00", för detaljvyer
+export function formatFullDateTimeRange(startIso, endIso) {
+    const start = new Date(startIso);
+    const dateStr = `${start.getDate()} ${MONTHS_FULL[start.getMonth()]} ${start.getFullYear()}`;
+    return `${dateStr} · ${formatTimeRange(startIso, endIso)}`;
+}
+
+// Returnerar t.ex. "Juli 2026", för sektionsrubriker
+export function getMonthYearLabel(isoDateString) {
+    const date = new Date(isoDateString);
+    const label = `${MONTHS_FULL[date.getMonth()]} ${date.getFullYear()}`;
+    return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
+// Formaterar till "15 juli 2026", för t.ex. sista anmälningsdag
+export function formatFullDate(isoDateString) {
+    const date = new Date(isoDateString);
+    return `${date.getDate()} ${MONTHS_FULL[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+// Nyckel för att avgöra var en ny grupp börjar, t.ex. "2026-06"
+function getMonthYearKey(isoDateString) {
+    const date = new Date(isoDateString);
+    return `${date.getFullYear()}-${String(date.getMonth()).padStart(2, "0")}`;
+}
+
+// Grupperar en redan sorterad lista av objekt (t.ex. events) efter månad/år.
+// Antar att listan redan är sorterad kronologiskt (vilket EventController redan garanterar).
+export function groupByMonth(items, dateField = "startDate") {
+    const groups = [];
+    let currentKey = null;
+
+    for (const item of items) {
+        const key = getMonthYearKey(item[dateField]);
+        if (key !== currentKey) {
+            groups.push({ key, label: getMonthYearLabel(item[dateField]), items: [] });
+            currentKey = key;
+        }
+        groups[groups.length - 1].items.push(item);
+    }
+
+    return groups;
+}
+

@@ -23,6 +23,7 @@ public class ListingService {
             this.listingMapper = listingMapper;
       }
 
+      // Hämtar alla annonser, nyaste först, och mappar till DTO
       public List<ListingDTO> getAllListings() {
             return listingRepository.findAllByOrderByPublishDateDesc()
                   .stream()
@@ -30,12 +31,14 @@ public class ListingService {
                   .toList();
       }
 
+      // Hämtar en annons via id, kastar exception om den inte finns
       public ListingDTO getListingById(Long id) {
             Listing listing = listingRepository.findById(id)
                   .orElseThrow(() -> new RuntimeException("Annons hittades inte med id: " + id));
             return listingMapper.toDTO(listing);
       }
 
+      // Hämtar alla annonser för en viss användare, nyaste först
       public List<ListingDTO> getListingsByUser(Long userId) {
             return listingRepository.findByUserIdOrderByPublishDateDesc(userId)
                   .stream()
@@ -43,6 +46,7 @@ public class ListingService {
                   .toList();
       }
 
+      // Hämtar alla annonser på en viss plats, nyaste först
       public List<ListingDTO> getListingsByLocation(String location) {
             return listingRepository.findByLocationOrderByPublishDateDesc(location)
                   .stream()
@@ -50,6 +54,7 @@ public class ListingService {
                   .toList();
       }
 
+      // Hämtar annonser inom ett prisintervall, billigast först
       public List<ListingDTO> getListingsByPriceRange(Integer min, Integer max) {
             return listingRepository.findByPriceBetweenOrderByPriceAsc(min, max)
                   .stream()
@@ -57,6 +62,7 @@ public class ListingService {
                   .toList();
       }
 
+      // Skapar en ny annons kopplad till den inloggade användaren
       public ListingDTO createListing(ListingDTO dto, String username) {
             User user = userRepository.findByUsername(username)
                   .orElseThrow(() -> new RuntimeException("Användare hittades inte: " + username));
@@ -64,6 +70,7 @@ public class ListingService {
             return listingMapper.toDTO(listingRepository.save(listing));
       }
 
+      // Uppdaterar en befintlig annons med nya värden från DTO:n
       public ListingDTO updateListing(Long id, ListingDTO dto) {
             Listing listing = listingRepository.findById(id)
                   .orElseThrow(() -> new RuntimeException("Annons hittades inte med id: " + id));
@@ -75,6 +82,7 @@ public class ListingService {
             return listingMapper.toDTO(listingRepository.save(listing));
       }
 
+      // Tar bort en annons via id
       public void deleteListing(Long id) {
             listingRepository.deleteById(id);
       }

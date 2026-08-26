@@ -40,7 +40,7 @@ function ServiceListPage() {
                         <p className={styles.hint}>Inga tjänster hittades.</p>
                     ) : (
                         services.map((service) => (
-                            <ServiceCard key={service.id} service={service} />
+                            <ServiceCard key={service.id} service={service} groupId={groupId} />
                         ))
                     )}
                 </div>

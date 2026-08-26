@@ -15,6 +15,7 @@ import ListingPage from "./features/listings/ListingPage";
 import ListingDetailPage from "./features/listings/ListingDetailPage";
 import CreateListingPage from "./features/listings/CreateListingPage";
 import ServiceListPage from "./features/services/ServiceListPage";
+import ServiceDetailPage from "./features/services/ServiceDetailPage";
 import CreateServicePage from "./features/services/CreateServicePage";
 
 function App() {
@@ -111,6 +112,14 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <ServiceListPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/groups/:groupId/services/:id"
+                    element={
+                        <ProtectedRoute>
+                            <ServiceDetailPage />
                         </ProtectedRoute>
                     }
                 />

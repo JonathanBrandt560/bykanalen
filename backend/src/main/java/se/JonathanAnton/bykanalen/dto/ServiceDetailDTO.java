@@ -2,26 +2,20 @@ package se.JonathanAnton.bykanalen.dto;
 
 import java.time.LocalDateTime;
 
-public class ServiceDTO {
+public class ServiceDetailDTO {
 
-    private Long id;
     private String title;
     private String description;
     private byte[] image;
     private LocalDateTime publishDate;
+    private String username;
 
-    public ServiceDTO() {}
-
-    public ServiceDTO(Long id, String title, String description, byte[] image, LocalDateTime publishDate) {
-        this.id = id;
+    public ServiceDetailDTO(String title, String description, byte[] image, LocalDateTime publishDate, String username) {
         this.title = title;
         this.description = description;
         this.image = image;
         this.publishDate = publishDate;
-    }
-
-    public Long getId() {
-        return id;
+        this.username = username;
     }
 
     public String getTitle() {
@@ -54,5 +48,13 @@ public class ServiceDTO {
 
     public void setPublishDate(LocalDateTime publishDate) {
         this.publishDate = publishDate;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

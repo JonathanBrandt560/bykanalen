@@ -1,57 +1,54 @@
-import { useParams, Link } from "react-router-dom";
-import { mockListingPage } from "./mockServicePage";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getServiceById } from "../../api/serviceApi";
 import styles from "./ServiceDetailPage.module.css";
 
 function ServiceDetailPage() {
-    const { id } = useParams();
-    const Service = mockServicePage.find((l) => l.id === Number(id));
+    const { groupId, id } = useParams();
+    const navigate = useNavigate();
+    const [service, setService] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    if (!Service) {
+    useEffect(() => {
+        getServiceById(groupId, id)
+            .then(setService)
+            .catch((err) => setError(err.message))
+            .finally(() => setLoading(false));
+    }, [groupId, id]);
+
+    if (loading) return <div className={styles.page}>Laddar...</div>;
+
+    if (error || !service) {
         return (
             <div className={styles.page}>
-                <p>Annonsen hittades inte.</p>
-                <Link to="/preview-Servicepage">Tillbaka till listan</Link>
+                <p>Tjänsten hittades inte.</p>
+                <Link to={`/groups/${groupId}/services`}>Tillbaka till tjänster</Link>
             </div>
         );
     }
 
     return (
         <div className={styles.page}>
-            <Link to="/preview-Servicepage" className={styles.back}>
+            <button onClick={() => navigate(-1)} className={styles.back}>
                 ← Tillbaka
-            </Link>
+            </button>
 
             <article className={styles.card}>
                 <div className={styles.image}>
-                    {Service.imageUrl ? (
-                        <img src={Service.imageUrl} alt={Service.title} />
+                    {service.image ? (
+                        <img src={`data:image/jpeg;base64,${service.image}`} alt="" />
                     ) : (
-                        <div
-                            className={styles.imagePlaceholder}
-                            aria-hidden="true"
-                        />
+                        <div className={styles.imagePlaceholder} aria-hidden="true" />
                     )}
                 </div>
 
                 <div className={styles.info}>
-                    <h1 className={styles.title}>{lService.title}</h1>
-                    <div className={styles.metaRow}>
-                        <span className={styles.price}>{Service.price}</span>
-                        <span className={styles.time}>
-                            {new Date(Service.publishDate).toLocaleDateString(
-                                "sv-SE",
-                            )}
-                        </span>
-                    </div>
-
-                    <p className={styles.description}>{Service.description}</p>
-
-                    <div className={styles.pickupRow}>
-                        <span className={styles.pickupLabel}>Hämtas i</span>
-                        <span className={styles.pickupLocation}>
-                            {Service.pickupLocation}
-                        </span>
-                    </div>
+                    <p className={styles.date}>
+                        Av {service.username} · {new Date(service.publishDate).toLocaleDateString("sv-SE")}
+                    </p>
+                    <h1 className={styles.title}>{service.title}</h1>
+                    <p className={styles.description}>{service.description}</p>
                 </div>
             </article>
         </div>

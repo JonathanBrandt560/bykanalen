@@ -12,3 +12,8 @@ export async function createService(groupId, dto) {
     });
     return response.json();
 }
+
+export async function getServiceById(groupId, serviceId) {
+    const response = await apiFetch(`/api/groups/${groupId}/services/${serviceId}`);
+    return response.json();
+}

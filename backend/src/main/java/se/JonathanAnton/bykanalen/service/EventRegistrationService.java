@@ -9,6 +9,7 @@ import se.JonathanAnton.bykanalen.model.User;
 import se.JonathanAnton.bykanalen.repository.EventRegistrationRepository;
 import se.JonathanAnton.bykanalen.repository.EventRepository;
 
+/** Service-lager för hantering av användares anmälningar (Registration) till evenemang i Bykanalen. */
 @Service
 public class EventRegistrationService {
     private final EventRegistrationRepository eventRegistrationRepository;
@@ -24,15 +25,17 @@ public class EventRegistrationService {
     }
 
     /* Registrerar en användare till det evenemang id vars id specificerats.
-    Utförs som en transaktion för att se till så att all eller ingentillhörande information sparas */
+    Utförs som en transaktion för att se till så att all eller ingen tillhörande information sparas */
     @Transactional
     public void registerForEvent(Long groupId, Long eventId) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan registrera sig till events i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
         Event event = eventRepository.findByGroupInfoIdAndId(groupId, eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event med id: " + eventId + " hittades inte"));
 
+        // Förhindrar dubbel-anmälan
         if (eventRegistrationRepository.existsByUserIdAndEventId(user.getId(), eventId)) {
             throw new IllegalStateException("Du är redan registrerad på detta event");
         }
@@ -40,9 +43,13 @@ public class EventRegistrationService {
         eventRegistrationRepository.save(new EventRegistration(user, event));
     }
 
-    // Avregistrerar en användare från ett evenemang som denne registrerat sig till
+    /* Avregistrerar en användare från ett evenemang den tidigare anmält sig till.
+    Utförs som en transaktion för att se till att all eller ingen tillhörande information sparas. */
     @Transactional
     public void unregisterFromEvent(Long groupId, Long eventId) {
+        /* Säkerställer gruppmedlemskap, samt att endast den som har den specifika
+        evenemangsregistreringen kan ta bort den (findByUserIdAndEventId hittar bara
+        registreringen om den tillhör den inloggade användaren). */
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId,  user.getId());
 

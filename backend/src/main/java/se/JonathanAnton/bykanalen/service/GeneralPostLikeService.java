@@ -9,8 +9,10 @@ import se.JonathanAnton.bykanalen.model.User;
 import se.JonathanAnton.bykanalen.repository.GeneralPostLikeRepository;
 import se.JonathanAnton.bykanalen.repository.GeneralPostRepository;
 import se.JonathanAnton.bykanalen.dto.LikeResult;
-import se.JonathanAnton.bykanalen.repository.UserRepository;
 
+/** Service-lager för hantering av gillningar (likes) på allmänna inlägg i Bykanalen.
+ Håller reda på vilka användare som gillat vilka inlägg, och synkar det aggregerade
+ antalet gillningar (likeCount) på själva inlägget. */
 @Service
 public class GeneralPostLikeService {
 
@@ -29,22 +31,21 @@ public class GeneralPostLikeService {
     // Hanterar logik för en like-knapp kopplat till ett allmänt inlägg. Returnerar utfallet av knapp-interaktionen.
     @Transactional
     public LikeResult toggleLike(Long groupId, Long postId) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan gilla/avgilla inlägg i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
         GeneralPost post = postRepository.findByGroupInfoIdAndId(groupId, postId)
                 .orElseThrow(() -> new ResourceNotFoundException("Post med id " + postId + " hittades inte"));
 
-        // Variabel som håller koll på om den inloggade användaren redan har like:at inlägget
+        // Håller koll på om den inloggade användaren redan har gillat inlägget
         boolean alreadyLiked = likeRepository.existsByUserIdAndPostId(user.getId(), postId);
 
-        /* Om användaren har like:at inlägget och klickar på like-knappen, tas like-sparningen bort.
-        Och de totala antalet likes för inlägget minskar med 1 */
+        // Om användaren redan gillat inlägget: ta bort gillningen och minska räknaren
         if (alreadyLiked) {
             likeRepository.deleteByUserIdAndPostId(user.getId(), postId);
             post.setLikeCount(post.getLikeCount() - 1);
-        /* Om användaren INTE har like:at inlägget och klickar på like-knappen, läggs en like-sparning till.
-        Och de totala antalet likes för inlägget ökar med 1 */
+        // Annars: lägg till en ny gillning och öka räknaren
         } else {
             likeRepository.save(new GeneralPostLike(user.getId(), postId));
             post.setLikeCount(post.getLikeCount() + 1);
@@ -54,7 +55,10 @@ public class GeneralPostLikeService {
         return new LikeResult(!alreadyLiked, post.getLikeCount());
     }
 
+    /* Kontrollerar om den inloggade användaren redan har gillat ett specifikt inlägg.
+    Används t.ex. för att visa rätt initialt tillstånd på gilla-knappen i frontend. */
     public boolean hasUserLiked(Long groupId, Long postId) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan gilla/avgilla inlägg i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 

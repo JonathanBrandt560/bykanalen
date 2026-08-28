@@ -16,22 +16,18 @@ import se.JonathanAnton.bykanalen.repository.ServiceRepository;
 
 import java.util.List;
 
-/**
- * Service lager för hantering av tjänster i Bykanalen.
- * Innehåller affärslogik för att hämta och skapa tjänster kopplade till byar/grupper.
- */
+/** Service-lager för hantering av tjänster (services) i Bykanalen.
+ Innehåller affärslogik för att hämta och skapa tjänster kopplade till byar/grupper.
+ Obs: modellklassen Service refereras med fullt kvalificerat namn genomgående,
+ eftersom "Service" annars krockar med @Service-annotationen som redan importerats. */
 @Service
 public class ServiceService {
 
-    // Dependencies för databaseåtkomst
     private final ServiceRepository serviceRepository;
     private final AuthorizationService authorizationService;
     private final ServiceMapper serviceMapper;
     private final GroupInfoRepository groupInfoRepository;
 
-    /**
-     * Constructor för Dependency Injection (Spring skickar in repositories automatiskt).
-     */
     public ServiceService(ServiceRepository serviceRepository,
                           AuthorizationService authorizationService,
                           ServiceMapper serviceMapper,
@@ -42,13 +38,11 @@ public class ServiceService {
         this.groupInfoRepository = groupInfoRepository;
     }
 
-    /**
-     * Hämtar alla tjänster som tillhör en viss grupp/by och omvandlar dem till DTO:er.
-     *
-     * @param groupId ID på den grupp/by vars tjänster ska hämtas.
-     * @return En lista med ServiceDTO-objekt.
-     */
+    /* Hämtar alla tjänster som tillhör en viss grupp/by och omvandlar dem till DTO:er.
+    Tar emot id för den grupp/by vars tjänster ska hämtas och
+    returnerar en lista med ServiceSummaryDTO-objekt. */
     public List<ServiceSummaryDTO> getServicesByGroup(Long groupId) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan hämta tjänster i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
@@ -58,7 +52,11 @@ public class ServiceService {
                 .toList();
     }
 
+    /* Hämtar en tjänst och omvandlar den till en ServiceDetailDTO.
+    Tar emot id för den grupp/by samt tjänstens id vars tjänst ska hämtas, och
+    returnerar en ServiceDetailDTO. */
     public ServiceDetailDTO getServiceById(Long groupId, Long id) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan hämta tjänster i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
@@ -68,12 +66,17 @@ public class ServiceService {
         return serviceMapper.toServiceDetailDTO(service);
     }
 
+    /* Skapar en ny tjänst i angiven grupp/by, kopplad till den inloggade användaren.
+    Verifierar gruppmedlemskap, mappar in-datan till en Service-entitet, sparar den,
+    och returnerar den skapade tjänsten som en ServiceDetailDTO. */
     public ServiceDetailDTO createService(CreateServiceDTO dto, Long groupId) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan skapa tjänster i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
         GroupInfo group = groupInfoRepository.findById(groupId)
                 .orElseThrow(() -> new ResourceNotFoundException("Grupp med id: " + groupId + " hittades inte"));
+
         se.JonathanAnton.bykanalen.model.Service service = serviceMapper.toEntity(dto, group, user);
         se.JonathanAnton.bykanalen.model.Service saved = serviceRepository.save(service);
         return serviceMapper.toServiceDetailDTO(saved);

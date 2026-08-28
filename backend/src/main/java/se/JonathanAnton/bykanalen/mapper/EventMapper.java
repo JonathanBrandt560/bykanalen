@@ -34,7 +34,7 @@ public class EventMapper {
         );
     }
 
-    public Event toEntity(CreateEventDTO dto, GroupInfo groupInfo){
+    public Event toEntity(GroupInfo groupInfo, CreateEventDTO dto){
         Event event = new Event();
         event.setTitle(dto.getTitle());
         event.setImage(dto.getImage());

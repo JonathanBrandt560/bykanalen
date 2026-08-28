@@ -13,7 +13,7 @@ import se.JonathanAnton.bykanalen.service.UserService;
 
 /**
  * REST-controller för att hantera HTTP-förfrågningar kopplade till registrering/inloggning.
- * Alla anrop till denna controller startar med bas-URL:en /auth
+ * Alla anrop till denna controller startar med bas-URL:en /api/auth
  */
 @RestController
 @RequestMapping("/api/auth")

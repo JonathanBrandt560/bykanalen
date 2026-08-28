@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * REST-controller för att hantera HTTP-förfrågningar kopplade till evenemang (Events) i en grupp.
- * Alla anrop till denna controller startar med bas-URL:en /groups/{groupId}/events
+ * Alla anrop till denna controller startar med bas-URL:en /api/groups/{groupId}/events
  */
 @RestController
 @RequestMapping("/api/groups/{groupId}/events")
@@ -31,7 +31,7 @@ public class EventController {
     }
 
     /* Endpoint som hämtar evenemang som äger rum EFTER specificerat datum
-    Datum skickas med som en Request parameter (?date=YYYY-MM-DD) */
+    Datum skickas med som en Request-parameter (?date=YYYY-MM-DD) */
     @GetMapping("/after")
     public ResponseEntity<List<EventSummaryDTO>> getEventsAfterDate(@PathVariable Long groupId, @RequestParam LocalDate date) {
         return ResponseEntity.ok(eventService.getEventsAfterDate(groupId, date));
@@ -51,11 +51,11 @@ public class EventController {
         return ResponseEntity.ok(eventService.getEventById(groupId, id));
     }
 
-    /* Endpoint som skickar ett nytt evenemang
+    /* Endpoint som skapar ett nytt evenemang
     Validering på variablerna som skickas in (@Valid) */
     @PostMapping
     public ResponseEntity<EventDetailDTO> createEvent(@PathVariable Long groupId, @Valid @RequestBody CreateEventDTO dto) {
-        return ResponseEntity.status(201).body(eventService.createEvent(dto, groupId));
+        return ResponseEntity.status(201).body(eventService.createEvent(groupId, dto));
     }
 
     // Endpoint som tar bort det evenemang vars id specificerats

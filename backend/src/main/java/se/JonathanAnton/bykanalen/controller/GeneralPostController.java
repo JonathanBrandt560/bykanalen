@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * REST-controller för att hantera HTTP-förfrågningar kopplade till allmänna inlägg (GeneralPosts) i en grupp.
- * Alla anrop till denna controller startar med bas-URL:en /groups/{groupId}/generalposts
+ * Alla anrop till denna controller startar med bas-URL:en /api/groups/{groupId}/generalposts
  */
 @RestController
 @RequestMapping("/api/groups/{groupId}/generalposts")
@@ -46,8 +46,6 @@ public class GeneralPostController {
 
     /* Enpoint för att skapa ett nytt allmänt inlägg i en specifik grupp.
      @Valid Aktiverar automatisk validering av DTO:n (t.ex. att fält inte får vara tomma).
-     @RequestBody Omvandlar inkommande JSON-data från anropets body till ett CreateGeneralPostDTO-objekt.
-     @PathVariable Hämtar 'groupId' från URL-sökvägen.
      @return ResponseEntity som innehåller det skapade allmänna inlägget (GeneralPostDetailDTO) och HTTP-status 201 Created.
      */
     @PostMapping
@@ -66,7 +64,8 @@ public class GeneralPostController {
         return ResponseEntity.noContent().build();
     }
 
-    // Endpoint som uppdaterar det allmänna inlägg vars id specificerats
+    /* Endpoint som uppdaterar det allmänna inlägg vars id specificerats.
+    Validerar de inmatade värdena i DTON:n (@Valid) */
     @PatchMapping("/{id}")
     public ResponseEntity<GeneralPostDetailDTO> patchGeneralPost(@PathVariable Long groupId,
                                                                  @PathVariable Long id,

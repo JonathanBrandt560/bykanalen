@@ -11,6 +11,7 @@ import se.JonathanAnton.bykanalen.repository.UserRepository;
 
 import java.util.List;
 
+/** Service-lager för hantering av annonser (Listings) i Bykanalen. */
 @Service
 public class ListingService {
 

@@ -14,7 +14,7 @@ public class UserDetail {
     @Id
     private Long userId;
 
-    // En användardetaljer kan tillhöra en användare. En användare ha en användardetaljer
+    // En användardetalj kan tillhöra en användare. En användare har en användardetalj
     @OneToOne
     @JoinColumn(name = "user_id")
     @MapsId // Säger att userId är både PK och FK

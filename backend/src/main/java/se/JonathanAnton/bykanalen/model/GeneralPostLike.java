@@ -4,8 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 /** Entitetsklass för gillningar (likes) på allmänna inlägg. Behöver en egen entitet
- * för att hålla koll på att en användare bara får lämna en
- * gillning per allmänt inlägg */
+ för att hålla koll på att en användare bara får lämna en gillning per allmänt inlägg */
 @Entity
 @Table(name = "general_post_likes",
         uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "post_id"}))

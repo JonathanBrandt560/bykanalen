@@ -16,6 +16,7 @@ import se.JonathanAnton.bykanalen.repository.MemberlistGroupRepository;
 import se.JonathanAnton.bykanalen.repository.UserDetailRepository;
 import se.JonathanAnton.bykanalen.repository.UserRepository;
 
+/** Servicelager för registrering av nya användare samt inloggning av befintliga användare **/
 @Service
 public class UserService {
 
@@ -39,6 +40,8 @@ public class UserService {
         this.jwtService = jwtService;
     }
 
+    /* Utför alla insert-satser i databasen som en enda transaktion (går någonting fel så dras alla insert-satser tillbaka).
+     Utvärderar först om användarnamnet och lösenordet som inkommer ifrån dto:n i argumentet är ledigt */
     @Transactional
     public void register(RegisterDTO dto) {
         if(userRepository.existsByUsername(dto.getUsername())) {
@@ -54,12 +57,15 @@ public class UserService {
         UserDetail userDetail = userMapper.toUserDetailEntity(dto, user);
         userDetailRepository.save(userDetail);
 
+        // Utvärderar om det finns en befintlig grupp med det id som skickats med i dto:n
         GroupInfo groupInfo = groupInfoRepository.findById(dto.getGroupId()).orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + dto.getGroupId() + " hittades inte"));
 
         MemberlistGroup memberlistGroup = userMapper.toMemberlistGroupEntity(user, groupInfo);
         memberlistGroupRepository.save(memberlistGroup);
     }
 
+    /* Tar emot ett användarnamn och ett lösenord ifrån dto:n som argument. Tillämpar Spring Security:s inbyggda
+    autentisering som returnerar en jwt-token vid lyckad inloggning */
     public String login(LoginDTO dto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword())

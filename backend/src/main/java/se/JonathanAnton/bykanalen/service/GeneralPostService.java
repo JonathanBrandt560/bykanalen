@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/** Service-lager för hantering av allmänna inlägg (GeneralPosts) i Bykanalen. */
 @Service
 public class GeneralPostService {
 
@@ -42,6 +43,7 @@ public class GeneralPostService {
 
     // Hämtar alla allmänna inlägg som tillhör specificerad grupp sorterat efter datum (nyast först)
     public List<GeneralPostSummaryDTO> getAllGeneralPostsLatest(Long groupId) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan hämta allmänna inlägg i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
@@ -51,6 +53,7 @@ public class GeneralPostService {
 
     // Hämtar alla allmänna inlägg som tillhör specificerad grupp sorterat efter antalet likes
     public List<GeneralPostSummaryDTO> getAllGeneralPostsByLikes(Long groupId) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan hämta allmänna inlägg i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
@@ -59,7 +62,7 @@ public class GeneralPostService {
     }
 
     /* Kopplar på like-status för de allmänna inlägg en inloggad användare har like:at.
-    Tar emot en array-list med GeneralPost-objekt och returnerar en array-list med GeneralPostSummary-dtos */
+    Tar emot en lista med GeneralPost-objekt och returnerar en lista med GeneralPostSummary-dtos */
     private List<GeneralPostSummaryDTO> attachLikedStatus(List<GeneralPost> generalPosts, User user) {
         List<Long> postIds = generalPosts.stream().map(GeneralPost::getId).toList();
         Set<Long> likedPostIds = new HashSet<>(likeRepository.findLikedPostIds(user.getId(), postIds));
@@ -75,6 +78,7 @@ public class GeneralPostService {
 
     // Hämtar det allmänna inlägg vars id specificerats mappat till detalj-vy
     public GeneralPostDetailDTO getGeneralPostById(Long groupId, Long id) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan hämta allmänna inlägg i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
@@ -86,6 +90,7 @@ public class GeneralPostService {
     /* Skapar ett nytt allmänt inlägg med inloggad användare som författare. Tar emot en CreateGeneralPost-DTO
     och returnerar en detaljvy-DTO*/
     public GeneralPostDetailDTO createGeneralPost(CreateGeneralPostDTO dto, Long groupId) {
+        // Säkerställer att endast inloggade medlemmar av gruppen kan posta allmänna inlägg i den
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
@@ -101,6 +106,8 @@ public class GeneralPostService {
     Utförs som en transaktion för att se till att alla tillhörande operationer utförs/inte utförs */
     @Transactional
     public void deleteGeneralPost(Long groupId, Long id) {
+        /* Säkerställer gruppmedlemskap, samt att endast den som skrivit inlägget kan ta bort det.
+        (findByUserIdAndId hittar bara inlägget om det tillhör den inloggade användaren) */
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
@@ -116,18 +123,18 @@ public class GeneralPostService {
     Utförs som en transaktion för att se till att alla tillhörande operationer utförs/inte utförs */
     @Transactional
     public GeneralPostDetailDTO patchGeneralPost(Long groupId, Long id, PatchGeneralPostDTO dto) {
+        /* Säkerställer gruppmedlemskap, samt att endast den som skrivit inlägget kan redigera det.
+        (findByUserIdAndId hittar bara inlägget om det tillhör den inloggade användaren) */
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
 
         GeneralPost generalPost = generalPostRepository.findByUserIdAndId(user.getId(), id)
                 .orElseThrow(() -> new ResourceNotFoundException("Inlägg med id " + id + " hittades inte"));
 
-        /* Om titelns värde inte är null i PatchGeneralPost-DTO:n,
-        så sätts det nya värdet till allmänna inläggets titel */
+        // Om titelns värde inte är null i PatchGeneralPost-DTO:n, sätts det nya värdet
         if (dto.getTitle() != null) {
             generalPost.setTitle(dto.getTitle());
-        /* Om beskrivningens värde inte är null i PatchGeneralPost-DTO:n,
-        så sätts det nya värdet till allmänna inläggets beskrivning */
+        // Om beskrivningens värde inte är null i PatchGeneralPost-DTO:n, sätts det nya värdet
         }
         if (dto.getDescription() != null) {
             generalPost.setDescription(dto.getDescription());

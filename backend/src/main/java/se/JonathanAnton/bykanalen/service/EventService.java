@@ -87,14 +87,14 @@ public class EventService {
     Tar emot en dto och mappas om till en event-entitet.
     Returnerar slutligen en EventDetailDTO */
     @Transactional
-    public EventDetailDTO createEvent(CreateEventDTO dto, Long groupId) {
+    public EventDetailDTO createEvent(Long groupId, CreateEventDTO dto) {
         User user = authorizationService.getCurrentUser();
         authorizationService.verifyGroupMembership(groupId, user.getId());
         authorizationService.verifyAdminStatus(user.getId());
 
         GroupInfo group = groupInfoRepository.findById(groupId)
                 .orElseThrow(() -> new ResourceNotFoundException("Grupp med id " + groupId + " hittades inte"));
-        Event event = eventMapper.toEntity(dto, group);
+        Event event = eventMapper.toEntity(group, dto);
         Event saved = eventRepository.save(event);
         return eventMapper.toEventDetailDTO(saved, 0);
     }
